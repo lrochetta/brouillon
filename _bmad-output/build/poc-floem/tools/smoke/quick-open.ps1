@@ -11,7 +11,7 @@
 param([string]$Exe, [string[]]$Mode = @('dark', 'light'), [string]$DataRoot = (Join-Path $env:TEMP 'brouillon-qo'), [string]$Tag = '')
 $ErrorActionPreference = 'Stop'
 $Mode = @($Mode | ForEach-Object { $_ -split ',' } | Where-Object { $_ })
-. (Join-Path $PSScriptRoot 'lib.ps1')
+. (Join-Path $PSScriptRoot $(if ($env:BROUILLON_SMOKE_TI -eq '1') { 'testinput.ps1' } else { 'lib.ps1' }))
 $Exe = (Resolve-Path $Exe).Path
 $env:BROUILLON_NO_UPDATE = '1'
 New-Item -ItemType Directory -Force $DataRoot | Out-Null

@@ -17,6 +17,24 @@ pub fn plan(src: &Path, defaults: Option<&Path>, dest: &Path, known: &dyn Fn(&st
     plan_import_with_defaults(src, defaults.filter(|d| d.is_dir() && *d != src), known, &existing).map_err(|e| e.to_string())
 }
 
+/// Dry-run plan for the editor `id` (any registered importer) reading `src`.
+pub fn plan_for(id: &str, src: &Path, dest: &Path, known: &dyn Fn(&str) -> bool) -> Result<Plan, String> {
+    if !src.is_dir() {
+        return Err(format!("{} is not a folder", src.display()));
+    }
+    let imp = brouillon_import::others::by_id(id).ok_or_else(|| format!("unknown editor `{id}`"))?;
+    let existing = std::fs::read_to_string(dest.join("settings.toml")).unwrap_or_default();
+    imp.plan(src, &brouillon_import::others::Ctx { known, existing_settings: &existing }).map_err(|e| e.to_string())
+}
+
+/// Every known editor with its folder and item count, for the dialog and the first-run screen.
+pub fn editors() -> Vec<ui::EditorEntry> {
+    brouillon_import::others::survey(&brouillon_import::others::Env::from_os())
+        .into_iter()
+        .map(|f| ui::EditorEntry { id: f.id.into(), label: f.label.into(), hint: f.folder_hint.into(), dir: f.dir, count: f.count })
+        .collect()
+}
+
 /// The program folder of EditPlus when `src` is its per-user folder (so shipped defaults are skipped).
 pub fn auto_defaults(src: &Path) -> Option<std::path::PathBuf> {
     let (user, program) = detect_dirs();
@@ -187,6 +205,32 @@ mod tests {
         let (reg, _) = crate::wiring::build_registry();
         let m = apply_message(&plan(&src, None, &dest, &|id| reg.contains(id)).unwrap());
         assert!(m.contains("Restart Brouillon to load: user tools, cliptext."), "{m}");
+    }
+
+    #[test]
+    fn plan_for_routes_to_the_chosen_editor_and_applies_with_backups() {
+        let src = tmp("pf-src");
+        std::fs::create_dir_all(src.join("Packages/User")).unwrap();
+        std::fs::write(src.join("Packages/User/Preferences.sublime-settings"), "{\"tab_size\": 5}").unwrap();
+        let dest = tmp("pf-dest");
+        std::fs::write(dest.join("settings.toml"), "[editor]
+font_size = 9
+").unwrap();
+        let (reg, _) = crate::wiring::build_registry();
+        let plan = plan_for("sublime", &src, &dest, &|id| reg.contains(id)).unwrap();
+        assert_eq!(std::fs::read_to_string(dest.join("settings.toml")).unwrap(), "[editor]
+font_size = 9
+", "dry run writes nothing");
+        apply(&plan, &dest).unwrap();
+        let text = std::fs::read_to_string(dest.join("settings.toml")).unwrap();
+        assert_eq!(crate::onboarding::settings_of(&text).get_i64("editor.tab_size", 0), 5);
+        assert_eq!(crate::onboarding::settings_of(&text).get_i64("editor.font_size", 0), 9, "other keys kept");
+        assert!(!text.contains("classic"), "only EditPlus switches the Classic preset on");
+        assert_eq!(std::fs::read_to_string(dest.join("settings.toml.pre-import.bak")).unwrap(), "[editor]
+font_size = 9
+");
+        assert!(plan_for("nope", &src, &dest, &|_| true).unwrap_err().contains("unknown editor"));
+        assert_eq!(editors().len(), 4);
     }
 
     #[test]

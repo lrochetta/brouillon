@@ -49,7 +49,7 @@ pub struct Report {
 }
 
 impl Report {
-    fn add(&mut self, category: &'static str, name: impl Into<String>, status: Status, detail: impl Into<String>) {
+    pub(crate) fn add(&mut self, category: &'static str, name: impl Into<String>, status: Status, detail: impl Into<String>) {
         // Names come from another program's files: scrubbed and bounded before they are shown.
         self.items.push(Item { category, name: crate::hardening::safe_label_n(&name.into(), 160), status, detail: detail.into() });
     }
@@ -98,18 +98,15 @@ pub struct Plan {
     pub report: Report,
 }
 
-/// Files in the destination that [`apply`] copies to `<name>.pre-import.bak` before replacing them.
-const BACKED_UP: &[&str] = &["keymap.toml", "tools.toml", "recent.toml"];
-
 // ---------------------------------------------------------------------------
 // INI reading
 // ---------------------------------------------------------------------------
 
 #[derive(Debug, Clone)]
-struct Entry {
-    section: String,
-    key: String,
-    value: String,
+pub(crate) struct Entry {
+    pub(crate) section: String,
+    pub(crate) key: String,
+    pub(crate) value: String,
 }
 
 fn norm(s: &str) -> String {
@@ -117,7 +114,7 @@ fn norm(s: &str) -> String {
 }
 
 /// Ordered `[section] key=value` list. Secret keys are dropped and reported.
-fn read_ini(text: &str, file: &str, report: &mut Report) -> Vec<Entry> {
+pub(crate) fn read_ini(text: &str, file: &str, report: &mut Report) -> Vec<Entry> {
     let mut out = Vec::new();
     let mut section = String::new();
     for line in text.lines() {
@@ -151,7 +148,7 @@ fn read_ini(text: &str, file: &str, report: &mut Report) -> Vec<Entry> {
     out
 }
 
-fn parse_bool(v: &str) -> Option<bool> {
+pub(crate) fn parse_bool(v: &str) -> Option<bool> {
     match v.trim().to_ascii_lowercase().as_str() {
         "1" | "y" | "yes" | "true" | "on" => Some(true),
         "0" | "n" | "no" | "false" | "off" | "" => Some(false),
@@ -201,7 +198,7 @@ const NOT_CARRIED: &[(&str, &str)] = &[
     ("workspacepath", "path of the old workspace folder: not carried"),
 ];
 
-fn import_settings(entries: &[Entry], settings_text: &mut String, report: &mut Report) {
+pub(crate) fn import_settings(entries: &[Entry], settings_text: &mut String, report: &mut Report) {
     let mut seen: BTreeSet<(&str, &str)> = BTreeSet::new();
     for e in entries {
         let nk = norm(&e.key);
@@ -371,7 +368,7 @@ pub fn split_args(s: &str) -> Vec<String> {
     out
 }
 
-fn import_tools(entries: &[Entry], report: &mut Report) -> Option<String> {
+pub(crate) fn import_tools(entries: &[Entry], report: &mut Report) -> Option<String> {
     let recs = collect_tools(entries);
     let mut root = toml::Table::new();
     let mut tools: Vec<toml::Value> = Vec::new();
@@ -788,8 +785,7 @@ pub fn plan_import_with_defaults(dir: &Path, defaults: Option<&Path>, known: &dy
     Ok(Plan { outputs, report })
 }
 
-/// Write the plan under `dest`. Existing `keymap.toml`, `tools.toml` and
-/// `recent.toml` are first copied to `<name>.pre-import.bak` (never overwriting
+/// Write the plan under `dest`. Every existing file about to be replaced is first copied to `<name>.pre-import.bak` (never overwriting
 /// an earlier backup). Returns the relative paths written.
 pub fn apply(plan: &Plan, dest: &Path) -> io::Result<Vec<String>> {
     let mut written = Vec::new();
@@ -798,7 +794,7 @@ pub fn apply(plan: &Plan, dest: &Path) -> io::Result<Vec<String>> {
         if let Some(parent) = p.parent() {
             fs::create_dir_all(parent)?;
         }
-        if BACKED_UP.contains(&rel.as_str()) && p.is_file() {
+        if p.is_file() {
             let bak = dest.join(format!("{rel}.pre-import.bak"));
             if !bak.exists() {
                 fs::copy(&p, &bak)?;

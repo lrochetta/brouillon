@@ -149,11 +149,50 @@ fn handle(req: &Value) -> Result<Value, String> {
             barrier()?;
             Ok(json!({"ok": true}))
         }
+        // `hold`/`release` keep modifiers (`mods`: "ctrl", "ctrl+shift"...) down between requests; `tap` presses one key while they
+        // are held. Together they drive "hold Ctrl, press Tab twice, release Ctrl" (the document switcher).
+        "hold" | "release" => {
+            let mods = parse_chord(&format!("{}+a", req.get("mods").and_then(|m| m.as_str()).ok_or("missing 'mods'")?))?.3;
+            ti::send(Cmd::Hold { mods, down: op == "hold" });
+            barrier()?;
+            Ok(json!({"ok": true}))
+        }
+        "tap" => {
+            let chord = req.get("chord").and_then(|c| c.as_str()).ok_or("missing 'chord'")?;
+            let (logical, physical, text, mods) = parse_chord(chord)?;
+            ti::send(Cmd::Tap { logical, physical, text, mods });
+            barrier()?;
+            Ok(json!({"ok": true}))
+        }
         "text" => {
             let t = req.get("text").and_then(|c| c.as_str()).ok_or("missing 'text'")?;
             ti::send(Cmd::Text(t.to_string()));
             barrier()?;
             Ok(json!({"ok": true}))
+        }
+        "latency" => {
+            // Types `text` one character at a time, `gap_ms` apart; for each character reports the time from the
+            // injection to the end of the first frame painted afterwards (renderer finish/present call).
+            let text = req.get("text").and_then(|c| c.as_str()).ok_or("missing 'text'")?;
+            let gap = req.get("gap_ms").and_then(|v| v.as_u64()).unwrap_or(60);
+            let _ = ti::lat_take();
+            let mut missed = 0u32;
+            for ch in text.chars() {
+                let before = ti::lat_count();
+                ti::send(Cmd::Text(ch.to_string()));
+                barrier()?;
+                let t0 = std::time::Instant::now();
+                while ti::lat_count() == before && t0.elapsed() < Duration::from_millis(1500) {
+                    std::thread::sleep(Duration::from_millis(1));
+                }
+                if ti::lat_count() == before {
+                    missed += 1;
+                }
+                std::thread::sleep(Duration::from_millis(gap));
+            }
+            let s = ti::lat_take();
+            let col = |i: usize| s.iter().map(|r| r[i]).collect::<Vec<f64>>();
+            Ok(json!({"ok": true, "ms": col(0), "handled": col(1), "wait": col(2), "paint": col(3), "missed": missed}))
         }
         "move" => {
             ti::send(Cmd::Move(Point::new(num(req, "x")?, num(req, "y")?)));
@@ -168,6 +207,12 @@ fn handle(req: &Value) -> Result<Value, String> {
                 None => Modifiers::empty(),
             };
             ti::send(Cmd::Click { pos: Point::new(num(req, "x")?, num(req, "y")?), button: button(req), count, mods });
+            barrier()?;
+            Ok(json!({"ok": true}))
+        }
+        // `down` / `up`: one button edge at (x, y), so a client can leave a real-mouse gap between press and release.
+        "down" | "up" => {
+            ti::send(Cmd::Button { pos: Point::new(num(req, "x")?, num(req, "y")?), button: button(req), down: op == "down" });
             barrier()?;
             Ok(json!({"ok": true}))
         }

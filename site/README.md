@@ -41,7 +41,7 @@ On PowerShell: `$env:DOWNLOADS_DIR="site/test/fixture-downloads"; node site/scri
 | Variable | Default | Effect |
 |---|---|---|
 | `SITE_URL` | `https://brouillon.rochetta.fr` | The ONLY source of absolute URLs (canonical, hreflang, Open Graph, JSON-LD, sitemap, llms.txt). The domain is provisional: change it here only. |
-| `REPO_URL` | empty (TODO) | Public repository. When unset, pages say "link to be added" and no GitHub link is invented. When set, adds repository + issues links and JSON-LD `sameAs`. |
+| `REPO_URL` | https://github.com/lrochetta/brouillon | Public repository. When set, adds repository + issues links and JSON-LD `sameAs`. |
 | `INDEXABLE` | `false` | `false`: `<meta name="robots" content="noindex,follow">` on every page, `X-Robots-Tag: noindex` in `_headers`, no `Sitemap:` line in robots.txt (sitemap.xml exists but is not submitted). `true`: all of that is removed. |
 | `DOWNLOADS_DIR` | `site/public/downloads` | Folder holding `build-info.json` and the artifacts (tests/fixtures only). |
 | `OUT_DIR` | `site/dist` | Output folder. |

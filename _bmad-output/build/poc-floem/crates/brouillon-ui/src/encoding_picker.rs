@@ -33,11 +33,45 @@ pub fn row_label(item: &PickerItem) -> String {
     }
 }
 
-/// List view over `query`; `on_pick` receives the chosen codepage id.
+/// How many bytes of the file the picker decodes for its preview.
+pub const PREVIEW_BYTES: usize = 600;
+
+/// Decoded start of `bytes` with codepage `id` (what "Reopen with encoding" would show), at most
+/// `max_chars` characters, line breaks shown as a pilcrow so the preview stays a few rows high.
+/// `None` when the encoding is unsupported.
+pub fn preview_text(bytes: &[u8], id: &str, max_chars: usize) -> Option<String> {
+    let head = &bytes[..bytes.len().min(PREVIEW_BYTES)];
+    let doc = brouillon_editor_engine::file_io::decode_with(head, id).ok()?;
+    Some(doc.text.chars().take(max_chars).map(|c| if c == '\n' { '\u{b6}' } else if c == '\r' { ' ' } else { c }).collect())
+}
+
+/// What the picker does with the choice: set the codepage of the next save, or re-decode the file.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PickerMode {
+    SaveWith,
+    Reopen,
+}
+
+impl PickerMode {
+    pub fn title(self) -> &'static str {
+        match self {
+            PickerMode::SaveWith => "Save with encoding (the text on screen is not changed)",
+            PickerMode::Reopen => "Reopen with encoding (re-reads the file from disk)",
+        }
+    }
+}
+
+/// The codepage Enter would choose for `query`: the first supported match.
+pub fn first_supported(query: &str) -> Option<&'static str> {
+    picker_items(query).into_iter().find(|i| i.supported).map(|i| i.id)
+}
+
+/// List view over `query`; `on_pick` receives the chosen codepage id, `on_hover` the one under the pointer.
 pub fn encoding_picker_view(
     query: RwSignal<String>,
     theme_idx: RwSignal<usize>,
     on_pick: impl Fn(&'static str) + 'static + Clone,
+    on_hover: impl Fn(&'static str) + 'static + Clone,
 ) -> impl IntoView {
     let get_theme = move || {
         let idx = theme_idx.get();
@@ -50,10 +84,12 @@ pub fn encoding_picker_view(
         |i: &PickerItem| i.id,
         move |item: PickerItem| {
             let cb = on_pick.clone();
+            let hv = on_hover.clone();
             let t = get_theme.clone();
             let (id, supported, text) = (item.id, item.supported, row_label(&item));
             label(move || text.clone())
                 .on_click_stop(move |_| cb(id))
+                .on_event_cont(floem::event::EventListener::PointerEnter, move |_| hv(id))
                 .style(move |s| {
                     let t = t();
                     s.color(if supported { t.fg } else { t.fg_dim })
@@ -84,6 +120,21 @@ mod tests {
         let ebcdic = picker_items("ebcdic");
         assert!(!ebcdic.is_empty() && ebcdic.iter().all(|i| !i.supported));
         assert!(row_label(&ebcdic[0]).ends_with("(unsupported)"));
+    }
+
+
+    #[test]
+    fn preview_decodes_with_the_candidate_codepage() {
+        let bytes = [b'c', b'a', b'f', 0xE9, b'\n', b'x'];
+        assert_eq!(preview_text(&bytes, "windows-1252", 20).as_deref(), Some("caf\u{e9}\u{b6}x"));
+        assert_eq!(preview_text(&bytes, "windows-1251", 20).as_deref(), Some("caf\u{439}\u{b6}x"));
+        assert_eq!(preview_text(&bytes, "windows-1252", 3).as_deref(), Some("caf"));
+        assert_eq!(preview_text(&bytes, "ibm500", 20), None);
+    }
+    #[test]
+    fn first_supported_skips_unsupported() {
+        assert_eq!(first_supported("windows-1252"), Some("windows-1252"));
+        assert_eq!(first_supported("ebcdic"), None);
     }
 
     #[test]

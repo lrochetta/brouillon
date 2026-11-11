@@ -22,6 +22,20 @@ impl NavPos {
     }
 }
 
+/// The GUI keeps carets as 1-based (line, column); `NavPos::at` packs that pair into `byte`.
+const COL_BITS: u32 = 24;
+
+impl NavPos {
+    /// A place given as 1-based line and column (what the shell's caret signal holds).
+    pub fn at(doc: impl Into<String>, line: usize, col: usize) -> Self {
+        Self { doc: doc.into(), byte: (line.max(1) << COL_BITS) | col.clamp(1, (1 << COL_BITS) - 1) }
+    }
+    /// Inverse of [`NavPos::at`].
+    pub fn line_col(&self) -> (usize, usize) {
+        (self.byte >> COL_BITS, self.byte & ((1 << COL_BITS) - 1))
+    }
+}
+
 #[derive(Debug, Clone, Default)]
 pub struct NavHistory {
     ring: VecDeque<NavPos>,
@@ -122,6 +136,13 @@ mod tests {
         assert_eq!(h.back(p(5)), None);
         assert_eq!(h.forward(), Some(p(90)));
         assert_eq!(h.forward(), None);
+    }
+
+    #[test]
+    fn line_col_round_trips() {
+        assert_eq!(NavPos::at("a", 40, 7).line_col(), (40, 7));
+        assert_ne!(NavPos::at("a", 40, 7), NavPos::at("a", 40, 8));
+        assert_eq!(NavPos::at("a", 0, 0).line_col(), (1, 1));
     }
 
     #[test]

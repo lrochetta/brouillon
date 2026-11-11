@@ -39,7 +39,8 @@ const SHELL: &[(&str, &str, &str, Option<&str>, bool)] = &[
     ("file_close", "File: Close Tab", "File", Some("ctrl+w"), true),
     ("file_print", "File: Print...", "File", None, true),
     ("app_quit", "File: Quit", "File", None, true),
-    ("project_load", "File: Load Project...", "File", None, true),
+    ("project_load", "File: Open Project...", "File", None, true),
+    ("project_save", "File: Save Project", "File", None, true),
     ("project_open_folder", "File: Open Folder...", "File", None, true),
     ("tab_next", "Tab: Next Tab", "Tab", Some("ctrl+tab"), true),
     ("tab_previous", "Tab: Previous Tab", "Tab", Some("ctrl+shift+tab"), true),
@@ -99,6 +100,8 @@ const SHELL: &[(&str, &str, &str, Option<&str>, bool)] = &[
     ("view_toggle_line_numbers", "View: Toggle Line Numbers", "View", None, true),
     ("view_toggle_tree", "View: Toggle Folder Tree", "View", Some("ctrl+shift+e"), true),
     ("view_toggle_minimap", "View: Toggle Minimap", "View", None, true),
+    ("view_toggle_sidebar", "View: Toggle Sidebar", "View", Some("ctrl+b"), true),
+    ("view_tabs_position_toggle", "View: Tabs at Top / Bottom", "View", None, true),
     ("diff_with_disk", "View: Compare with File on Disk", "View", None, true),
     ("diff_with_last_tab", "View: Compare with Last Visited Tab", "View", None, true),
     ("diff_close", "View: Close Comparison", "View", None, true),
@@ -111,7 +114,7 @@ const SHELL: &[(&str, &str, &str, Option<&str>, bool)] = &[
     ("tools_infinite", "Tools: Toggle Infinite Layout", "Tools", None, true),
     // Kill switch of Brouillon Link: always available, also while a dialog is open (see main.rs).
     ("link_kill", "Agents: Stop (kill switch)", "Agents", Some("ctrl+alt+k"), true),
-    ("file_import_editplus", "File: Import EditPlus Settings...", "File", None, true),
+    ("tools_import_settings", "Tools: Import Settings from Another Editor...", "Tools", None, true),
     ("help_first_run", "Help: First-Run Setup...", "Help", None, true),
     ("help_try_agent", "Help: Try an Agent...", "Help", None, true),
     ("help_about", "Help: About Brouillon...", "Help", None, true),
@@ -137,6 +140,7 @@ fn shell_commands() -> Vec<CommandSpec> {
 /// Legacy ids (palette defaults, menus, toolbar, old `dispatch` arms) to the
 /// stable snake_case ids.
 const ALIASES: &[(&str, &str)] = &[
+    ("file_import_editplus", "tools_import_settings"),
     ("file.open", "file_open"),
     ("file.save", "file_save"),
     ("file.save-as", "file_save_as"),
@@ -298,7 +302,7 @@ pub fn shell_implements(id: &str) -> bool {
     SHELL.iter().any(|(sid, _, _, _, ok)| *sid == id && *ok)
         || matches!(
             id,
-            "edit_undo" | "edit_redo" | "edit_undo_all" | "edit_undo_to_save" | "bookmark_toggle" | "bookmark_clear" | "bookmark_invert"
+            "edit_undo" | "edit_redo" | "edit_undo_all" | "edit_undo_to_save" | "bookmark_toggle" | "bookmark_clear" | "bookmark_invert" | "nav_back" | "nav_forward"
         )
 }
 
@@ -1047,6 +1051,29 @@ mod tests {
         }
     }
 
+
+    /// The dropdowns keep a hand-curated layout (captions and order), but every row must be a registered command that
+    /// is listed once per menu, and a command whose registry category is the menu's must also be in the registry-derived
+    /// `menu_entries` for that menu: nothing the registry knows for a menu is lost or doubled.
+    #[test]
+    fn menu_rows_are_unique_registered_and_consistent_with_the_registry_derived_entries() {
+        let (reg, _) = build_registry();
+        let binds = dispatch_bindings(&reg, false, &[]);
+        for (menu, _) in crate::menu_bar::MENU_ITEMS {
+            let rows = crate::menu_dropdown::get_dropdown_items(menu);
+            let derived = brouillon_ui::menu_dropdown::menu_entries(&reg, &binds, menu, brouillon_core::preset::Preset::Moldu, &|_| false);
+            let mut seen = std::collections::HashSet::new();
+            for row in &rows {
+                let id = canonical(row.action_id);
+                assert!(reg.contains(&id), "{menu}: `{}` is not registered", row.action_id);
+                assert!(seen.insert(id.clone()), "{menu}: `{id}` appears twice");
+                let spec = reg.all().iter().find(|s| s.id == id).unwrap();
+                if spec.category.eq_ignore_ascii_case(menu) {
+                    assert_eq!(derived.iter().filter(|e| e.command == id).count(), 1, "{menu}: `{id}` is missing from (or doubled in) the registry-derived entries");
+                }
+            }
+        }
+    }
     #[test]
     fn menu_shortcut_hints_match_effective_bindings() {
         let (reg, _) = build_registry();
@@ -1296,7 +1323,7 @@ mod tests {
         // Shell-only commands without an implementation (SHELL, implemented == false) and
         // stateful lot commands the shell does not drive yet (nav history, multi-region painting).
         let mut expected: Vec<&str> = SHELL.iter().filter(|(_, _, _, _, ok)| !ok).map(|(id, ..)| *id).collect();
-        expected.extend(["nav_back", "nav_forward", "bookmark_next_unused"].iter().copied().filter(|id| reg.contains(id)));
+        expected.extend(["bookmark_next_unused"].iter().copied().filter(|id| reg.contains(id)));
         expected.sort_unstable();
         assert_eq!(pending, expected);
     }

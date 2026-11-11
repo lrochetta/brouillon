@@ -29,6 +29,10 @@ pub enum Cmd {
     /// Press + release of one key with the given held modifiers (modifier key events are emitted too).
     Key { logical: Key, physical: PhysicalKey, text: Option<String>, mods: Modifiers },
     /// Type text: one key press + release per character (what winit delivers for typed characters).
+    /// Press (`down`) or release the modifier keys of `mods` only; they stay held until a later `Hold` releases them.
+    Hold { mods: Modifiers, down: bool },
+    /// Press + release of one key with `mods` reported as held, WITHOUT modifier key events (pair with `Hold`).
+    Tap { logical: Key, physical: PhysicalKey, text: Option<String>, mods: Modifiers },
     Text(String),
     Move(Point),
     Button { pos: Point, button: PointerButton, down: bool },
@@ -51,6 +55,77 @@ pub fn send(cmd: Cmd) {
     Application::with_event_loop_proxy(|proxy| {
         let _ = proxy.send_event(UserEvent::TestInput);
     });
+}
+
+/// Keystroke-to-presented-frame latency probe (DEV-ONLY, same feature gate). `lat_arm` stamps the injection,
+/// `lat_handled` the end of the key handling on the GUI thread, `lat_paint_start` the start of the first paint
+/// afterwards and `lat_presented` (right after the renderer's `finish()` in `WindowHandle::paint`) closes the sample.
+/// A sample is `[total, handled, wait (handled -> paint start), paint]` in milliseconds.
+#[derive(Default)]
+struct Lat {
+    arm: Option<std::time::Instant>,
+    handled: Option<std::time::Instant>,
+    pstart: Option<std::time::Instant>,
+    samples: Vec<[f64; 4]>,
+}
+static LAT: Mutex<Option<Lat>> = Mutex::new(None);
+
+fn ms(a: std::time::Instant, b: std::time::Instant) -> f64 {
+    b.saturating_duration_since(a).as_secs_f64() * 1000.0
+}
+
+pub fn lat_arm() {
+    let mut g = LAT.lock();
+    let l = g.get_or_insert_with(Lat::default);
+    l.arm = Some(std::time::Instant::now());
+    l.handled = None;
+    l.pstart = None;
+}
+
+pub(crate) fn lat_handled() {
+    if let Some(l) = LAT.lock().as_mut() {
+        if l.arm.is_some() {
+            l.handled = Some(std::time::Instant::now());
+        }
+    }
+}
+
+pub(crate) fn lat_paint_start() {
+    if let Some(l) = LAT.lock().as_mut() {
+        if l.handled.is_some() && l.pstart.is_none() {
+            l.pstart = Some(std::time::Instant::now());
+        }
+    }
+}
+
+pub(crate) fn lat_presented() {
+    if let Some(l) = LAT.lock().as_mut() {
+        if let (Some(a), Some(h), Some(p)) = (l.arm, l.handled, l.pstart) {
+            let now = std::time::Instant::now();
+            l.samples.push([ms(a, now), ms(a, h), ms(h, p), ms(p, now)]);
+            l.arm = None;
+            l.handled = None;
+            l.pstart = None;
+        }
+    }
+}
+
+/// Number of closed samples so far.
+pub fn lat_count() -> usize {
+    LAT.lock().as_ref().map(|l| l.samples.len()).unwrap_or(0)
+}
+
+pub fn lat_take() -> Vec<[f64; 4]> {
+    let mut g = LAT.lock();
+    match g.as_mut() {
+        Some(l) => {
+            l.arm = None;
+            l.handled = None;
+            l.pstart = None;
+            std::mem::take(&mut l.samples)
+        }
+        None => Vec::new(),
+    }
 }
 
 thread_local! {
@@ -150,7 +225,32 @@ impl WindowHandle {
         FOCUS.with(|f| *f.borrow_mut() = desc);
         match std::mem::replace(cmd, Cmd::Quit) {
             Cmd::Key { logical, physical, text, mods } => self.t_key(logical, physical, text, mods),
+            Cmd::Hold { mods, down } => {
+                let held = mod_keys(mods);
+                if down {
+                    let mut cur = self.modifiers;
+                    for (n, c, flag) in &held {
+                        self.key_data_event(key_data(Key::Named(*n), PhysicalKey::Code(*c), None, true));
+                        cur |= *flag;
+                        self.modifiers = cur;
+                    }
+                } else {
+                    let mut cur = self.modifiers;
+                    for (n, c, flag) in held.iter().rev() {
+                        cur.remove(*flag);
+                        self.modifiers = cur;
+                        self.key_data_event(key_data(Key::Named(*n), PhysicalKey::Code(*c), None, false));
+                    }
+                }
+            }
+            Cmd::Tap { logical, physical, text, mods } => {
+                self.modifiers = mods;
+                let text = if mods.control() || mods.alt() { None } else { text };
+                self.key_data_event(key_data(logical.clone(), physical, text, true));
+                self.key_data_event(key_data(logical, physical, None, false));
+            }
             Cmd::Text(s) => {
+                lat_arm();
                 for ch in s.chars() {
                     match ch {
                         '\r' => {}
@@ -165,6 +265,7 @@ impl WindowHandle {
                         }
                     }
                 }
+                lat_handled();
             }
             Cmd::Move(p) => self.pointer_move(p),
             Cmd::Button { pos, button, down } => {

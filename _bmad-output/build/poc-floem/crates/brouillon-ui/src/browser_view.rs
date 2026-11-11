@@ -63,6 +63,15 @@ impl RemoteUi {
         self.ex.borrow().active_site().is_some_and(|s| s.profile.id == LOCAL_SITE_ID)
     }
 
+    /// The local folder the browser is showing (None when a server or the drives list is active).
+    pub fn local_folder(&self) -> Option<std::path::PathBuf> {
+        if !self.active_is_local() {
+            return None;
+        }
+        let root = self.ex.borrow().current_root()?;
+        to_native(&root, cfg!(windows)).ok().flatten()
+    }
+
     pub fn set_browser_visible(&self, on: bool) {
         if on {
             self.ensure_started();

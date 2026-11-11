@@ -609,6 +609,8 @@ impl WindowHandle {
     }
 
     pub fn paint(&mut self) -> Option<peniko::Image> {
+        #[cfg(feature = "test-input")]
+        crate::test_input::lat_paint_start();
         let mut cx = PaintCx {
             app_state: &mut self.app_state,
             paint_state: &mut self.paint_state,
@@ -648,6 +650,8 @@ impl WindowHandle {
             }
         }
         let image = cx.paint_state.renderer_mut().finish();
+        #[cfg(feature = "test-input")]
+        crate::test_input::lat_presented();
         // cosmic-text's shape-run cache has no eviction of its own and is keyed by the full run
         // text: every distinct text ever laid out (a line growing by one character per keystroke,
         // every search result, every scrolled page) stayed cached for the life of the process

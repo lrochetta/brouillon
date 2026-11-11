@@ -5,7 +5,7 @@
 //
 // Config (environment variables, read ONCE here):
 //   SITE_URL   absolute origin, default https://brouillon.rochetta.fr (provisional domain)
-//   REPO_URL   public repository URL, default unset (TODO: pages then say "link to be added")
+//   REPO_URL   public repository URL, default https://github.com/lrochetta/brouillon
 //   INDEXABLE  "true" removes noindex meta + X-Robots-Tag; default false
 //   DOWNLOADS_DIR  override of site/public/downloads (used by tests)
 //   OUT_DIR        override of site/dist
@@ -25,7 +25,7 @@ const SITE = path.resolve(HERE, "..");
 
 export const DEFAULTS = {
   siteUrl: process.env.SITE_URL || "https://brouillon.rochetta.fr",
-  repoUrl: process.env.REPO_URL || "",
+  repoUrl: process.env.REPO_URL || "https://github.com/lrochetta/brouillon",
   indexable: String(process.env.INDEXABLE || "true").toLowerCase() === "true",
   downloadsDir: process.env.DOWNLOADS_DIR || path.join(SITE, "public", "downloads"),
   publicDir: path.join(SITE, "public"),

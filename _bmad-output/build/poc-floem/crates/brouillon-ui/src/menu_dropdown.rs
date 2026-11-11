@@ -27,9 +27,10 @@ pub fn get_dropdown_items(menu_id: &str) -> Vec<DropdownItem> {
             DropdownItem { label: "Save As...", shortcut: "Ctrl-Shift-S", action_id: "file.save-as" },
             DropdownItem { label: "Print...", shortcut: "", action_id: "file_print" },
             DropdownItem { label: "Open Folder...", shortcut: "", action_id: "project_open_folder" },
+            DropdownItem { label: "Open Project...", shortcut: "", action_id: "project_load" },
+            DropdownItem { label: "Save Project", shortcut: "", action_id: "project_save" },
             DropdownItem { label: "Preferences...", shortcut: "Ctrl-,", action_id: "preferences_open_settings" },
             DropdownItem { label: "Keyboard Shortcuts...", shortcut: "", action_id: "preferences_open_keymap" },
-            DropdownItem { label: "Import EditPlus Settings...", shortcut: "", action_id: "file_import_editplus" },
             DropdownItem { label: "Quit", shortcut: "", action_id: "app.quit" },
         ],
         "edit" => vec![
@@ -55,6 +56,8 @@ pub fn get_dropdown_items(menu_id: &str) -> Vec<DropdownItem> {
             DropdownItem { label: "Cycle Theme", shortcut: "Ctrl-T", action_id: "view.theme.cycle" },
             DropdownItem { label: "Toggle Markdown Preview", shortcut: "Ctrl-Shift-V", action_id: "view.toggle-preview" },
             DropdownItem { label: "Toggle Folder Tree", shortcut: "Ctrl-Shift-E", action_id: "view_toggle_tree" },
+            DropdownItem { label: "Toggle Sidebar", shortcut: "Ctrl-B", action_id: "view_toggle_sidebar" },
+            DropdownItem { label: "Tabs at Top / Bottom", shortcut: "", action_id: "view_tabs_position_toggle" },
             DropdownItem { label: "Last Visited Tab", shortcut: "", action_id: "tab_last_visited" },
             DropdownItem { label: "Toggle Minimap", shortcut: "", action_id: "view_toggle_minimap" },
             DropdownItem { label: "Compare with File on Disk", shortcut: "", action_id: "diff_with_disk" },
@@ -69,6 +72,7 @@ pub fn get_dropdown_items(menu_id: &str) -> Vec<DropdownItem> {
             DropdownItem { label: "Cliptext Library", shortcut: "", action_id: "cliptext_open_panel" },
             DropdownItem { label: "Record / Stop Macro", shortcut: "", action_id: "macro_record_toggle" },
             DropdownItem { label: "Play Macro", shortcut: "Ctrl-Shift-Q", action_id: "macro_play" },
+            DropdownItem { label: "Import Settings from Another Editor...", shortcut: "", action_id: "tools_import_settings" },
         ],
         "help" => vec![
             DropdownItem { label: "Welcome", shortcut: "", action_id: "help_welcome" },
@@ -190,10 +194,38 @@ pub fn popup_palette(t: &Theme) -> PopupPalette {
     PopupPalette { bg, border, text, hint }
 }
 
+/// Accelerator text of a row: `accel(action_id, built-in hint)`. The shell answers from the live keymap so a rebinding shows in the menus.
+pub type AccelFn = Arc<dyn Fn(&str, &'static str) -> String + 'static>;
+
+/// Display form of a registry chord in the menus: "ctrl+shift+s" -> "Ctrl-Shift-S".
+pub fn menu_accel_text(chord: &str) -> String {
+    brouillon_core::keymap::chord_display(chord).replace('+', "-")
+}
+
+/// The accelerator a menu row shows: the first chord now bound to `command` (user keymap and Classic overlay
+/// included), else the built-in `hint` (rows whose key the shell catches itself, like Go To Line).
+pub fn live_accel(bindings: &[brouillon_core::keymap::Binding], command: &str, hint: &str) -> String {
+    brouillon_core::keymap::chords_for(bindings, command).first().map(|c| menu_accel_text(c)).unwrap_or_else(|| hint.to_string())
+}
+
+/// Menu open after a click on a title: the same title toggles it closed, another title switches to it.
+pub fn toggle_menu(current: Option<&'static str>, clicked: Option<&'static str>) -> Option<&'static str> {
+    if current == clicked { None } else { clicked }
+}
+
 pub fn menu_dropdown_overlay(
     active_menu: RwSignal<Option<&'static str>>,
     theme_idx: RwSignal<usize>,
     on_dispatch: Arc<dyn Fn(&str) + 'static>,
+) -> impl IntoView {
+    menu_dropdown_overlay_with(active_menu, theme_idx, on_dispatch, Arc::new(|_, hint| hint.to_string()))
+}
+
+pub fn menu_dropdown_overlay_with(
+    active_menu: RwSignal<Option<&'static str>>,
+    theme_idx: RwSignal<usize>,
+    on_dispatch: Arc<dyn Fn(&str) + 'static>,
+    accel: AccelFn,
 ) -> impl IntoView {
     let get_theme = move || {
         let idx = theme_idx.get();
@@ -207,18 +239,19 @@ pub fn menu_dropdown_overlay(
             if let Some(menu_id) = active_opt {
                 let items = get_dropdown_items(menu_id);
                 let dispatch = on_dispatch.clone();
+                let accel = accel.clone();
                 let active = active_menu;
                 
                 // Horizontal offset based on active menu column index
                 let left_offset = match menu_id {
                     "file" => 8.0,
-                    "edit" => 52.0,
-                    "search" => 102.0,
-                    "view" => 165.0,
-                    "tools" => 218.0,
-                    "help" => 275.0,
+                    "edit" => 61.0,
+                    "search" => 114.0,
+                    "view" => 181.0,
+                    "tools" => 234.0,
+                    "help" => 293.0,
                     _ => 8.0,
-                };
+                } + crate::view_icons::LEAD_WIDTH;
 
                 let t = get_theme();
                 let pal = popup_palette(&t);
@@ -234,7 +267,8 @@ pub fn menu_dropdown_overlay(
                         let label_lbl = label(move || item.label.to_string())
                             .style(move |s| s.color(pal.text).flex_grow(1.0).font_size(12.0));
                         
-                        let shortcut_lbl = label(move || item.shortcut.to_string())
+                        let (hint, a_for_label) = (item.shortcut, accel.clone());
+                        let shortcut_lbl = label(move || a_for_label(a_id, hint))
                             .style(move |s| s.color(pal.hint).font_size(11.0).padding_left(20.0));
 
                         stack((label_lbl, shortcut_lbl))
@@ -253,6 +287,7 @@ pub fn menu_dropdown_overlay(
                     }
                 ).style(|s| s.flex_col().width_full());
 
+                let popup_width = if menu_id == "tools" { 340.0 } else { 260.0 };
                 let popup = container(row_views)
                     .on_event_stop(EventListener::KeyDown, move |event| {
                         if let Event::KeyDown(ke) = event {
@@ -265,7 +300,7 @@ pub fn menu_dropdown_overlay(
                         s.absolute()
                             .inset_top(MENU_POPUP_TOP - HOST_TOP) // floating directly under the Moldu top menu (host starts at HOST_TOP)
                             .inset_left(left_offset)
-                            .width(260.0) // widest row: "Toggle Markdown Preview" + "Ctrl-Shift-V"
+                            .width(popup_width) // widest rows: "Toggle Markdown Preview" + "Ctrl-Shift-V", Tools: "Import Settings from Another Editor..."
                             .background(pal.bg)
                             .border(1.0)
                             .border_color(pal.border)
@@ -308,12 +343,32 @@ pub fn menu_dropdown_overlay(
 
 /// Y of the popup, measured under the menu bar (header ~19 + menu 28 = 47).
 const MENU_POPUP_TOP: f64 = 52.0;
-/// Top of the overlay host and of the click-away layer: just under the menu titles, so they stay clickable.
-const HOST_TOP: f64 = MENU_POPUP_TOP - 6.0;
+/// Top of the overlay host and of the click-away layer: exactly the bottom edge of the menu titles
+/// (header 24 + menu bar). Any higher and the click-away layer covers the lower strip of every title,
+/// so a click there while a menu is open only closes it and the next click is needed to open the other one.
+const HOST_TOP: f64 = MENU_POPUP_TOP;
+/// Height of the header row above the menu bar (`header_bar` in main.rs).
+#[cfg(test)]
+const HEADER_HEIGHT: f64 = 24.0;
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn one_click_on_a_title_opens_or_switches_and_the_same_title_closes() {
+        assert_eq!(toggle_menu(None, Some("view")), Some("view"));
+        assert_eq!(toggle_menu(Some("file"), Some("view")), Some("view"), "switching needs ONE click");
+        assert_eq!(toggle_menu(Some("view"), Some("view")), None);
+        assert_eq!(toggle_menu(Some("view"), None), None);
+    }
+
+    /// The click-away layer must not cover any part of the menu titles (one click must switch menus).
+    #[test]
+    fn click_away_layer_starts_below_the_menu_titles() {
+        assert!(HOST_TOP >= HEADER_HEIGHT + crate::menu_bar::MENU_HEIGHT, "host top {HOST_TOP} overlaps the menu titles");
+        assert!(MENU_POPUP_TOP >= HOST_TOP, "popup must sit at or below the host top");
+    }
 
     #[test]
     fn registry_menu_rows_resolve_and_show_accelerators_and_toggles() {
@@ -342,6 +397,17 @@ mod tests {
         assert_eq!(view[0].checked, Some(true));
         assert!(menu_entries(&reg, &b, "file", Preset::Geek, &|_| false).is_empty());
     }
+    #[test]
+    fn live_accelerators_follow_the_keymap_and_fall_back_to_the_built_in_hint() {
+        use brouillon_core::keymap::Binding;
+        let b = vec![Binding::new("ctrl+shift+s", "file_save_as", None).unwrap(), Binding::new("ctrl+j", "duplicate_line", None).unwrap()];
+        assert_eq!(live_accel(&b, "file_save_as", "Ctrl-Shift-S"), "Ctrl-Shift-S");
+        assert_eq!(live_accel(&b, "duplicate_line", ""), "Ctrl-J");
+        let rebound = vec![Binding::new("ctrl+alt+s", "file_save_as", None).unwrap()];
+        assert_eq!(live_accel(&rebound, "file_save_as", "Ctrl-Shift-S"), "Ctrl-Alt-S", "a rebinding shows in the menu");
+        assert_eq!(live_accel(&[], "go_to", "Ctrl-G"), "Ctrl-G", "the hint stays for keys the shell catches itself");
+    }
+
     #[test]
     fn popup_is_readable_and_outlined_in_every_theme() {
         let reg = brouillon_core::theme::ThemeRegistry::new();

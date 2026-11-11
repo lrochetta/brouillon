@@ -7,9 +7,9 @@
   The text is checked by saving (Ctrl+S) and reading the file back.
   Click geometry (logical px from the window's outer top-left): -TextX0/-TextY0 = top-left of line 1 col 1.
 #>
-param([string]$Exe, [string]$DataRoot = (Join-Path $env:TEMP 'brouillon-mc'), [string]$Tag = '', [double]$TextX0 = 78, [double]$TextY0 = 112, [double]$CellW = 7.15, [double]$LineH = 18)
+param([string]$Exe, [string]$DataRoot = (Join-Path $env:TEMP 'brouillon-mc'), [string]$Tag = '', [double]$TextX0 = 312, [double]$TextY0 = 112, [double]$CellW = 7.15, [double]$LineH = 18)
 $ErrorActionPreference = 'Stop'
-. (Join-Path $PSScriptRoot 'lib.ps1')
+. (Join-Path $PSScriptRoot $(if ($env:BROUILLON_SMOKE_TI -eq '1') { 'testinput.ps1' } else { 'lib.ps1' }))
 $Exe = (Resolve-Path $Exe).Path
 $env:BROUILLON_NO_UPDATE = '1'
 New-Item -ItemType Directory -Force $DataRoot | Out-Null
@@ -17,6 +17,7 @@ $u = New-Object Text.UTF8Encoding($false)
 function Pos($line, $col) { @(($TextX0 + ($col - 1) * $CellW + 1), ($TextY0 + ($line - 1) * $LineH + 8)) }
 function AltClick($app, $line, $col) {
     $p = Pos $line $col
+    if ($env:BROUILLON_SMOKE_TI -eq '1') { Send-Click $app $p[0] $p[1] -Mods 'alt'; return }
     Send-Vk 0xA4 $false; Start-Sleep -Milliseconds 60
     Send-Click $app $p[0] $p[1]
     Send-Vk 0xA4 $true; Start-Sleep -Milliseconds 120

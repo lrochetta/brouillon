@@ -28,8 +28,14 @@ ruler_column = 0
 # Overview of the whole document at the right edge (View > Toggle Minimap).
 minimap = false
 
+[ui]
+# Left sidebar (Open Files + Browser): shown or hidden (View > Toggle Sidebar, Ctrl+B).
+sidebar.visible = true
+# Where the open-file tab bar sits: "top" or "bottom" (just above the status bar).
+tabs.position = "top"
+
 [files]
-# Encoding of a new document ("" = UTF-8); an EditPlus import fills it in.
+# Encoding of a new document ("" = UTF-8); an import from another editor fills it in.
 default_encoding = ""
 # UTF-8 files of at least this many MB open in "large file mode": the text stays on disk and is read on demand,
 # so memory does not depend on the file size. Highlighting, wrap, folding, outline and word completion are off.
@@ -189,6 +195,15 @@ impl Settings {
     }
     pub fn get_str(&self, path: &str, default: &str) -> String {
         self.get(path).and_then(Value::as_str).unwrap_or(default).to_string()
+    }
+
+    /// `ui.sidebar.visible` (default shown).
+    pub fn sidebar_visible(&self) -> bool {
+        self.get_bool("ui.sidebar.visible", true)
+    }
+    /// `ui.tabs.position == "bottom"` (default top; anything else is top).
+    pub fn tabs_at_bottom(&self) -> bool {
+        self.get_str("ui.tabs.position", "top") == "bottom"
     }
 
     fn threshold(&self, key: &str) -> u64 {
@@ -395,5 +410,35 @@ mod tests {
         assert_eq!(s.highlight_max_lines(), 200_000);
         assert_eq!(s.search_max_results(), 100_000);
         assert!(s.to_toml().contains("large_file_bytes = 1000"));
+    }
+
+    #[test]
+    fn layout_defaults_are_sidebar_shown_tabs_top() {
+        let s = Settings::build(&[]);
+        assert!(s.sidebar_visible());
+        assert!(!s.tabs_at_bottom());
+        assert!(s.unknown_keys.is_empty());
+    }
+
+    #[test]
+    fn layout_choices_round_trip_through_the_settings_file() {
+        let mut text = String::new();
+        text = set_raw_key(&text, "ui", "sidebar.visible", "false");
+        text = set_raw_key(&text, "ui", "tabs.position", "\"bottom\"");
+        let s = Settings::build(&[(Layer::User, text.as_str())]);
+        assert!(!s.sidebar_visible());
+        assert!(s.tabs_at_bottom());
+        assert!(s.unknown_keys.is_empty(), "{:?}", s.unknown_keys);
+        // Writing again replaces the line instead of adding one.
+        let text = set_raw_key(&text, "ui", "sidebar.visible", "true");
+        assert_eq!(text.matches("sidebar.visible").count(), 1);
+        let s = Settings::build(&[(Layer::User, text.as_str())]);
+        assert!(s.sidebar_visible() && s.tabs_at_bottom());
+        // A damaged value falls back to the default.
+        let s = Settings::build(&[(Layer::User, "[ui]
+tabs.position = \"left\"
+sidebar.visible = 3
+")]);
+        assert!(!s.tabs_at_bottom() && s.sidebar_visible());
     }
 }

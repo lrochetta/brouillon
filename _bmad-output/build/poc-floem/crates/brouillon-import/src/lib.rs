@@ -4,6 +4,7 @@
 pub mod editplus;
 pub mod editplus_full;
 pub mod hardening;
+pub mod others;
 pub mod stx;
 
 use brouillon_core::contract::{CmdCtx, CmdOutcome, CommandSpec};

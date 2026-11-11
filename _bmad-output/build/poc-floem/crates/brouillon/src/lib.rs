@@ -90,6 +90,7 @@ pub use brouillon_ui::sketch_view;
 pub use brouillon_ui::tab_bar;
 pub use brouillon_ui::theme_ctx;
 pub use brouillon_ui::toolbar;
+pub use brouillon_ui::view_icons;
 pub use brouillon_ui::xcf;
 
 
@@ -136,6 +137,7 @@ pub use brouillon_editor_engine::file_io;
 pub use brouillon_editor_engine::large_file;
 pub use brouillon_editor_engine::markers;
 pub use brouillon_editor_engine::nav_history;
+pub use brouillon_editor_engine::project;
 pub use brouillon_editor_engine::recovery;
 pub use brouillon_editor_engine::replace_files;
 pub use brouillon_editor_engine::search_files;

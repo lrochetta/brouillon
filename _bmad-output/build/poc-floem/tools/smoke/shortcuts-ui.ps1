@@ -8,7 +8,8 @@
 #>
 param([string]$Exe, [string]$DataRoot = (Join-Path $env:TEMP 'brouillon-shortcuts-ui'), [string]$Tag = '', [string]$Mode = 'dark')
 $ErrorActionPreference = 'Stop'
-. (Join-Path $PSScriptRoot 'lib.ps1')
+. (Join-Path $PSScriptRoot $(if ($env:BROUILLON_SMOKE_TI -eq '1') { 'testinput.ps1' } else { 'lib.ps1' }))
+if ($env:BROUILLON_STALE_SHORTCUTS_UI -ne '1') { throw 'shortcuts-ui.ps1 is RETIRED (stale pixel rows: its click lands on Open Folder, a native dialog). Use phasepass.ps1 -Only shortcuts,shortcut-record.' }
 $Exe = (Resolve-Path $Exe).Path
 $env:BROUILLON_NO_UPDATE = '1'
 New-Item -ItemType Directory -Force $DataRoot | Out-Null

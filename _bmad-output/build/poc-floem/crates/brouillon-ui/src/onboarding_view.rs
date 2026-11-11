@@ -1,4 +1,4 @@
-//! First-run screens, the EditPlus import dialog and the About page.
+//! First-run screens, the settings import dialog and the About page.
 //!
 //! Everything that decides something is pure and unit-tested (`act_for`, `WizardState::dispatch`,
 //! `ImportPreview`); the views only draw it. The host (main.rs) supplies the callbacks that touch
@@ -89,15 +89,53 @@ impl ImportPreview {
     }
 }
 
+/// One editor the import knows, with where its settings were found (read-only look).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct EditorEntry {
+    pub id: String,
+    pub label: String,
+    /// Usual settings folder, shown as a hint.
+    pub hint: String,
+    pub dir: Option<PathBuf>,
+    /// Items a dry run would carry over (0 when not found).
+    pub count: usize,
+}
+
+impl EditorEntry {
+    /// Button caption: name and, when found, how many items.
+    pub fn caption(&self) -> String {
+        match &self.dir {
+            Some(_) => format!("{} ({} found)", self.label, self.count),
+            None => format!("{} (not found)", self.label),
+        }
+    }
+}
+
+/// The editor to select when the dialog opens: the first one found, else the first one.
+pub fn initial_editor(entries: &[EditorEntry]) -> usize {
+    entries.iter().position(|e| e.dir.is_some()).unwrap_or(0)
+}
+
+/// First-run line about the detected editors (works for none, one or several).
+pub fn found_summary(entries: &[EditorEntry]) -> String {
+    let found: Vec<String> = entries.iter().filter(|e| e.dir.is_some()).map(|e| format!("{} ({} items)", e.label, e.count)).collect();
+    if found.is_empty() {
+        let all: Vec<&str> = entries.iter().map(|e| e.label.as_str()).collect();
+        format!("No settings of another editor were found ({}). You can still point to a folder, or skip this: Tools menu > Import Settings from Another Editor... does it later.", all.join(", "))
+    } else {
+        format!("Found settings of: {}. Review what would be imported (nothing is written until you press Apply).", found.join(", "))
+    }
+}
+
 /// What the import dialog needs from the host.
 #[derive(Clone)]
 pub struct ImportHost {
-    /// Where an EditPlus settings folder was found (`%APPDATA%\EditPlus`), if anywhere.
-    pub detect: Rc<dyn Fn() -> Option<PathBuf>>,
-    /// Dry run: read the folder, write nothing.
-    pub preview: Rc<dyn Fn(&Path) -> Result<ImportPreview, String>>,
+    /// Every known editor, with its settings folder when it was found.
+    pub detect: Rc<dyn Fn() -> Vec<EditorEntry>>,
+    /// Dry run for the editor with this id: read the folder, write nothing.
+    pub preview: Rc<dyn Fn(&str, &Path) -> Result<ImportPreview, String>>,
     /// Write the import and reload what can be reloaded. Returns the message to show.
-    pub apply: Rc<dyn Fn(&Path) -> Result<String, String>>,
+    pub apply: Rc<dyn Fn(&str, &Path) -> Result<String, String>>,
     /// Native folder picker (`None` = cancelled or unavailable).
     pub pick_folder: Rc<dyn Fn() -> Option<PathBuf>>,
 }
@@ -119,39 +157,45 @@ fn dim(text: impl Fn() -> String + 'static) -> impl IntoView {
     label(text).style(|s| s.font_size(11.0).color(active_theme().fg_dim).max_width(780.0))
 }
 
-/// "Import EditPlus settings..." dialog.
+/// "Import settings from another editor..." dialog.
 pub fn import_overlay(visible: RwSignal<bool>, host: ImportHost) -> impl IntoView {
-    modal(visible, "Import EditPlus settings", 860.0, 600.0, move || import_body(host.clone()))
+    modal(visible, "Import settings from another editor", 860.0, 600.0, move || import_body(host.clone()))
 }
 
 fn import_body(host: ImportHost) -> AnyView {
-    let detected = (host.detect)();
-    let path = create_rw_signal(detected.as_ref().map(|p| p.display().to_string()).unwrap_or_default());
+    let entries = (host.detect)();
+    let first = initial_editor(&entries);
+    let sel = create_rw_signal(first);
+    let path = create_rw_signal(entries.get(first).and_then(|e| e.dir.as_ref()).map(|p| p.display().to_string()).unwrap_or_default());
+    let detected_first = entries.get(first).is_some_and(|e| e.dir.is_some());
+    let ids: Rc<Vec<EditorEntry>> = Rc::new(entries);
     let preview: RwSignal<Option<Result<ImportPreview, String>>> = create_rw_signal(None);
     let message = create_rw_signal(String::new());
     let applied = create_rw_signal(false);
 
     let scan: Rc<dyn Fn()> = {
-        let host = host.clone();
+        let (host, ids) = (host.clone(), ids.clone());
         Rc::new(move || {
             applied.set(false);
             let p = path.get_untracked();
+            let Some(ed) = ids.get(sel.get_untracked()) else { return };
             if p.trim().is_empty() {
-                preview.set(Some(Err("Type or pick the folder that holds editplus.ini (usually %APPDATA%\\EditPlus).".into())));
+                preview.set(Some(Err(format!("Type or pick the settings folder of {} (usually {}).", ed.label, ed.hint))));
                 return;
             }
             message.set(String::new());
-            preview.set(Some((host.preview)(Path::new(p.trim()))));
+            preview.set(Some((host.preview)(&ed.id, Path::new(p.trim()))));
         })
     };
     let apply: Rc<dyn Fn()> = {
-        let host = host.clone();
+        let (host, ids) = (host.clone(), ids.clone());
         Rc::new(move || {
             if applied.get_untracked() || !matches!(preview.get_untracked(), Some(Ok(_))) {
                 return;
             }
             let p = path.get_untracked();
-            match (host.apply)(Path::new(p.trim())) {
+            let Some(ed) = ids.get(sel.get_untracked()) else { return };
+            match (host.apply)(&ed.id, Path::new(p.trim())) {
                 Ok(m) => {
                     applied.set(true);
                     message.set(m);
@@ -160,14 +204,14 @@ fn import_body(host: ImportHost) -> AnyView {
             }
         })
     };
-    if detected.is_some() {
+    if detected_first {
         scan();
     }
 
     let field = {
         let (scan, apply) = (scan.clone(), apply.clone());
         text_input(path)
-            .placeholder("Folder with your EditPlus settings, for example %APPDATA%\\EditPlus")
+            .placeholder("Settings folder of the selected editor")
             .request_focus(|| {})
             .style(|s| field_style(s).flex_grow(1.0).min_width(0.0))
             .on_event(EventListener::KeyDown, move |e| {
@@ -201,6 +245,28 @@ fn import_body(host: ImportHost) -> AnyView {
         let scan = scan.clone();
         button(|| "Scan (dry run)".into(), || false, move || scan())
     };
+    let editor_buttons: Vec<AnyView> = ids
+        .iter()
+        .enumerate()
+        .map(|(i, e)| {
+            let (cap, dir, scan) = (e.caption(), e.dir.clone(), scan.clone());
+            button(
+                move || cap.clone(),
+                move || sel.get() == i,
+                move || {
+                    sel.set(i);
+                    path.set(dir.as_ref().map(|p| p.display().to_string()).unwrap_or_default());
+                    preview.set(None);
+                    applied.set(false);
+                    message.set(String::new());
+                    if dir.is_some() {
+                        scan();
+                    }
+                },
+            )
+        })
+        .collect();
+    let picker = floem::views::stack_from_iter(editor_buttons).style(|s| s.flex_row().gap(6.0));
     let top = stack((field, browse, scan_btn)).style(|s| s.flex_row().items_center().gap(6.0).width_full());
 
     let summary = label(move || match preview.get() {
@@ -256,7 +322,8 @@ fn import_body(host: ImportHost) -> AnyView {
     .style(|s| s.flex_row().items_center().gap(8.0).width_full());
 
     stack((
-        dim(|| "Reads your EditPlus settings folder and never changes it. Scanning writes nothing; Apply writes into your Brouillon settings folder (keymap, tools and recent files are first copied to .pre-import.bak). Secret keys and the licence file are never read.".to_string()),
+        dim(|| "Reads the settings folder of the editor you pick and never changes it. Scanning writes nothing; Apply writes into your Brouillon settings folder (every file it replaces is first copied to .pre-import.bak). Secret keys and the licence file are never read.".to_string()),
+        picker,
         top,
         summary,
         list,
@@ -484,14 +551,10 @@ fn screen_view(state: WizardState, host: WizardHost, n: usize) -> AnyView {
             .into_any()
         }
         1 => {
-            let found = (host.import.detect)();
             let h = host.clone();
-            let msg: String = match &found {
-                Some(p) => format!("EditPlus settings found in {}. Review what would be imported (nothing is written until you press Apply).", p.display()),
-                None => "No EditPlus settings folder was found in %APPDATA%\\EditPlus. You can still point to one, or skip this: File menu > Import EditPlus settings... does it later.".to_string(),
-            };
+            let msg: String = found_summary(&(host.import.detect)());
             stack((
-                title("Coming from EditPlus?"),
+                title("Coming from another editor?"),
                 label(move || msg.clone()).style(|s| s.font_size(12.0).max_width(640.0)),
                 stack((
                     button(|| "Review and import... (I)".into(), || true, move || state.dispatch(Act::Import, &h)),
@@ -588,9 +651,9 @@ mod tests {
         let l4 = log.clone();
         WizardHost {
             import: ImportHost {
-                detect: Rc::new(|| None),
-                preview: Rc::new(|_| Ok(ImportPreview::default())),
-                apply: Rc::new(|_| Ok(String::new())),
+                detect: Rc::new(Vec::new),
+                preview: Rc::new(|_, _| Ok(ImportPreview::default())),
+                apply: Rc::new(|_, _| Ok(String::new())),
                 pick_folder: Rc::new(|| None),
             },
             preview_theme: Rc::new(move |t| l3.0.borrow_mut().push(format!("theme:{t}"))),
@@ -598,6 +661,25 @@ mod tests {
             open_import: Rc::new(l1),
             try_agent: Rc::new(l2),
         }
+    }
+
+    fn entry(id: &str, found: Option<usize>) -> EditorEntry {
+        EditorEntry { id: id.into(), label: id.to_uppercase(), hint: "h".into(), dir: found.map(|_| PathBuf::from("x")), count: found.unwrap_or(0) }
+    }
+
+    #[test]
+    fn the_dialog_copes_with_zero_one_and_several_found_editors() {
+        let none = vec![entry("a", None), entry("b", None)];
+        assert_eq!(initial_editor(&none), 0);
+        assert!(found_summary(&none).starts_with("No settings of another editor were found (A, B)"));
+        assert_eq!(none[0].caption(), "A (not found)");
+        let one = vec![entry("a", None), entry("b", Some(4))];
+        assert_eq!(initial_editor(&one), 1);
+        assert_eq!(found_summary(&one), "Found settings of: B (4 items). Review what would be imported (nothing is written until you press Apply).");
+        let many = vec![entry("a", Some(2)), entry("b", Some(4))];
+        assert_eq!((initial_editor(&many), many[1].caption()), (0, "B (4 found)".to_string()));
+        assert!(found_summary(&many).contains("A (2 items), B (4 items)"));
+        assert_eq!(initial_editor(&[]), 0);
     }
 
     #[test]

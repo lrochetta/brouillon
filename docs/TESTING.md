@@ -110,3 +110,20 @@ The window-close veto is a small floem patch (`set_close_guard`, see `vendor/flo
 `WM_COMMAND` (IDCANCEL, IDYES, IDNO), then check the process state and the bytes on disk. The channel's own `quit` op
 bypasses the guard on purpose. Saving a 100 MB file takes about 0.46 s (dev profile,
 `cargo test -p brouillon-ui save_100mb_timing -- --ignored --nocapture`), so the save stays on the UI thread.
+
+## Verification scenarios (`tools/smoke/phasepass.ps1`, test-input backend)
+
+Run with a DEV exe built with `--features test-input`: `phasepass.ps1 -Exe <exe> -Only nav,nav-tabs,switcher,reopen,project,...`.
+Besides `key`, `text` and `click`, the channel has `hold` / `tap` / `release` (client helpers `Send-Hold`, `Send-Tap`,
+`Send-Release`): `hold` presses the modifier keys and leaves them down, `tap` presses one key while they are held, `release`
+lets go. They drive "hold Ctrl, press Tab twice, release Ctrl" (the Ctrl+Tab document popup).
+
+Scenarios added for the navigation, switcher, encoding and project work: `nav` (goto, Alt+Left twice, Alt+Right twice),
+`nav-tabs` (tab switch and a Ctrl+P `@symbol` jump), `switcher` (popup order, commit on Ctrl release, Esc cancels),
+`reopen` (picker preview, Reopen with Encoding re-reads the file), `project` (Save Project, `--project`).
+
+Retired or fixed old scripts: `shortcuts-ui.ps1` is retired (it clicked stale pixel rows and landed on Open Folder, a native
+dialog the invisible window cannot answer): use `phasepass.ps1 -Only shortcuts,shortcut-record`. The `tree` scenario of
+`phase3.ps1` is retired (stale rows, and the per-workspace state it expected is not written): use `phasepass.ps1 -Only tree`.
+`multicursor.ps1` now defaults to the sidebar layout (`-TextX0 312`). The Save As branch of `external-change.ps1` needs the
+native Save As dialog and cannot be driven by this channel.

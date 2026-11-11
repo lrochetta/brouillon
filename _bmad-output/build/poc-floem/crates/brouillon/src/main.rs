@@ -6,7 +6,7 @@
 //! constructors live under `floem::views::*` (not the prelude — that's
 //! the unreleased main branch).
 //!
-//! Assumption (Karpathy G1): `virtual_list` (0.2.0 spelling) virtualizes
+//! Assumption: `virtual_list` (0.2.0 spelling) virtualizes
 //! vertically by line index using a `VirtualVector` data source. We feed
 //! it a `Range<usize>` (which implements `VirtualVector`) and render each
 //! line by indexing into a shared `Arc<Vec<String>>`. This avoids the cost
@@ -267,6 +267,18 @@ fn main() {
     //     session, opens the targets and starts the autosave timer.
     let cli = <brouillon::cli::Cli as clap::Parser>::parse();
     trace_stage("cli parsed");
+    let mut cli = cli;
+    // `--project FILE`: the project's folder and files stand for `--folder` and file arguments.
+    if let Some(pf) = cli.project.take() {
+        match brouillon::project::Project::load(&pf) {
+            Ok(p) => {
+                cli.folder = p.first_folder().or(cli.folder.take());
+                cli.files.extend(p.targets());
+                cli.new_window = true;
+            }
+            Err(e) => eprintln!("[project] {e}"),
+        }
+    }
     let paths = brouillon::paths::Paths::system(cli.settings_dir.as_deref())
         .unwrap_or_else(|| brouillon::paths::Paths::resolve(std::path::Path::new("."), None, PathBuf::from(".brouillon")));
     // `--import-editplus`: headless one-shot import, report on stdout, no window and no instance handling.
@@ -736,6 +748,12 @@ fn app_view(
         o
     };
     let distraction_sig: RwSignal<bool> = create_rw_signal(false);
+    // Layout choices remembered between launches: `ui.sidebar.visible`, `ui.tabs.position`.
+    let (sidebar_visible_sig, tabs_bottom_sig): (RwSignal<bool>, RwSignal<bool>) = {
+        let text = std::fs::read_to_string(startup().paths.settings_file()).unwrap_or_default();
+        let st = brouillon::settings::Settings::build(&[(brouillon::settings::Layer::User, text.as_str())]);
+        (create_rw_signal(st.sidebar_visible()), create_rw_signal(st.tabs_at_bottom()))
+    };
     // Column used when the ruler is switched on from the menu (the configured one, else 80).
     let ruler_default_sig: RwSignal<usize> = create_rw_signal({
         let c = editor_opts.ruler_column.get_untracked();
@@ -1205,6 +1223,27 @@ fn app_view(
     // Encoding picker (status bar "encoding" cell / Encoding: Choose Encoding...).
     let encoding_picker_visible: RwSignal<bool> = create_rw_signal(false);
     let encoding_query: RwSignal<String> = create_rw_signal(String::new());
+    // Encoding picker state: what a choice does, the head of the file on disk (for the decoded preview) and the row hovered.
+    let encoding_mode: RwSignal<brouillon::encoding_picker::PickerMode> = create_rw_signal(brouillon::encoding_picker::PickerMode::SaveWith);
+    let encoding_head: RwSignal<Vec<u8>> = create_rw_signal(Vec::new());
+    let encoding_hover: RwSignal<Option<&'static str>> = create_rw_signal(None);
+    let open_encoding_picker = move |mode: brouillon::encoding_picker::PickerMode| {
+        use std::io::Read;
+        let head = path_sig
+            .get_untracked()
+            .and_then(|p| {
+                let mut buf = vec![0u8; brouillon::encoding_picker::PREVIEW_BYTES];
+                let n = std::fs::File::open(p).ok()?.read(&mut buf).ok()?;
+                buf.truncate(n);
+                Some(buf)
+            })
+            .unwrap_or_default();
+        encoding_head.set(head);
+        encoding_hover.set(None);
+        encoding_mode.set(mode);
+        encoding_query.set(String::new());
+        encoding_picker_visible.set(true);
+    };
     // Preference surfaces (settings, shortcuts, cliptext): see brouillon-ui `ui_kit` and its siblings.
     let dialogs = brouillon::ui_kit::Dialogs::new();
     // Remote explorer (dev flag: only the built-in fake server is reachable until the SFTP helper is plugged in).
@@ -1379,7 +1418,9 @@ fn app_view(
         brouillon::test_input::set_state_hook(move || {
             tabs_sig.with_untracked(|tm| {
                 let t = tm.current();
-                let text = t.buffer.text();
+                // A lazy (huge) buffer must not be materialised by a state read: it would add its whole size to the RSS.
+                let text = if t.buffer.is_lazy() { t.buffer.nth_line(0).unwrap_or_default() } else { t.buffer.text() };
+                let text_len = t.buffer.byte_len();
                 serde_json::json!({
                     "active_tab": tm.active_idx(),
                     "tab_count": tm.count(),
@@ -1387,7 +1428,7 @@ fn app_view(
                     "tab_title": t.title,
                     "dirty": t.dirty,
                     "caret": [cursor_sig.get_untracked().0, cursor_sig.get_untracked().1],
-                    "text_len": text.len(),
+                    "text_len": text_len,
                     "text_head": text.chars().take(200).collect::<String>(),
                     "palette_open": palette_visible.get_untracked(),
                 })
@@ -1416,9 +1457,34 @@ fn app_view(
         extra_carets_sig.set(Vec::new());
     };
 
+    // Navigation history (Alt+Left / Alt+Right): `nav_note` is called right before a jump leaves the
+    // current place (go to, quick open, search hit, bookmark, tab switch, open at a line).
+    let nav: Rc<RefCell<brouillon::nav_history::NavHistory>> = Rc::new(RefCell::new(Default::default()));
+    let nav_busy = Rc::new(std::cell::Cell::new(false));
+    let nav_here = move || {
+        let key = tabs_sig.with_untracked(|tm| {
+            let t = tm.current();
+            brouillon::tab_mru::tab_key(t.path.as_deref(), &t.title)
+        });
+        let (l, c) = cursor_sig.get_untracked();
+        brouillon::nav_history::NavPos::at(key, l, c)
+    };
+    let nav_note = {
+        let (nav, busy) = (nav.clone(), nav_busy.clone());
+        move || {
+            if !busy.get() {
+                nav.borrow_mut().record_jump(nav_here());
+            }
+        }
+    };
+
     let on_switch: Arc<dyn Fn(usize) + 'static> = Arc::new({
         let sync = sync_active_to_mirrors.clone();
+        let nav_note = nav_note.clone();
         move |idx| {
+            if tabs_sig.with_untracked(|tm| tm.active_idx() != idx) {
+                nav_note();
+            }
             tabs_sig.update(|tm| tm.switch_to(idx));
             sync();
         }
@@ -1721,7 +1787,9 @@ fn app_view(
     // open dialog, the command line, IPC requests, search results and errors.
     let open_path = {
         let sync = sync_active_to_mirrors;
+        let nav_note = nav_note.clone();
         move |p: PathBuf, line: Option<usize>, col: Option<usize>| {
+            nav_note();
             let req = brouillon::ipc::Request::Open { path: p.clone(), line, col, readonly: false, new_window: false, wait: false };
             let pos = tabs_sig.try_update(|tm| brouillon::wiring::apply_request(tm, &req)).flatten();
             sync();
@@ -1912,29 +1980,30 @@ fn app_view(
     };
     // EditPlus import (dialog and first-run screen 2): dry run = `plan`, Apply = `plan` + `apply`.
     let import_host = brouillon::onboarding_view::ImportHost {
-        detect: Rc::new(|| brouillon_import::editplus_full::detect_dirs().0),
+        detect: Rc::new(brouillon::import_cli::editors),
         preview: Rc::new({
             let registry = registry.clone();
-            move |dir: &std::path::Path| {
+            move |editor: &str, dir: &std::path::Path| {
                 let dest = startup().paths.root().to_path_buf();
-                brouillon::import_cli::plan(dir, brouillon::import_cli::auto_defaults(dir).as_deref(), &dest, &|id| registry.contains(id))
-                    .map(|p| brouillon::import_cli::to_preview(&p))
+                brouillon::import_cli::plan_for(editor, dir, &dest, &|id| registry.contains(id)).map(|p| brouillon::import_cli::to_preview(&p))
             }
         }),
         apply: Rc::new({
             let registry = registry.clone();
             let reload_settings = reload_settings.clone();
-            move |dir: &std::path::Path| {
+            move |editor: &str, dir: &std::path::Path| {
                 let dest = startup().paths.root().to_path_buf();
-                let plan = brouillon::import_cli::plan(dir, brouillon::import_cli::auto_defaults(dir).as_deref(), &dest, &|id| registry.contains(id))?;
+                let plan = brouillon::import_cli::plan_for(editor, dir, &dest, &|id| registry.contains(id))?;
                 brouillon_import::editplus_full::apply(&plan, &dest).map_err(|e| format!("could not write under {}: {e}", dest.display()))?;
                 reload_settings();
-                // The import switched the Classic preset on: the first-run answer follows it.
-                wizard.classic.set(true);
+                // An EditPlus import switches the Classic preset on: the first-run answer follows it.
+                if plan.outputs.iter().any(|(r, t)| r == "settings.toml" && t.contains("classic = true")) {
+                    wizard.classic.set(true);
+                }
                 Ok(brouillon::import_cli::apply_message(&plan))
             }
         }),
-        pick_folder: Rc::new(|| rfd::FileDialog::new().set_title("Folder with your EditPlus settings").pick_folder()),
+        pick_folder: Rc::new(|| rfd::FileDialog::new().set_title("Settings folder of the editor to import from").pick_folder()),
     };
     let wizard_host = brouillon::onboarding_view::WizardHost {
         import: import_host.clone(),
@@ -2089,10 +2158,7 @@ fn app_view(
                 results_visible_sig.set(true);
                 active_panel_sig.set("results");
             }
-            "encoding_picker" => {
-                encoding_query.set(String::new());
-                encoding_picker_visible.set(true);
-            }
+            "encoding_picker" => open_encoding_picker(brouillon::encoding_picker::PickerMode::SaveWith),
             other if dialogs.open_panel(other) => {}
             other => {
                 status_msg_sig.set(format!("Panel `{other}` has no view yet"));
@@ -2173,12 +2239,16 @@ fn app_view(
         let fr = find_replace_state.clone();
         let apply_ui_outcome = apply_ui_outcome;
         let open_panel_named = open_panel_named.clone();
+        let nav_note = nav_note.clone();
         move |id: &str| {
             let buf = buffer_sig.get_untracked();
             if buf.is_lazy() {
                 // The registry commands take the whole text: not on a large-file-mode document.
                 status_msg_sig.set(format!("`{id}` is not available in large file mode"));
                 return;
+            }
+            if matches!(id, "search_find_next" | "search_find_prev" | "bookmark_next" | "bookmark_prev") {
+                nav_note();
             }
             let text = buf.text();
             let sel = selection_sig.get_untracked();
@@ -2450,6 +2520,7 @@ fn app_view(
 
     // Last visited tab (Tab: Last Visited Tab) and the comparison view.
     let tab_mru: Rc<std::cell::RefCell<brouillon::tab_mru::TabMru>> = Rc::new(std::cell::RefCell::new(Default::default()));
+    let tab_mru_keys = tab_mru.clone();
     {
         let tab_mru = tab_mru.clone();
         create_effect(move |_| {
@@ -2523,6 +2594,16 @@ fn app_view(
             hex_sync();
         });
     }
+    // Opening the Go to dialog leaves the current place: remember it (a cancelled dialog leaves an entry equal to
+    // the caret, which Back skips).
+    {
+        let nav_note = nav_note.clone();
+        create_effect(move |_| {
+            if goto_visible.get() {
+                nav_note();
+            }
+        });
+    }
     let dispatch_scope = Scope::current();
     let sftp_state_for_dispatch = sftp_state.clone();
     let dispatch: Arc<dyn Fn(&str) + 'static> = Arc::new({
@@ -2536,6 +2617,7 @@ fn app_view(
         let on_new_tab = on_new_tab.clone();
         let on_close = on_close.clone();
         let on_switch = on_switch.clone();
+        let (nav, nav_busy) = (nav.clone(), nav_busy.clone());
         let link_kill = link_actions.kill.clone();
         let macro_rec = macro_rec.clone();
         let macro_slot = macro_slot.clone();
@@ -2671,7 +2753,60 @@ fn app_view(
                 ai_visible_sig.update(|v| *v = !*v);
                 eprintln!("[palette] AI panel -> {}", ai_visible_sig.get_untracked());
             }
-            "project_open_folder" | "project_load" => {
+            "project_save" => {
+                // The folders and files of this work, saved under the settings folder (never inside the project folder).
+                let folder = remote_ui.local_folder();
+                let (files, active) = tabs_sig.with_untracked(|tm| {
+                    let cur = tm.active_idx();
+                    let files: Vec<brouillon::project::ProjectFile> = tm
+                        .iter()
+                        .enumerate()
+                        .filter_map(|(i, t)| {
+                            let p = t.path.clone()?;
+                            let (l, c) = if i == cur { cursor_sig.get_untracked() } else { t.cursor };
+                            Some(brouillon::project::ProjectFile { path: p.to_string_lossy().into_owned(), line: Some(l), col: Some(c) })
+                        })
+                        .collect();
+                    (files, tm.current().path.as_ref().map(|p| p.to_string_lossy().into_owned()))
+                });
+                let name = folder
+                    .as_ref()
+                    .and_then(|f| f.file_name())
+                    .map(|n| n.to_string_lossy().into_owned())
+                    .or_else(|| files.first().and_then(|f| std::path::Path::new(&f.path).file_stem().map(|s| s.to_string_lossy().into_owned())))
+                    .unwrap_or_else(|| "project".into());
+                let project = brouillon::project::Project { name: name.clone(), folders: folder.iter().map(|f| f.to_string_lossy().into_owned()).collect(), files, active };
+                let file = brouillon::project::default_file(startup().paths.root(), &name);
+                match project.save(&file) {
+                    Ok(()) => status_msg_sig.set(format!("Project saved: {} ({} file(s))", file.display(), project.files.len())),
+                    Err(e) => status_msg_sig.set(format!("Project could not be saved: {e}")),
+                }
+            }
+            "project_load" => {
+                let start = brouillon::project::projects_dir(startup().paths.root());
+                let picked = rfd::FileDialog::new()
+                    .set_title("Open Project")
+                    .set_directory(if start.is_dir() { start } else { startup().paths.root().to_path_buf() })
+                    .add_filter("Brouillon project", &["toml"])
+                    .pick_file();
+                if let Some(pf) = picked {
+                    match brouillon::project::Project::load(&pf) {
+                        Ok(p) => {
+                            if let Some(dir) = p.first_folder() {
+                                remote_ui.browse_local(&dir);
+                            }
+                            let n = p.targets().len();
+                            for t in p.targets() {
+                                let (path, line, col) = brouillon::cli::parse_target(&t);
+                                open_path(path, line, col);
+                            }
+                            status_msg_sig.set(format!("Project \"{}\" opened ({n} file(s))", p.name));
+                        }
+                        Err(e) => status_msg_sig.set(format!("Project: {e}")),
+                    }
+                }
+            }
+            "project_open_folder" => {
                 if let Some(dir) = rfd::FileDialog::new().set_title("Open Folder").pick_folder() {
                     remote_ui.browse_local(&dir);
                     status_msg_sig.set(format!("Folder: {}", dir.display()));
@@ -2784,6 +2919,23 @@ fn app_view(
                 }
                 status_msg_sig.set(msg);
             }
+            "view_toggle_sidebar" | "view_tabs_position_toggle" => {
+                let (key, raw, msg) = if id == "view_toggle_sidebar" {
+                    let on = !sidebar_visible_sig.get_untracked();
+                    sidebar_visible_sig.set(on);
+                    ("sidebar.visible", on.to_string(), if on { "Sidebar shown" } else { "Sidebar hidden" })
+                } else {
+                    let bottom = !tabs_bottom_sig.get_untracked();
+                    tabs_bottom_sig.set(bottom);
+                    ("tabs.position", format!("\"{}\"", if bottom { "bottom" } else { "top" }), if bottom { "Tabs at the bottom" } else { "Tabs at the top" })
+                };
+                let file = startup().paths.settings_file();
+                let text = std::fs::read_to_string(&file).unwrap_or_default();
+                if let Err(e) = std::fs::write(&file, brouillon::settings::set_raw_key(&text, "ui", key, &raw)) {
+                    eprintln!("[settings] cannot save ui.{key}: {e}");
+                }
+                status_msg_sig.set(msg.to_string());
+            }
             "view_distraction_free" => {
                 let on = !distraction_sig.get_untracked();
                 distraction_sig.set(on);
@@ -2821,7 +2973,7 @@ fn app_view(
                 }
             }
             "help_about" => dialogs.about.set(true),
-            "file_import_editplus" => dialogs.import.set(true),
+            "tools_import_settings" => dialogs.import.set(true),
             "help_first_run" => {
                 wizard.screen.set(0);
                 dialogs.firstrun.set(true);
@@ -2911,6 +3063,45 @@ fn app_view(
             "file_close" => {
                 let active = tabs_sig.with_untracked(|tm: &TabManager| tm.active_idx());
                 (on_close)(active);
+            }
+            // Both open the picker; what a choice does differs (see `PickerMode`).
+            "encoding_reopen_as" => open_encoding_picker(brouillon::encoding_picker::PickerMode::Reopen),
+            "encoding_convert_to" => open_encoding_picker(brouillon::encoding_picker::PickerMode::SaveWith),
+            "nav_back" | "nav_forward" => {
+                // Walk the jump history; entries equal to where we are, or whose document is gone, are skipped.
+                let here = nav_here();
+                let mut target = None;
+                for _ in 0..16 {
+                    let step = if id == "nav_back" { nav.borrow_mut().back(here.clone()) } else { nav.borrow_mut().forward() };
+                    let Some(p) = step else { break };
+                    if p == here {
+                        continue;
+                    }
+                    let idx = tabs_sig.with_untracked(|tm| tm.iter().position(|t| brouillon::tab_mru::tab_key(t.path.as_deref(), &t.title) == p.doc));
+                    if idx.is_some() || std::path::Path::new(&p.doc).is_file() {
+                        target = Some((p, idx));
+                        break;
+                    }
+                }
+                match target {
+                    None => status_msg_sig.set(if id == "nav_back" { "Nothing to go back to".into() } else { "Nothing to go forward to".into() }),
+                    Some((p, idx)) => {
+                        nav_busy.set(true);
+                        let (l, c) = p.line_col();
+                        match idx {
+                            Some(i) => {
+                                if tabs_sig.with_untracked(|tm| tm.active_idx() != i) {
+                                    (on_switch)(i);
+                                }
+                                let last = buffer_sig.get_untracked().line_count().max(1);
+                                cursor_sig.set((l.min(last), c));
+                                selection_sig.set(Selection::new((1, 1), (1, 1), false));
+                            }
+                            None => open_path(PathBuf::from(&p.doc), Some(l), Some(c)),
+                        }
+                        nav_busy.set(false);
+                    }
+                }
             }
             "tab_next" | "tab_previous" => {
                 let (n, cur) = tabs_sig.with_untracked(|tm| (tm.count(), tm.active_idx()));
@@ -3233,24 +3424,39 @@ fn app_view(
                 "help" => Some("help"),
                 _ => None,
             };
-            active_menu_dropdown.update(|cur| {
-                if *cur == static_id {
-                    *cur = None;
-                } else {
-                    *cur = static_id;
-                }
-            });
+            active_menu_dropdown.update(|cur| *cur = brouillon::menu_dropdown::toggle_menu(*cur, static_id));
             eprintln!("[menu] toggled dropdown: {:?}", static_id);
         }
     });
 
+    let lead_dispatch = toolbar_dispatch.clone();
+    let (on_switch_bottom, on_close_bottom, on_new_tab_bottom) = (on_switch.clone(), on_close.clone(), on_new_tab.clone());
     let menu_bar_view_gated = floem::views::dyn_container(
         move || preset_sig.get().config().show_menu_bar,
         {
             let cb = menu_on_click.clone();
             move |show| {
                 if show {
-                    menu_bar::menu_bar_view(theme_idx, cb.clone()).into_any()
+                    let (d1, d2) = (lead_dispatch.clone(), lead_dispatch.clone());
+                    let lead = stack((
+                        brouillon::view_icons::icon_button(
+                            theme_idx,
+                            brouillon::view_icons::Glyph::Sidebar,
+                            sidebar_visible_sig,
+                            || "Show/hide sidebar (Ctrl+B)".to_string(),
+                            move || d1("view_toggle_sidebar"),
+                        ),
+                        brouillon::view_icons::icon_button(
+                            theme_idx,
+                            brouillon::view_icons::Glyph::Tabs,
+                            tabs_bottom_sig,
+                            move || format!("Tabs at top/bottom (now {})", if tabs_bottom_sig.get_untracked() { "bottom" } else { "top" }),
+                            move || d2("view_tabs_position_toggle"),
+                        ),
+                    ))
+                    .style(|s| s.flex_row().items_center().margin_right(4.0))
+                    .into_any();
+                    menu_bar::menu_bar_view(theme_idx, cb.clone(), lead).into_any()
                 } else {
                     empty().into_any()
                 }
@@ -3546,7 +3752,7 @@ fn app_view(
 
     // Distraction-free mode hides every piece of chrome around the text.
     let zen = move |s: Style| if distraction_sig.get() { s.hide() } else { s };
-    let tree_panel = tree_panel.style(zen);
+    let tree_panel = tree_panel.style(zen).style(move |s| if sidebar_visible_sig.get() { s } else { s.hide() });
     let sftp_panel_view_gated = sftp_panel_view_gated.style(zen);
     let ai_panel_view_gated = ai_panel_view_gated.style(zen);
     let cliptext_panel_view = cliptext_panel_view.style(zen);
@@ -3580,6 +3786,10 @@ fn app_view(
         key_bindings.iter().any(|b| q.as_ref() == Some(&b.chord))
     };
     let dispatch_for_keys = dispatch.clone();
+    // Ctrl+Tab popup (most recently used documents): opens on the first press, Ctrl released commits, Esc cancels.
+    let switcher_sig: RwSignal<Option<brouillon::tab_mru::Switcher>> = create_rw_signal(None);
+    let on_switch_keys = on_switch.clone();
+    let on_switch_keyup = on_switch.clone();
     let dispatcher_for_keys = dispatcher.clone();
     let dispatch_for_status = dispatch.clone();
 
@@ -3686,7 +3896,13 @@ fn app_view(
         stack((
             header_bar(fps_sig, theme_idx, toolbar_view_gated, brouillon::link_view::link_chip(link_ui, link_actions.clone())),
             menu_bar_view_gated,
-            tab_bar::tab_bar_view(tabs_sig, on_switch, on_close, on_new_tab),
+            floem::views::dyn_container(
+                move || tabs_bottom_sig.get(),
+                {
+                    let (a, b, c) = (on_switch.clone(), on_close.clone(), on_new_tab.clone());
+                    move |bottom| if bottom { empty().into_any() } else { tab_bar::tab_bar_view(tabs_sig, a.clone(), b.clone(), c.clone(), false).into_any() }
+                },
+            ),
         ))
         .style(|s| s.flex_col().width_full())
         .style(zen),
@@ -3708,8 +3924,20 @@ fn app_view(
         body_with_sidebar,
         // Find in Files results, then streaming tool output (Stop, click-to-jump, F4).
         // Grouped: floem implements ViewTuple up to 16 elements.
-        stack((results_panel_gated, output_panel_gated)).style(|s| s.flex_col().width_full()).style(zen),
+        stack((
+        // The tab bar sits last when it is at the bottom: just above the status line.
+        stack((
+            results_panel_gated,
+            output_panel_gated,
+            floem::views::dyn_container(
+                move || tabs_bottom_sig.get(),
+                move |bottom| if bottom { tab_bar::tab_bar_view(tabs_sig, on_switch_bottom.clone(), on_close_bottom.clone(), on_new_tab_bottom.clone(), true).into_any() } else { empty().into_any() },
+            ),
+        ))
+        .style(|s| s.flex_col().width_full())
+        .style(zen),
         status_line(total_bytes, panes_sig, status_msg_sig, ram_sig, ram_detail_sig, preset_sig, theme_idx, path_sig, buffer_sig, bracket_paint_sig, language_sig, move |cmd| dispatch_for_status(cmd)).style(zen),
+        )).style(|s| s.flex_col().width_full()),
         // Find/Replace overlay paints last so its `Style::absolute()` floats
         // over the editor body. The dyn_container inside collapses to empty()
         // when `visible.get() == false` — no stale paint.
@@ -3720,10 +3948,12 @@ fn app_view(
             quick_open_state,
             {
                 let open_path = open_path.clone();
+                let nav_note = nav_note.clone();
                 let fr = find_replace_state.clone();
                 Rc::new(move |hit: brouillon::quick_open::Hit| {
                     use brouillon::quick_open::Hit;
                     let goto = |line: usize, col: usize| {
+                        nav_note();
                         let last = buffer_sig.get_untracked().line_count().max(1);
                         cursor_sig.set((line.clamp(1, last), col.max(1)));
                         selection_sig.set(Selection::new((1, 1), (1, 1), false));
@@ -3744,33 +3974,126 @@ fn app_view(
         .into_any(),
         // alpha.11 : Go-to-line dialog (Ctrl-G or palette edit.go-to-line).
         brouillon::goto_view::go_to_line_overlay(goto_visible, goto_input, cursor_sig, buffer_sig, theme_idx, editor_opts.vp).into_any(),
-        // Encoding picker: choosing an encoding sets the codepage used by the next save.
+        // Ctrl+Tab popup: open documents, most recently used first.
+        floem::views::dyn_container(
+            move || switcher_sig.get(),
+            move |sw| match sw {
+                None => floem::views::empty().into_any(),
+                Some(sw) => {
+                    let rows: Vec<(String, bool)> = tabs_sig.with_untracked(|tm| {
+                        let titles: Vec<(String, bool)> = tm.iter().map(|t| (t.title.clone(), t.dirty)).collect();
+                        sw.items.iter().enumerate().map(|(row, i)| {
+                            let (t, d) = titles.get(*i).cloned().unwrap_or_default();
+                            (format!("{}{}", if d { "\u{25cf} " } else { "  " }, t), row == sw.sel)
+                        }).collect()
+                    });
+                    floem::views::v_stack_from_iter(rows.into_iter().map(|(text, selected)| {
+                        floem::views::label(move || text.clone()).style(move |s| {
+                            let t = current_theme(theme_idx.get());
+                            let s = s.width_full().padding_horiz(12.0).padding_vert(4.0).font_size(13.0).color(if selected { t.fg } else { t.fg_dim });
+                            if selected { s.background(t.accent.multiply_alpha(0.25)) } else { s }
+                        })
+                    }))
+                    .style(move |s| {
+                        let t = current_theme(theme_idx.get());
+                        s.width(360.0).padding(6.0).background(t.bg_chrome).border(1.0).border_color(t.accent).border_radius(4.0)
+                    })
+                    .into_any()
+                }
+            },
+        )
+        .style(|s| s.absolute().inset_top(120.0).inset_left_pct(50.0).margin_left(-180.0_f32))
+        .into_any(),
+        // Encoding picker. "Save with" sets the codepage of the next save; "Reopen" re-reads the file from disk.
         floem::views::dyn_container(
             move || encoding_picker_visible.get(),
             move |show| {
                 if !show {
                     return floem::views::empty().into_any();
                 }
+                use brouillon::encoding_picker::PickerMode;
                 let on_pick = move |id: &'static str| {
-                    match brouillon::codepages::supported(id) {
-                        Ok(cp) => {
+                    let Ok(cp) = brouillon::codepages::supported(id) else {
+                        status_msg_sig.set(format!("Encoding `{id}` is not supported"));
+                        return;
+                    };
+                    match encoding_mode.get_untracked() {
+                        PickerMode::SaveWith => {
                             tabs_sig.update(|tm| tm.current_mut().meta.codepage = cp.id);
                             status_msg_sig.set(format!("Next save will encode as {} (the text on screen is not re-decoded)", cp.label));
                         }
-                        Err(_) => status_msg_sig.set(format!("Encoding `{id}` is not supported")),
+                        PickerMode::Reopen => {
+                            let path = path_sig.get_untracked();
+                            match path {
+                                None => status_msg_sig.set("Reopen with encoding: this document has no file on disk".into()),
+                                Some(_) if buffer_sig.get_untracked().is_lazy() => status_msg_sig.set("Reopen with encoding is not available in large file mode".into()),
+                                Some(_) if buffer_sig.get_untracked().is_dirty() => status_msg_sig.set("Reopen with encoding: save or revert your changes first (it re-reads the file from disk)".into()),
+                                Some(p) => match brouillon::file_io::reopen_file(&p, cp.id) {
+                                    Ok(doc) => {
+                                        let old = buffer_sig.get_untracked();
+                                        let regions = brouillon::wiring::regions_from_buf(&old, cursor_sig.get_untracked(), None);
+                                        let out = brouillon::contract::CmdOutcome {
+                                            edits: brouillon::contract::EditSet(vec![brouillon::contract::TextEdit::new(0, old.byte_len(), doc.text)]),
+                                            selection: Some(vec![brouillon::contract::Region::caret(0)]),
+                                            message: Some(format!("Reopened from disk as {}{}", cp.label, if doc.lossy { " (some bytes could not be decoded)" } else { "" })),
+                                            ..Default::default()
+                                        };
+                                        apply_ui_outcome(out, regions);
+                                        let mut nb = (*buffer_sig.get_untracked()).clone();
+                                        nb.mark_saved();
+                                        buffer_sig.set(Arc::new(nb));
+                                        tabs_sig.update(|tm| {
+                                            let m = &mut tm.current_mut().meta;
+                                            m.codepage = cp.id;
+                                            m.bom = doc.bom;
+                                        });
+                                    }
+                                    Err(e) => status_msg_sig.set(format!("Reopen with encoding: {e}")),
+                                },
+                            }
+                        }
                     }
                     encoding_picker_visible.set(false);
                 };
+                // The decoded start of the file under the pointer (else the first match of the filter).
+                let preview = floem::views::label(move || {
+                    let id = encoding_hover.get().or_else(|| brouillon::encoding_picker::first_supported(&encoding_query.get()));
+                    let head = encoding_head.get();
+                    match (id, head.is_empty()) {
+                        (_, true) => "Preview: this document has no file on disk".to_string(),
+                        (Some(id), false) => format!("Preview ({id}): {}", brouillon::encoding_picker::preview_text(&head, id, 90).unwrap_or_default()),
+                        (None, false) => "Preview: no supported encoding matches".to_string(),
+                    }
+                })
+                .style(move |s| {
+                    let t = current_theme(theme_idx.get());
+                    s.width(280.0).padding(6.0).font_size(12.0).background(t.bg_chrome).color(t.fg_dim).border(1.0).border_color(t.border)
+                });
+                let title = floem::views::label(move || encoding_mode.get().title().to_string()).style(move |s| {
+                    let t = current_theme(theme_idx.get());
+                    s.width(280.0).padding(4.0).font_size(11.0).color(t.accent)
+                });
                 floem::views::stack((
+                    title,
                     floem::views::text_input(encoding_query)
-                        .placeholder("Filter encodings...")
+                        .placeholder("Filter encodings (Enter picks the first match)...")
                         .request_focus(|| {})
+                        .on_event_stop(EventListener::KeyDown, move |event| {
+                            if let Event::KeyDown(ke) = event {
+                                if ke.key.logical_key == Key::Named(NamedKey::Enter) {
+                                    if let Some(id) = brouillon::encoding_picker::first_supported(&encoding_query.get_untracked()) {
+                                        on_pick(id);
+                                    }
+                                }
+                            }
+                        })
                         .style(move |s| {
                             let t = current_theme(theme_idx.get());
                             s.width(280.0).padding(6.0).background(t.bg_chrome).color(t.fg)
                                 .border(1.0).border_color(t.accent).border_radius(2.0)
                         }),
-                    brouillon::encoding_picker::encoding_picker_view(encoding_query, theme_idx, on_pick),
+                    preview,
+                    brouillon::encoding_picker::encoding_picker_view(encoding_query, theme_idx, on_pick, move |id| encoding_hover.set(Some(id))),
                 ))
                 .style(|s| s.flex_col().gap(4.0))
                 .into_any()
@@ -3779,7 +4102,13 @@ fn app_view(
         .style(|s| s.absolute().inset_top(112.0).inset_left(300.0))
         .into_any(),
         // Round 14 : floating top-bar dropdown popovers Tokyo-Night styled.
-        brouillon::menu_dropdown::menu_dropdown_overlay(active_menu_dropdown, theme_idx, dispatch).into_any(),
+        brouillon::menu_dropdown::menu_dropdown_overlay_with(active_menu_dropdown, theme_idx, dispatch, {
+            // Menu accelerators follow the live chord table (user keymap, Classic overlay).
+            let dispatcher = dispatcher.clone();
+            Arc::new(move |action: &str, hint: &'static str| {
+                brouillon::menu_dropdown::live_accel(&dispatcher.borrow().bindings, &brouillon::wiring::canonical(action), hint)
+            })
+        }).into_any(),
         // Preferences dialog (settings.toml) and its effects that need no relaunch.
         brouillon::settings_editor::settings_overlay(dialogs.settings, startup().paths.settings_file(), Rc::new({
             let rebind = rebind.clone();
@@ -3886,6 +4215,42 @@ fn app_view(
                 if ke.key.logical_key == Key::Named(NamedKey::Escape) {
                     dialogs.close_modals();
                     remote_ui.cancel_dialogs();
+                }
+                return;
+            }
+            // ── Ctrl+Tab popup: first press opens the MRU list, more presses move, Escape cancels; the commit
+            // happens when Ctrl is released (KeyUp below). Every other key is swallowed while it is open. ──
+            if ke.modifiers.control() && !ke.modifiers.alt() && ke.key.logical_key == Key::Named(NamedKey::Tab) {
+                let forward = !ke.modifiers.shift();
+                if switcher_sig.get_untracked().is_some() {
+                    switcher_sig.update(|s| {
+                        if let Some(s) = s {
+                            s.step(if forward { 1 } else { -1 });
+                        }
+                    });
+                } else {
+                    let items = tabs_sig.with_untracked(|tm| {
+                        let keys: Vec<String> = tm.iter().map(|t| brouillon::tab_mru::tab_key(t.path.as_deref(), &t.title)).collect();
+                        tab_mru_keys.borrow().ordered(&keys)
+                    });
+                    if items.len() > 1 {
+                        switcher_sig.set(Some(brouillon::tab_mru::Switcher::open(items, forward)));
+                    }
+                }
+                return;
+            }
+            if switcher_sig.get_untracked().is_some() {
+                match &ke.key.logical_key {
+                    Key::Named(NamedKey::Escape) => switcher_sig.set(None),
+                    Key::Named(NamedKey::ArrowDown) => switcher_sig.update(|s| s.iter_mut().for_each(|s| s.step(1))),
+                    Key::Named(NamedKey::ArrowUp) => switcher_sig.update(|s| s.iter_mut().for_each(|s| s.step(-1))),
+                    Key::Named(NamedKey::Enter) => {
+                        if let Some(i) = switcher_sig.get_untracked().and_then(|s| s.chosen()) {
+                            (on_switch_keys)(i);
+                        }
+                        switcher_sig.set(None);
+                    }
+                    _ => {}
                 }
                 return;
             }
@@ -4397,6 +4762,24 @@ fn app_view(
                 }
             }
 
+            // Ctrl+Home / Ctrl+End: start / end of the document (a bare Home / End stay on the line).
+            if ke.modifiers.control() && !ke.modifiers.alt() && !ke.modifiers.shift() {
+                let buf = buffer_sig.get_untracked();
+                let to = match ke.key.logical_key {
+                    Key::Named(NamedKey::Home) => Some((1, 1)),
+                    Key::Named(NamedKey::End) => {
+                        let last = buf.line_count().max(1);
+                        Some((last, buf.nth_line(last - 1).map(|s| s.chars().count() + 1).unwrap_or(1)))
+                    }
+                    _ => None,
+                };
+                if let Some(pos) = to {
+                    cursor_sig.set(pos);
+                    selection_sig.set(Selection::new((1, 1), (1, 1), false));
+                    return;
+                }
+            }
+
             let moved = handle_cursor_key_folded(&ke.key.logical_key, cursor_sig, &buffer_sig.get_untracked(), &fold_state_sig.get_untracked());
             if moved {
                 selection_sig.set(Selection::new((1, 1), (1, 1), false));
@@ -4406,6 +4789,15 @@ fn app_view(
     .on_event_stop(EventListener::KeyUp, move |event| {
         tick_frame();
         if let Event::KeyUp(ke) = event {
+            // Releasing Ctrl commits the Ctrl+Tab popup.
+            if ke.key.logical_key == Key::Named(NamedKey::Control) {
+                if let Some(s) = switcher_sig.get_untracked() {
+                    switcher_sig.set(None);
+                    if let Some(i) = s.chosen() {
+                        (on_switch_keyup)(i);
+                    }
+                }
+            }
             // Bare F11 only: Ctrl+F11 is Go to Function (Classic keymap) and must not open the inspector.
             if ke.key.logical_key == Key::Named(NamedKey::F11) && !ke.modifiers.control() && !ke.modifiers.alt() && !ke.modifiers.shift() {
                 floem::action::inspect();
@@ -4432,6 +4824,7 @@ fn app_view(
     // Leaving the window (Alt+Tab, click on another app) closes an open menu popup.
     .on_event_cont(EventListener::WindowLostFocus, move |_| {
         active_menu_dropdown.set(None);
+        switcher_sig.set(None);
     })
     // Mouse activity re-arms the idle memory trimmer (key activity does it in tick_frame()).
     .on_event_cont(EventListener::PointerMove, |_| brouillon::memtrim::touch())
@@ -4659,7 +5052,7 @@ fn format_bytes(b: usize) -> String {
 /// Spawn a background sampler that publishes FPS and RAM into the GUI
 /// signals every 500 ms.
 ///
-/// Sentinel issue #1 (alpha.3 QA): the previous implementation called
+/// QA issue #1 (alpha.3): the previous implementation called
 /// `RwSignal::set` directly from a non-GUI thread, which Floem 0.2 does
 /// not guarantee safe. Closed in alpha.5 via
 /// `ext_event_helpers::spawn_periodic`, which routes values through an

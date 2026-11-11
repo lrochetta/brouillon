@@ -221,6 +221,22 @@ pub fn catalog() -> Vec<Def> {
             effect: Effect::Now,
         },
         Def {
+            key: "ui.sidebar.visible",
+            category: "Display",
+            label: "Show the sidebar",
+            help: "The left column with Open Files and the Browser (also the icon left of the File menu, View > Toggle Sidebar and Ctrl+B).",
+            kind: Kind::Bool,
+            effect: Effect::Now,
+        },
+        Def {
+            key: "ui.tabs.position",
+            category: "Display",
+            label: "Tab bar position",
+            help: "Top (under the menu) or bottom (just above the status bar). Also the second icon left of the File menu and View > Tabs at Top / Bottom.",
+            kind: choice(&[("top", "Top"), ("bottom", "Bottom")]),
+            effect: Effect::Now,
+        },
+        Def {
             key: "files.default_encoding",
             category: "Files",
             label: "Encoding of new documents",

@@ -16,7 +16,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $Mode = @($Mode | ForEach-Object { $_ -split ',' } | Where-Object { $_ })
-. (Join-Path $PSScriptRoot 'lib.ps1')
+. (Join-Path $PSScriptRoot $(if ($env:BROUILLON_SMOKE_TI -eq '1') { 'testinput.ps1' } else { 'lib.ps1' }))
 if (-not $Exe -or -not (Test-Path $Exe)) { throw 'pass -Exe <path to brouillon.exe>' }
 $Exe = (Resolve-Path $Exe).Path
 New-Item -ItemType Directory -Force $DataRoot | Out-Null

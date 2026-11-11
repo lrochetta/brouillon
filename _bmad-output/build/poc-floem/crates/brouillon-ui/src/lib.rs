@@ -31,6 +31,7 @@ pub mod remote_view;
 pub mod sftp_panel;
 pub mod sketch_view;
 pub mod tab_bar;
+pub mod view_icons;
 pub mod theme_ctx;
 pub mod toolbar;
 pub mod xcf;

@@ -45,6 +45,7 @@ pub const MENU_ITEMS: &[(&str, &str)] = &[
 pub fn menu_bar_view(
     theme_idx: RwSignal<usize>,
     on_item_click: Arc<dyn Fn(&str) + 'static>,
+    lead: floem::AnyView,
 ) -> impl IntoView {
     // Build each cell with its own captured callback clone. Hover background
     // and text color flip reactively on theme change via the `move ||` style
@@ -57,6 +58,7 @@ pub fn menu_bar_view(
     let cb_help = on_item_click.clone();
 
     let row = stack((
+        lead,
         menu_item(theme_idx, "file", "File", cb_file),
         menu_item(theme_idx, "edit", "Edit", cb_edit),
         menu_item(theme_idx, "search", "Search", cb_search),
@@ -64,7 +66,7 @@ pub fn menu_bar_view(
         menu_item(theme_idx, "tools", "Tools", cb_tools),
         menu_item(theme_idx, "help", "Help", cb_help),
     ))
-    .style(|s| s.flex_row().items_center().height(MENU_HEIGHT));
+    .style(|s| s.flex_row().items_center().height(MENU_HEIGHT).padding_left(4.0));
 
     container(row).style(move |s| {
         let theme = read_theme(theme_idx);

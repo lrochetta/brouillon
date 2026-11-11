@@ -113,6 +113,11 @@ function Send-Chord {
     Start-Sleep -Milliseconds $PauseMs
 }
 
+# Hold modifiers ("ctrl") down, tap keys with them held, release: Send-Hold $app "ctrl"; Send-Tap $app "ctrl+tab"; Send-Release $app "ctrl"
+function Send-Hold    { param($App, [string]$Mods) [void](Invoke-TI $App @{ op = "hold"; mods = $Mods }); Start-Sleep -Milliseconds 80 }
+function Send-Release { param($App, [string]$Mods) [void](Invoke-TI $App @{ op = "release"; mods = $Mods }); Start-Sleep -Milliseconds 200 }
+function Send-Tap     { param($App, [string]$Chord, [int]$PauseMs = 200) [void](Invoke-TI $App @{ op = "tap"; chord = $Chord }); Start-Sleep -Milliseconds $PauseMs }
+
 function Send-Text {
     param($App, [string]$Text, [int]$CharDelayMs = 12)
     [void](Invoke-TI $App @{ op = 'text'; text = $Text })
@@ -133,10 +138,12 @@ function ConvertTo-ClientXY {
 }
 
 function Send-Click {
-    param($App, [double]$LX, [double]$LY, [switch]$Double)
+    param($App, [double]$LX, [double]$LY, [switch]$Double, [string]$Mods = '')
     $c = ConvertTo-ClientXY $App $LX $LY
     $n = 1; if ($Double) { $n = 2 }
-    [void](Invoke-TI $App @{ op = 'click'; x = $c[0]; y = $c[1]; count = $n })
+    $req = @{ op = 'click'; x = $c[0]; y = $c[1]; count = $n }
+    if ($Mods) { $req.mods = $Mods }
+    [void](Invoke-TI $App $req)
     Start-Sleep -Milliseconds 150
 }
 

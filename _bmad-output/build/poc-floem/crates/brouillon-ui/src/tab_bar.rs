@@ -79,6 +79,7 @@ pub fn tab_bar_view(
     on_switch: Arc<dyn Fn(usize) + 'static>,
     on_close: Arc<dyn Fn(usize) + 'static>,
     on_new_tab: Arc<dyn Fn() + 'static>,
+    at_bottom: bool,
 ) -> impl IntoView {
     // Memoised snapshot of the tab list. `TabManager` is not `Clone`
     // (data layer constraint — we MUST NOT touch tabs.rs), so we read
@@ -154,13 +155,11 @@ pub fn tab_bar_view(
                 .height(TAB_HEIGHT)
         }),
     )
-    .style(|s| {
+    .style(move |s| {
         let c = tab_colors();
-        s.width_full()
-            .height(TAB_HEIGHT)
-            .background(c.bar)
-            .border_bottom(1.0)
-            .border_color(c.separator)
+        let s = s.width_full().height(TAB_HEIGHT).background(c.bar).border_color(c.separator);
+        // At the bottom the rule goes on the side facing the editor.
+        if at_bottom { s.border_top(1.0) } else { s.border_bottom(1.0) }
     })
 }
 
@@ -378,7 +377,7 @@ mod tests {
             let on_switch: Arc<dyn Fn(usize)> = Arc::new(|_| {});
             let on_close: Arc<dyn Fn(usize)> = Arc::new(|_| {});
             let on_new_tab: Arc<dyn Fn()> = Arc::new(|| {});
-            let _view = tab_bar_view(tabs_sig, on_switch, on_close, on_new_tab);
+            let _view = tab_bar_view(tabs_sig, on_switch, on_close, on_new_tab, false);
         });
     }
 

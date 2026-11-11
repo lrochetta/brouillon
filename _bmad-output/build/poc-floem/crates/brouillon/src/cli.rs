@@ -41,6 +41,9 @@ pub struct Cli {
     /// Open this folder in the folder tree (implies a new window; the last folder is reopened otherwise).
     #[arg(long, value_name = "DIR")]
     pub folder: Option<PathBuf>,
+    /// Open a project file (.brouillon-project.toml): its folder in the folder tree and its files as tabs (implies a new window).
+    #[arg(long, value_name = "FILE")]
+    pub project: Option<PathBuf>,
     /// Development: with no file, open the generated 100,000-line sample document.
     #[arg(long, hide = true)]
     pub sample: bool,

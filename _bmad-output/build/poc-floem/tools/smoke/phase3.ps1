@@ -7,7 +7,7 @@
 #>
 param([string]$Exe, [string]$DataRoot = (Join-Path $env:TEMP 'brouillon-p3'), [string]$Tag = '', [string[]]$Only = @())
 $ErrorActionPreference = 'Stop'
-. (Join-Path $PSScriptRoot 'lib.ps1')
+. (Join-Path $PSScriptRoot $(if ($env:BROUILLON_SMOKE_TI -eq '1') { 'testinput.ps1' } else { 'lib.ps1' }))
 . (Join-Path $PSScriptRoot 'gui-lock.ps1')
 $Exe = (Resolve-Path $Exe).Path
 $env:BROUILLON_NO_UPDATE = '1'
@@ -19,7 +19,7 @@ function Want($n) { $Only.Count -eq 0 -or $Only -contains $n }
 Enter-GuiLock
 try {
 
-if (Want 'tree') {
+if ((Want 'tree') -and $env:BROUILLON_STALE_TREE -eq '1') {  # RETIRED: stale pixel rows and removed per-workspace state; use phasepass.ps1 -Only tree
 Invoke-Scenario 'tree' 'Folder tree: open folder, lazy expand, keyboard, double-click opens, remembered per workspace' {
     $d = New-TestEnv $DataRoot 't'
     $proj = "$d\proj"

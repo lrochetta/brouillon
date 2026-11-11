@@ -15,12 +15,52 @@ While the project is in **0.x**, anything MAY break between minor versions.
 
 ## [Unreleased]
 
+---
+
+## [0.1.0-alpha.16] — 2026-11-11
+
+Written by hand from `git log 3017ae2..HEAD` plus the work merged just before it (hex and vault checks, quit guard, file kinds). git-cliff is not installed on the build machine. This is an alpha: read "Known limits" below before relying on it.
+
+### Highlights
+- **Update check is on by default, and safe offline.** A launch with no network stays silent and starts as fast as before. The check can be turned off on the first-run screen or in Preferences.
+- **Hex editor and credential vault now verified on screen.** The alpha.15 slice was tests only; both were driven in the real window and the bugs found there were fixed.
+- **Import settings from other editors**, under Tools: Notepad++, Sublime Text, EditPad Lite and EditPlus.
+- **Navigation history, Ctrl+Tab popup, encoding preview and reopen, and projects.**
+
 ### Added
+- **Sidebar and tab bar position.** Two vector icons (drawn in code, themed, with hover, pressed and tooltip) left of the File menu: show/hide the left sidebar (also **Ctrl+B**, command `view_toggle_sidebar`) and move the tab bar between the top and the bottom above the status bar (`view_tabs_position_toggle`). Both are in the View menu and the palette and are remembered: `ui.sidebar.visible`, `ui.tabs.position`, listed in Preferences.
+- **Settings import from other editors.** One `Importer` trait and registry; **Tools > Import Settings from Another Editor...** (replaces the File entry; the old id `file_import_editplus` stays as an alias) and the first-run screen detect Notepad++, Sublime Text, EditPad Lite and EditPlus in their per-user folders (read-only), list them with item counts, and import settings, shortcuts, run commands, recent files, colour themes, user-defined languages and snippets from their documented file formats (dry run first, imported / approximated / skipped with reasons, no paths or contents shown, backup of every replaced file). EditPad Lite is limited to an exported `.ini` read by key name.
+- **Navigation history.** Alt+Left / Alt+Right go back and forward across jumps (go to line, quick open, find next, bookmarks, result clicks, tab switches).
+- **Ctrl+Tab document popup** in most-recently-used order: hold Ctrl, tap Tab to move, release Ctrl to switch, Esc cancels.
+- **Encoding picker preview and Reopen with Encoding.** The picker shows the decoded start of the file; Reopen re-reads the file from disk with the chosen code page, separate from Save with encoding.
+- **Projects.** File > Save Project / Open Project... and `--project <file>` keep the folder, open files, carets and active file in `<settings>/projects/`.
+- Menu accelerators follow the live keymap, so a rebound shortcut shows in the menus.
 - **Automatic update at launch.** In the background, after the first frame, Brouillon checks the signed `latest.json` (Ed25519, pinned keys), refuses older builds and replays, enforces `min_supported_build`, throttles to once per `updates.check_interval_hours`, and stays silent offline. A newer build is downloaded with progress and verified (size, SHA-256); with `updates.auto_install` (default on) it starts by itself when no document is unsaved, otherwise a banner offers Update now / Later / Skip this version. Portable copies only show the file name, hash and link. The request carries no identifier, no cookie, no query string and no version. New settings: `updates.auto_install` (replaces `updates.auto`), `updates.check_interval_hours`, `updates.channel`. The check is on by default and can be turned off on the first-run screen or in Preferences; an offline launch is unaffected.
 - The installer runs per user, never elevated, with its temp folder inside the data folder; if it fails the build is remembered and a manual-download message is shown. The Inno script reopens the app after a silent update (`/RELAUNCH=1`).
+- **Quit guard for unsaved hex edits.** Closing the window or quitting with unsaved byte edits now asks first (this was listed as a known limit in alpha.15).
+- **File kind detection.** Files are classified by content and extension (text, binary, PDF, Office, archive...). PDF and Office files show a placeholder instead of garbage; no viewer or editor for them ships yet.
+- **Modules on demand, groundwork only.** The loader, manifest and trust checks for optional modules exist, but there is no module to download yet.
+- Docs helper (`brouillon-docs`), DOCX codec, rich-document model and a PDF spike exist as separate crates and design studies. They are NOT in this release.
 
 ### Changed
 - Update tests use an in-process fake HTTP transport (no sockets); the two tests that compile and run a fake installer are `#[ignore]`.
+- The import dialog now says that every file it replaces is first copied to `.pre-import.bak` (it used to say only keymap, tools and recent files).
+- The Tools menu is wider so "Import Settings from Another Editor..." is no longer clipped.
+
+### Fixed
+- Menus needed a second click to switch after the icons were added; one click now switches, and the click-away layer no longer covers the lower strip of the titles. Popups open under their title again.
+- Ctrl+Home and Ctrl+End now go to the start and the end of the document.
+- Bugs found by driving the hex editor and the vault interface on screen.
+- The fake-password development hook is compiled only in debug and test-input builds.
+- Menus show the live accelerator of a rebound shortcut.
+
+### Known limits
+- Unsigned: Windows SmartScreen will warn on the installer and the exe (More info, then Run anyway). Check the SHA-256 in `SHA256SUMS.txt`. The update manifest is signed with the project's own Ed25519 key, which is not an Authenticode certificate.
+- Memory: about 72 MB private at the default window size, and it grows with the window size (about 110 MB at 1920x1080). The 80 MB goal is not met at large sizes.
+- Typing latency has a probe but has not been measured on a quiet machine, so no latency figure is claimed.
+- No document modules yet: PDF and Office files are detected and shown as placeholders only.
+- Import mappings are partial for Notepad++, Sublime Text and EditPad Lite; unmapped items are reported as skipped.
+- The installer was built and run on the maintainer's machine only, not on a clean machine.
 
 ---
 
@@ -88,8 +128,6 @@ Written by hand from `git log v0.1.0-alpha.13..HEAD` (about 260 commits); git-cl
 - No password is stored (the vault is not wired). Cloud drives (Google Drive, Dropbox, Box) are not implemented; only folders already synced by the vendor's app appear.
 - Hex editing is upcoming. Startup measured 41 to 62 ms until the window is visible on the test machine; a quiet-machine re-measure is pending.
 - The installer was not built on this machine (no Inno Setup); builds are unsigned.
-
----
 
 
 ---

@@ -82,7 +82,7 @@ Invoke-Scenario 'i1' 'Import EditPlus settings: detect, dry run, apply, live rel
     $ep = New-FakeEditPlus $d
     $env:APPDATA = "$d\appdata"
     $app = Launch-Brouillon -Exe $Exe -Dir $d -Files @("$d\files\a.txt") -Tag 'import'
-    Open-ViaPalette $app 'Import EditPlus Settings'
+    Open-ViaPalette $app 'Import Settings from Another Editor'
     Shot $app 'imp-1-dry-run'
     # the dry run wrote nothing
     if (Test-Path "$d\settings\keymap.toml") { throw 'the dry run wrote keymap.toml' }
@@ -95,6 +95,31 @@ Invoke-Scenario 'i1' 'Import EditPlus settings: detect, dry run, apply, live rel
     Send-Chord $app 'esc' 500
     Shot $app 'imp-3-closed'
     "dry run listed items and wrote nothing; Ctrl+Enter applied; settings.toml/keymap.toml read back"
+}
+
+Invoke-Scenario 'i2' 'Import from another editor: several synthetic editors found, pick one, dry run, apply' {
+    if (-not (Want 'i2')) { throw 'NOT_TESTABLE: skipped' }
+    $d = New-TestEnv $DataRoot 'import2'
+    Write-Utf8 "$d\settings\settings.toml" "[firstrun]`ndone = true`n[theme]`nmode = `"$Mode`"`n"
+    Write-Utf8 "$d\files\a.txt" "alpha`n"
+    $ap = "$d\appdata"
+    New-Item -ItemType Directory -Force "$ap\Notepad++", "$ap\Sublime Text\Packages\User" | Out-Null
+    Write-Utf8 "$ap\Notepad++\config.xml" '<NotepadPlus><GUIConfigs><GUIConfig name="TabSetting" size="7" replaceBySpace="yes" /></GUIConfigs></NotepadPlus>'
+    Write-Utf8 "$ap\Notepad++\shortcuts.xml" '<NotepadPlus><InternalCommands><Command id="41006" Ctrl="yes" Alt="yes" Shift="no" Key="83" /></InternalCommands></NotepadPlus>'
+    Write-Utf8 "$ap\Sublime Text\Packages\User\Preferences.sublime-settings" '{ "tab_size": 5, "font_face": "Consolas" }'
+    $env:APPDATA = $ap
+    $app = Launch-Brouillon -Exe $Exe -Dir $d -Files @("$d\files\a.txt") -Tag 'import2'
+    Open-ViaPalette $app 'Import Settings from Another Editor'
+    Shot $app 'imp2-1-several-found'
+    if (Test-Path "$d\settings\keymap.toml") { throw 'the dry run wrote keymap.toml' }
+    Send-Chord $app 'ctrl+enter' 900
+    Shot $app 'imp2-2-applied'
+    $t = Settings-Text $d
+    if ($t -notmatch 'tab_size = 7') { throw "settings.toml lacks tab_size = 7:`n$t" }
+    if ($t -match 'classic') { throw 'a Notepad++ import must not switch Classic on' }
+    if (-not (Test-Path "$d\settings\keymap.toml")) { throw 'keymap.toml not written' }
+    Send-Chord $app 'esc' 500
+    "two synthetic editors listed with counts; first one scanned; Ctrl+Enter applied; settings.toml/keymap.toml read back"
 }
 
 Invoke-Scenario 'a1' 'About page' {

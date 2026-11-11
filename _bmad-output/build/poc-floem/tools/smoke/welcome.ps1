@@ -9,7 +9,7 @@
 param([string]$Exe, [string[]]$Only, [string]$DataRoot = (Join-Path $env:TEMP 'brouillon-welcome'), [string]$Tag = '')
 $ErrorActionPreference = 'Stop'
 if ($Only) { $Only = @($Only | ForEach-Object { $_ -split ',' } | Where-Object { $_ }) }
-. (Join-Path $PSScriptRoot 'lib.ps1')
+. (Join-Path $PSScriptRoot $(if ($env:BROUILLON_SMOKE_TI -eq '1') { 'testinput.ps1' } else { 'lib.ps1' }))
 $Exe = (Resolve-Path $Exe).Path
 New-Item -ItemType Directory -Force $DataRoot | Out-Null
 function Want([string]$id) { (-not $Only) -or ($Only -contains $id) }

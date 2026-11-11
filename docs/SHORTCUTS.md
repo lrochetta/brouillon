@@ -33,6 +33,8 @@ internal state today and gain their UI surface in a later alpha.
 | Close Tab                           | Ctrl-W                            | alpha.9                                         |
 | Next Tab                            | Ctrl-PgDn                         | alpha.9                                         |
 | Previous Tab                        | Ctrl-PgUp                         | alpha.9                                         |
+| Go Back / Go Forward (jump history)  | Alt-Left / Alt-Right              | jumps: go to, quick open, search hit, bookmark, tab switch, open at a line |
+| Document switcher popup (recent first) | Ctrl-Tab / Ctrl-Shift-Tab (hold Ctrl, release to switch, Esc cancels) | Ctrl-PgDn / Ctrl-PgUp still cycle in tab order |
 | Cursor: Up / Down / Left / Right    | arrow keys                        | alpha.0                                         |
 | Cursor: Home / End                  | Home / End                        | alpha.0                                         |
 | Cursor: PageUp / PageDown           | PageUp / PageDown                 | alpha.0                                         |
@@ -40,6 +42,8 @@ internal state today and gain their UI surface in a later alpha.
 | Column / Block selection            | Alt + Mouse left-click drag       | alpha.14                                        |
 | Clipboard history menu              | Ctrl-Shift-V                      | alpha.14                                        |
 | Inspector                           | F11                               | day-1                                           |
+| Show / hide the left sidebar        | Ctrl-B (also the icon left of File) | 0.x (`view_toggle_sidebar`)                   |
+| Tabs at top / bottom                | none (icon next to the sidebar one) | 0.x (`view_tabs_position_toggle`)             |
 
 ## Moldu vs Geek and the keymap
 

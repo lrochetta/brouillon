@@ -57,6 +57,7 @@ pub mod file_io;
 pub mod large_file;
 pub mod markers;
 pub mod nav_history;
+pub mod project;
 pub mod recovery;
 pub mod replace_files;
 pub mod search_files;
