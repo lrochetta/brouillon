@@ -1,0 +1,36 @@
+name = "YAML"
+extensions = ["yml", "yaml"]
+filenames = [".clang-format", ".clang-tidy"]
+case_sensitive = false
+word_chars = "-."
+line_comments = ["#"]
+
+[[line_start]]
+prefix = "---"
+kind = "preprocessor"
+
+[[line_start]]
+prefix = "..."
+kind = "preprocessor"
+
+[keys]
+separators = ":"
+kind = "attribute"
+strings = true
+
+[[string]]
+open = '"'
+escape = '\'
+
+[[string]]
+open = "'"
+doubled = true
+escapes = false
+
+[[prefix]]
+chars = "&*"
+kind = "variable"
+
+[[keywords]]
+name = "Literals"
+words = "true false null yes no on off"

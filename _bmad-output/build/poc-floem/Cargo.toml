@@ -1,0 +1,180 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/brouillon",
+    "crates/brouillon-core",
+    "crates/brouillon-editor-engine",
+    "crates/brouillon-import",
+    "crates/brouillon-mcp",
+    "crates/brouillon-modules",
+    "crates/brouillon-safesave",
+    "crates/brouillon-secrets",
+    "crates/brouillon-textstore-spike",
+    "crates/brouillon-ui",
+    "crates/brouillon-update",
+    "crates/brouillon-vault"
+]
+
+[workspace.package]
+edition = "2021"
+license = "MIT"
+authors = ["Laurent Rochetta"]
+rust-version = "1.91"
+
+[workspace.dependencies]
+# UI framework — pinned to crates.io 0.2.0 (lapce/floem, released 2024-11-15).
+# https://crates.io/crates/floem/0.2.0
+# Day-4 feature audit: drop `editor` (we built our own viewport, lapce-xi-rope
+# is dead weight) and `default-image-formats` (no image support in a code
+# editor yet — saves image-jpeg/png/webp/ico). Keep `vger` renderer.
+floem = { version = "0.2.0", default-features = false, features = ["vger"] }
+
+# Rope buffer (B-tree backed UTF-8 rope, fast slice/edit).
+# https://crates.io/crates/crop/0.4.3
+crop = "0.4"
+
+# Incremental syntax parsing.
+# https://crates.io/crates/tree-sitter/0.26.8
+tree-sitter = "0.26"
+# Rust grammar — uses tree-sitter 0.25+ Language API (LANGUAGE constant).
+# https://crates.io/crates/tree-sitter-rust/0.24.2
+tree-sitter-rust = "0.24"
+
+# Cross-platform process memory & system info.
+# https://crates.io/crates/sysinfo
+sysinfo = { version = "0.32", default-features = false, features = ["system"] }
+
+# Persistent immutable Vector — required by floem 0.2.0's VirtualVector
+# trait (im::Vector is the only impl shipped). Already a transitive dep
+# of floem; pinning explicitly so we get random-access by index.
+im = "15.1"
+
+# Deterministic RNG for sample generation.
+rand = { version = "0.8", default-features = false, features = ["std", "std_rng"] }
+rand_chacha = "0.3"
+
+# Day-3 optimization: global allocator. Microsoft's HeapAlloc is conservative
+# on long-lived rope/tree-sitter buffers; mimalloc typically saves 20-30 MB
+# WorkingSet on Windows for editor workloads and improves alloc latency.
+# https://crates.io/crates/mimalloc
+mimalloc = { version = "0.1", default-features = false }
+
+# Regex search/replace engine. perf feature enables PCRE-style optimizations
+# at compile-time cost; std avoids no_std baggage.
+# `unicode` is required for Unicode-aware word/digit classes and case-insensitive matching (Lot 4 finding):
+# without it the classes are ASCII-only or the pattern fails to compile.
+regex = { version = "1", default-features = false, features = ["std", "perf", "unicode"] }
+
+# Native file dialog. Pure-Rust on Windows (commdlg/IFileDialog), AppKit on
+# macOS, GTK or Zenity on Linux. ~30 KB on a stripped Windows binary.
+# default-features = false drops GTK on Linux ; xdg-portal is the modern
+# path (falls back to zenity at runtime). tokio feature is harmless on
+# Windows (the dialog is sync there).
+# https://crates.io/crates/rfd
+rfd = { version = "0.15", default-features = false, features = ["xdg-portal", "tokio"] }
+
+# Session persistence — serialize the TabManager state to ~/.brouillon/session.toml
+# on window close, restore tabs on launch. `derive` for #[derive(Serialize, Deserialize)],
+# `dirs` for cross-platform home-dir resolution (CSIDL_APPDATA on Win, XDG on Linux).
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = { version = "0.8", default-features = false, features = ["display", "parse"] }
+dirs = "5"
+arboard = "3"
+encoding_rs = "0.8"
+linkify = "0.10"
+open = "5"
+loro = { path = "crates/stubs/loro", default-features = false }
+wasmtime = { path = "crates/stubs/wasmtime", default-features = false, features = ["async", "runtime", "cache"] }
+wasmtime-wasi = { path = "crates/stubs/wasmtime-wasi" }
+tokio = { path = "crates/stubs/tokio", features = ["rt-multi-thread", "process", "io-util", "sync", "macros"] }
+
+# --- Step 0 (swarm): dependencies pre-added for lots 2-9; lots never edit Cargo.toml ---
+ignore = "0.4"                 # Lot 4: parallel gitignore-aware walk
+globset = "0.4"                # Lot 4: include/exclude globs
+notify = "8"                   # Lot 7: external change detection
+chardetng = "0.1"              # Lot 2: legacy encoding guess
+memmap2 = "0.9"                # Lot 2: large-file lazy load
+similar = "2"                  # Lot 4/wave2: diff (replace-in-files preview, BK-084)
+tempfile = "3"                 # Lot 4/7: atomic write temp+rename
+clap = { version = "4", features = ["derive"] }  # Lot 7: CLI
+interprocess = "2"             # Lot 7: single-instance local socket
+fancy-regex = "0.14"           # Lot 3: optional lookbehind/backrefs (feature `fancy-regex`)
+unicode-segmentation = "1"     # Lot 2/6: grapheme-aware caret
+sha2 = "0.10"                  # BK-036: hashing text commands
+md-5 = "0.10"                  # BK-036
+base64 = "0.22"                # BK-036: base64 encode/decode
+
+
+[workspace.dependencies.criterion]
+version = "0.5"
+default-features = false
+features = ["cargo_bench_support"]
+
+# Local copy of floem 0.2.0 with ONE fix in views/text_input.rs (cursor-blink repaint timers piled up
+# without bound, see vendor/floem/PATCH.md). Drop this patch when upstream fixes it.
+[patch.crates-io]
+floem = { path = "vendor/floem" }
+
+# Release profile tuned for small binary + ship-quality perf measurement.
+[profile.release]
+opt-level = 3
+# fat vs thin: 14.69 MB vs 15.49 MB (-5.2%), clean release build 5m39s on 1 machine.
+lto = "fat"
+codegen-units = 1
+strip = "symbols"
+panic = "abort"
+debug = false
+
+# Faster local dev compiles for the inner editor loop while keeping deps optimized.
+# Heap-profiling profile (see crates/brouillon `dhat-heap`): fast to rebuild, symbols kept for backtraces.
+# Fast profile for GUI smoke tests and A/B measurements: ~same speed as release for our code,
+# no fat LTO, 16 codegen units: much shorter builds. NEVER used for published artifacts.
+[profile.fast]
+inherits = "release"
+opt-level = 2
+lto = "off"
+codegen-units = 16
+incremental = true
+strip = "none"
+panic = "abort"
+debug = false
+
+[profile.leak]
+inherits = "release"
+lto = false
+codegen-units = 16
+incremental = true
+debug = "line-tables-only"
+strip = "none"
+
+[profile.dev]
+opt-level = 0
+
+[profile.dev.package."*"]
+opt-level = 2
+
+[profile.bench]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+debug = true
+
+# Config for 'cargo dist'
+[workspace.metadata.dist]
+# The version of the cargo-dist schema being used
+cargo-dist-version = "0.22.0"
+# CI settings
+ci = ["github"]
+# The installers to generate for each release
+installers = ["shell", "powershell", "msi", "dmg"]
+# Target platforms to build for
+targets = [
+    "x86_64-pc-windows-msvc",
+    "x86_64-unknown-linux-gnu",
+    "x86_64-apple-darwin",
+    "aarch64-apple-darwin",
+]
+# Path to the binary in the workspace
+bin-members = ["brouillon"]
+

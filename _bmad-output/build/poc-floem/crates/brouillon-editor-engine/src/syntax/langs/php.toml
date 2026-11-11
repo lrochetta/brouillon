@@ -1,0 +1,82 @@
+# PHP: the document is HTML (`host`) with PHP between <?php ... ?>.
+# Inside <script>/<style> blocks of the host, PHP tags are still recognised.
+name = "PHP"
+extensions = ["php", "php3", "php4", "php5", "php7", "php8", "phtml", "phps", "inc"]
+first_line = ["<?php"]
+shebang = ["php"]
+host = "HTML"
+case_sensitive = false
+functions = true
+operators = "+-*/%=<>!&|^~?:."
+line_comments = ["//", "#"]
+block_comments = [["/*", "*/"]]
+heredoc = ["<<<"]
+
+[script]
+begin = ["<?php", "<?=", "<?"]
+end = "?>"
+
+[[string]]
+open = '"'
+escape = '\'
+multiline = true
+
+[[string]]
+open = "'"
+escape = '\'
+multiline = true
+
+[[string]]
+open = "`"
+escape = '\'
+multiline = true
+
+[[prefix]]
+chars = "$"
+kind = "variable"
+braced = true
+
+[[keywords]]
+name = "Keywords"
+words = '''
+abstract and as break callable case catch class clone const continue declare
+default die do echo else elseif empty enddeclare endfor endforeach endif endswitch
+endwhile enum eval exit extends final finally fn for foreach function global goto
+if implements include include_once instanceof insteadof interface isset list match
+namespace new or print private protected public readonly require require_once
+return static switch throw trait try unset use var while xor yield
+'''
+
+[[keywords]]
+name = "Types"
+kind = "type"
+words = "int float bool string array object mixed void never iterable self parent null"
+
+[[keywords]]
+name = "Functions"
+words = '''
+count strlen str_replace substr strpos strrpos stripos strtolower strtoupper trim
+ltrim rtrim explode implode sprintf printf print_r var_dump var_export json_encode
+json_decode array_map array_filter array_reduce array_merge array_keys array_values
+array_key_exists in_array array_push array_pop array_shift array_unshift
+array_slice array_splice array_search array_unique array_reverse array_sum
+array_combine array_flip array_fill sort rsort usort uasort ksort asort arsort
+preg_match preg_match_all preg_replace preg_replace_callback preg_split
+file_get_contents file_put_contents file_exists fopen fclose fgets fwrite fread
+is_array is_string is_int is_numeric is_null is_bool is_callable intval floatval
+strval boolval date time mktime strtotime microtime rand mt_rand random_int abs
+ceil floor round max min sqrt pow htmlspecialchars htmlentities addslashes
+stripslashes urlencode urldecode base64_encode base64_decode md5 sha1 hash
+password_hash password_verify session_start header setcookie define defined
+constant function_exists class_exists method_exists spl_autoload_register
+str_contains str_starts_with str_ends_with ucfirst ucwords nl2br number_format
+mysqli_connect mysqli_query unlink mkdir rmdir basename dirname realpath
+'''
+
+[[keywords]]
+name = "Constants"
+words = '''
+true false PHP_EOL PHP_INT_MAX PHP_INT_SIZE PHP_VERSION PHP_OS E_ALL E_ERROR
+E_WARNING E_NOTICE E_STRICT __FILE__ __LINE__ __DIR__ __FUNCTION__ __CLASS__
+__METHOD__ __NAMESPACE__ M_PI JSON_PRETTY_PRINT JSON_UNESCAPED_UNICODE
+'''

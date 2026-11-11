@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Idle memory</title>
+<table><caption>Idle memory (working set, MB) on Windows 11 Pro, Intel Iris Xe iGPU, release build, measured 2026-11-05</caption>
+<thead><tr><th scope="col">Case</th><th scope="col">MB</th><th scope="col">Range / n</th><th scope="col">Status</th></tr></thead>
+<tbody>
+<tr><th scope="row">Empty document, Vulkan (original)</th><td>294.6</td><td>n=5, median</td><td>measured</td></tr>
+<tr><th scope="row">Empty document, Direct3D 12</th><td>151.7</td><td>151.6–153.4, n=5</td><td>measured</td></tr>
+<tr><th scope="row">Empty document, CPU renderer (default)</th><td>60.9</td><td>60.9–61.1, n=5</td><td>measured</td></tr>
+<tr><th scope="row">100,000-line file, Vulkan (original)</th><td>351.7</td><td>344.6–359.5, n=5</td><td>measured</td></tr>
+<tr><th scope="row">100,000-line file, Direct3D 12</th><td>201.0</td><td>183.5–203.5</td><td>measured</td></tr>
+<tr><th scope="row">100,000-line file, CPU renderer</th><td>94.2</td><td>92.2–97.9</td><td>measured</td></tr>
+<tr><th scope="row">Goal, idle RAM</th><td>80</td><td>budget, not reached with a 100,000-line file</td><td>objective</td></tr>
+</tbody></table>
+<p>Source: internal design notes (not published) sections 1 and 3</p>
+</html>

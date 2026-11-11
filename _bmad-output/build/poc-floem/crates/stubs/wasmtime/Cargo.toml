@@ -1,0 +1,12 @@
+[package]
+name = "wasmtime"
+version = "22.0.0"
+edition = "2021"
+
+[dependencies]
+
+[features]
+default = []
+async = []
+runtime = []
+cache = []

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>100 MB file performance</title>
+<table><caption>Opening, searching and typing in a 100 MB file, measured 2026-11-05</caption>
+<thead><tr><th scope="col">Operation</th><th scope="col">Result</th><th scope="col">Method</th><th scope="col">Status</th></tr></thead>
+<tbody>
+<tr><th scope="row">Open: read and decode, 109.6 MB</th><td>211.4 ms</td><td>median of 3 (207.0 to 211.5)</td><td>measured</td></tr>
+<tr><th scope="row">Open: rope build</th><td>50.3 ms</td><td>median of 3 (49.1 to 53.3)</td><td>measured</td></tr>
+<tr><th scope="row">Open in the window, 1,050,000 lines</th><td>about 350 ms</td><td>one observation</td><td>measured</td></tr>
+<tr><th scope="row">Search literal, count whole file</th><td>164 ms</td><td>median of 3 (159 to 165)</td><td>measured</td></tr>
+<tr><th scope="row">Search regex, count whole file</th><td>44.1 ms</td><td>median of 3 (44.1 to 46.8)</td><td>measured</td></tr>
+<tr><th scope="row">Count 1,000,000 matches in 51 MB</th><td>113 ms</td><td>single run, release lto thin</td><td>measured</td></tr>
+<tr><th scope="row">Typing in the window, per key</th><td>312 to 374 ms</td><td>build 110, three keys</td><td>measured</td></tr>
+<tr><th scope="row">Insert one character (engine)</th><td>0.1 us</td><td>median of 200</td><td>measured</td></tr>
+<tr><th scope="row">Undo (engine)</th><td>0.2 us</td><td>median of 100</td><td>measured</td></tr>
+<tr><th scope="row">Fetch 80 lines (engine)</th><td>23 us</td><td>median of 300</td><td>measured</td></tr>
+<tr><th scope="row">One frame at 60 Hz</th><td>16.6 ms</td><td>1000 / 60</td><td>deduced</td></tr>
+</tbody></table>
+<p>Source: internal design notes (not published) section 5; internal notes scenario i; internal notes section 5</p>
+</html>

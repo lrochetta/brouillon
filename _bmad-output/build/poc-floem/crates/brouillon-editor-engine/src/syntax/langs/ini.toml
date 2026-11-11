@@ -1,0 +1,23 @@
+name = "INI"
+extensions = ["ini", "cfg", "inf", "conf", "desktop", "editorconfig", "properties", "reg"]
+filenames = [".gitconfig", ".editorconfig", ".npmrc", "php.ini", "my.cnf"]
+case_sensitive = false
+word_chars = "-.@"
+line_comments_col0 = [";", "#"]
+
+[[line_start]]
+prefix = "["
+kind = "tag"
+
+[keys]
+separators = "=:"
+kind = "attribute"
+line_start_only = true
+
+[[string]]
+open = '"'
+escapes = false
+
+[[keywords]]
+name = "Literals"
+words = "true false yes no on off"

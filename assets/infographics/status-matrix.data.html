@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Status matrix</title>
+<table><caption>Status per domain, from reports 42, 44, 45 (2026-11-05)</caption>
+<thead><tr><th scope="col">Domain</th><th scope="col">Status</th><th scope="col">Evidence</th><th scope="col">Detail</th></tr></thead>
+<tbody>
+<tr><th scope="row">Typing, undo, tabs</th><td>Available</td><td>seen on screen</td><td>Text visible and saved, 3 tabs (44 a, b)</td></tr>
+<tr><th scope="row">Search and replace</th><td>Available</td><td>seen on screen</td><td>Find, Replace All in one undo, Find in Files (44 c, f)</td></tr>
+<tr><th scope="row">Encodings, line endings</th><td>Available</td><td>seen on screen</td><td>UTF-16 LE + BOM + CRLF round trip on disk (44 h)</td></tr>
+<tr><th scope="row">Syntax colouring</th><td>Available</td><td>seen on screen</td><td>9 of 30 languages seen on screen (44 l)</td></tr>
+<tr><th scope="row">Crash recovery</th><td>Available</td><td>seen on screen</td><td>Text back and marked modified (45 bug 2)</td></tr>
+<tr><th scope="row">Durable save, dated backups</th><td>Available</td><td>unit tests only</td><td>Atomic write and backups: unit tests only (45, 42)</td></tr>
+<tr><th scope="row">User tools, command palette</th><td>Available</td><td>seen on screen</td><td>Streamed tool output, palette filter (44 e, g)</td></tr>
+<tr><th scope="row">100 MB files</th><td>Available</td><td>seen on screen</td><td>Opens in ~350 ms; each keypress takes 312-374 ms (44 i)</td></tr>
+<tr><th scope="row">Multiple carets</th><td>Engine ready</td><td>not seen</td><td>Commands collapse to the last region (42 s.4.6)</td></tr>
+<tr><th scope="row">Replace in Files</th><td>Engine ready</td><td>not seen</td><td>Engine merged and tested, no dialog (42 s.4.7)</td></tr>
+<tr><th scope="row">Quick Open, settings, keymap, encoding picker</th><td>Engine ready</td><td>not seen</td><td>View models exist, no views (42 s.4)</td></tr>
+<tr><th scope="row">External change watch</th><td>Engine ready</td><td>not seen</td><td>Merged, not driven by the shell (42 s.4.10)</td></tr>
+<tr><th scope="row">Agents, MCP</th><td>Engine ready</td><td>not seen</td><td>MCP client mock-tested on a local tokio stub (42)</td></tr>
+<tr><th scope="row">SSH, SFTP</th><td>Planned</td><td>not seen</td><td>Only a local-folder model; no SSH library</td></tr>
+<tr><th scope="row">Plugins (WebAssembly)</th><td>Planned</td><td>not seen</td><td>Host written against a local stub; cannot run</td></tr>
+<tr><th scope="row">Notes, vault</th><td>Planned</td><td>not seen</td><td>Design study only (internal notes)</td></tr>
+<tr><th scope="row">Live collaboration (CRDT)</th><td>Planned</td><td>not seen</td><td>loro is a local stub</td></tr>
+</tbody></table>
+<p>Source: internal design notes (not published) section 4; internal notes; internal notes</p>
+</html>

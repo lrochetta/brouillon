@@ -1,0 +1,19 @@
+[package]
+name = "brouillon-textstore-spike"
+version = "0.0.0"
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+publish = false
+description = "SPIKE (dev-only, not wired into the editor): lazy text store for huge files vs the crop rope."
+
+[dependencies]
+crop.workspace = true
+memmap2.workspace = true
+memchr = "2"
+rand.workspace = true
+rand_chacha.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

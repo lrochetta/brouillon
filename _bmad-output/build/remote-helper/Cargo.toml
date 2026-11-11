@@ -1,0 +1,35 @@
+# Standalone workspace for the optional remote-editing helper (`brouillon-remote.exe`).
+# It is deliberately NOT a member of ../poc-floem and does not use its [patch]/stub crates:
+# the helper owns every network-facing dependency so the editor binary is unaffected.
+[workspace]
+resolver = "2"
+members = ["crates/brouillon-remote-proto", "crates/brouillon-remote", "crates/brouillon-test-sshd"]
+# `cargo test` / `cargo build --release` at the workspace root never build the dev-only test server
+# (it pulls russh + tokio); run it explicitly with `-p brouillon-test-sshd`.
+default-members = ["crates/brouillon-remote-proto", "crates/brouillon-remote"]
+
+[workspace.package]
+edition = "2021"
+license = "MIT"
+authors = ["Laurent Rochetta"]
+rust-version = "1.91"
+version = "0.1.9"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+zeroize = "1"
+getrandom = "0.2"
+# FTPS only (crates/brouillon-remote/src/ftp). rustls with the ring provider, no logging, no default
+# post-quantum extras; roots come from the OS store.
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
+rustls-native-certs = "0.8"
+ring = { version = "0.17", default-features = false, features = ["alloc"] }
+
+[profile.release]
+opt-level = "s"
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true

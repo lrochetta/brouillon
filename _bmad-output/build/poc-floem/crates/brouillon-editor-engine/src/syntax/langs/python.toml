@@ -1,0 +1,56 @@
+name = "Python"
+extensions = ["py", "pyw", "pyi", "pyx", "gyp", "bzl"]
+filenames = ["SConstruct", "SConscript", "wscript"]
+shebang = ["python"]
+case_sensitive = true
+functions = true
+operators = "+-*/%=<>!&|^~"
+line_comments = ["#"]
+
+[[string]]
+open = '"""'
+escape = '\'
+multiline = true
+
+[[string]]
+open = "'''"
+escape = '\'
+multiline = true
+
+[[string]]
+open = '"'
+escape = '\'
+
+[[string]]
+open = "'"
+escape = '\'
+
+[[prefix]]
+chars = "@"
+kind = "attribute"
+
+[[keywords]]
+name = "Keywords"
+words = '''
+False None True and as assert async await break class continue def del elif else
+except finally for from global if import in is lambda nonlocal not or pass raise
+return try while with yield match case
+'''
+
+[[keywords]]
+name = "Types"
+kind = "type"
+words = "int float str bool list dict set tuple bytes bytearray object complex frozenset type range"
+
+[[keywords]]
+name = "Builtins"
+words = '''
+print len input open isinstance issubclass sorted enumerate zip map filter sum min
+max abs any all repr super property staticmethod classmethod iter next reversed
+round format hasattr getattr setattr delattr id hash dir vars globals locals
+callable chr ord hex oct bin pow divmod slice exec eval compile
+'''
+
+[[keywords]]
+name = "Special names"
+words = "self cls __name__ __main__ __file__ __doc__ __init__ __all__ __class__ __dict__"

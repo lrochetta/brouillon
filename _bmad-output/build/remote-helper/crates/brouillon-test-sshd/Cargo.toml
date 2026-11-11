@@ -1,0 +1,20 @@
+[package]
+name = "brouillon-test-sshd"
+description = "DEV-ONLY user-space SSH/SFTP test server (russh) used to prove the helper against the real OpenSSH client. Never shipped."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+publish = false
+
+[dependencies]
+russh = { version = "0.65", default-features = false, features = ["ring"] }
+russh-sftp = "3"
+tokio = { version = "1", features = ["rt-multi-thread", "net", "io-util", "time", "sync", "macros", "fs"] }
+rand = "0.10"
+
+[dev-dependencies]
+brouillon-remote-proto = { path = "../brouillon-remote-proto" }
+serde.workspace = true
+serde_json.workspace = true

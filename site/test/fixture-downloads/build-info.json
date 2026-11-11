@@ -1,0 +1,21 @@
+{
+  "product": "Brouillon",
+  "version": "0.1.0-sample",
+  "build": "0",
+  "build_date_utc": "2026-11-05T14:32:00Z",
+  "git_commit": "0000000",
+  "channel": "alpha",
+  "platform": "Windows x64",
+  "min_os": "Windows 10 or 11, 64-bit",
+  "artifacts": [
+    {
+      "kind": "portable-zip",
+      "file": "Brouillon-SAMPLE-windows-x64.zip",
+      "size_bytes": 2048,
+      "sha256": "88f2b806bc0fb07eaa551a1eb4ec0854a3731467f6b03c01e1cfddd6df68f8eb"
+    }
+  ],
+  "signed": false,
+  "license": "MIT",
+  "author": "Laurent Rochetta"
+}

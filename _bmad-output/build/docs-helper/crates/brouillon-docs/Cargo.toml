@@ -1,0 +1,16 @@
+[package]
+name = "brouillon-docs"
+description = "Optional Brouillon documents helper (stdio, no network, no file access)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+
+[[bin]]
+name = "brouillon-docs"
+path = "src/main.rs"
+
+[dependencies]
+brouillon-docs-proto = { path = "../brouillon-docs-proto" }
+serde_json.workspace = true

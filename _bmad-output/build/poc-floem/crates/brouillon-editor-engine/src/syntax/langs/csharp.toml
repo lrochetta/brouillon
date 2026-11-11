@@ -1,0 +1,76 @@
+name = "C#"
+extensions = ["cs", "csx"]
+case_sensitive = true
+functions = true
+operators = "+-*/%=<>!&|^~?:"
+line_comments = ["//"]
+block_comments = [["/*", "*/"]]
+
+[[string]]
+open = '$@"'
+close = '"'
+multiline = true
+doubled = true
+
+[[string]]
+open = '@$"'
+close = '"'
+multiline = true
+doubled = true
+
+[[string]]
+open = '@"'
+close = '"'
+multiline = true
+doubled = true
+
+[[string]]
+open = '"""'
+multiline = true
+
+[[string]]
+open = '$"'
+close = '"'
+escape = '\'
+
+[[string]]
+open = '"'
+escape = '\'
+
+[[string]]
+open = "'"
+escape = '\'
+
+[preprocessor]
+start = "#"
+
+[[prefix]]
+chars = "@"
+kind = "attribute"
+
+[[keywords]]
+name = "Keywords"
+words = '''
+abstract as base break case catch checked class const continue default delegate
+do else enum event explicit extern finally fixed for foreach goto if implicit in
+interface internal is lock namespace new operator out override params private
+protected public readonly ref return sealed sizeof stackalloc static struct switch
+this throw try typeof unchecked unsafe using virtual volatile while
+add alias and async await by descending dynamic equals file from get global group
+init into join let managed nameof nint nuint not notnull on or orderby partial
+record remove required scoped select set unmanaged value var when where with yield
+'''
+
+[[keywords]]
+name = "Types"
+kind = "type"
+words = '''
+bool byte char decimal double float int long object sbyte short string uint ulong
+ushort void String Object Int32 Int64 Boolean Double Decimal DateTime TimeSpan Guid
+List Dictionary HashSet Queue Stack IEnumerable IList IDictionary Task Action Func
+Exception Console Math Convert StringBuilder Array Nullable
+'''
+
+[[keywords]]
+name = "Constants"
+words = "true false null"

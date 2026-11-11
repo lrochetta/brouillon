@@ -1,0 +1,17 @@
+[package]
+name = "tokio"
+version = "1.38.0"
+edition = "2021"
+
+[dependencies]
+futures-channel = "0.3"
+futures-util = "0.3"
+futures-executor = "0.3"
+
+[features]
+default = []
+rt-multi-thread = []
+process = []
+io-util = []
+sync = []
+macros = []

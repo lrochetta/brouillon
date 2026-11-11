@@ -1,0 +1,47 @@
+name = "Java"
+extensions = ["java", "jav"]
+case_sensitive = true
+functions = true
+operators = "+-*/%=<>!&|^~?:"
+line_comments = ["//"]
+block_comments = [["/*", "*/"]]
+
+[[string]]
+open = '"""'
+escape = '\'
+multiline = true
+
+[[string]]
+open = '"'
+escape = '\'
+
+[[string]]
+open = "'"
+escape = '\'
+
+[[prefix]]
+chars = "@"
+kind = "attribute"
+
+[[keywords]]
+name = "Keywords"
+words = '''
+abstract assert break case catch class const continue default do else enum extends
+final finally for goto if implements import instanceof interface native new package
+private protected public return static strictfp super switch synchronized this
+throw throws transient try volatile while var record sealed permits yield
+'''
+
+[[keywords]]
+name = "Types"
+kind = "type"
+words = '''
+boolean byte char double float int long short void String Object Integer Long
+Double Float Boolean Character Byte Short Number Math System List ArrayList Map
+HashMap Set HashSet Optional Exception RuntimeException Thread Class Iterable
+Collection Collections Arrays Stream Override Deprecated FunctionalInterface
+'''
+
+[[keywords]]
+name = "Constants"
+words = "true false null"

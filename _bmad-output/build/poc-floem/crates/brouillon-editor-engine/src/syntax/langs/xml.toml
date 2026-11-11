@@ -1,0 +1,7 @@
+name = "XML"
+extensions = ["xml", "xsl", "xslt", "xsd", "svg", "rss", "atom", "plist", "csproj", "vbproj", "fsproj", "props", "targets", "config", "resx", "wsdl", "xaml", "kml", "gpx", "xliff", "manifest"]
+first_line = ["<?xml"]
+case_sensitive = true
+
+[markup]
+pi = true

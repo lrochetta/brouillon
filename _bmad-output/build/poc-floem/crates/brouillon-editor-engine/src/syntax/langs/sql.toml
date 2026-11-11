@@ -1,0 +1,67 @@
+name = "SQL"
+extensions = ["sql", "ddl", "dml", "psql", "mysql", "pgsql", "plsql"]
+case_sensitive = false
+functions = true
+operators = "+-*/%=<>!|&^~"
+line_comments = ["--"]
+block_comments = [["/*", "*/"]]
+
+[[string]]
+open = "'"
+doubled = true
+multiline = true
+escapes = false
+
+[[string]]
+open = '"'
+doubled = true
+escapes = false
+
+[[string]]
+open = "`"
+doubled = true
+escapes = false
+
+[[prefix]]
+chars = "@"
+kind = "variable"
+
+[[keywords]]
+name = "Keywords"
+words = '''
+add all alter and any as asc authorization backup begin between break by cascade
+case check checkpoint close clustered coalesce collate column commit compute
+constraint contains continue create cross current cursor database deallocate
+declare default delete deny desc distinct drop else end escape except exec execute
+exists exit fetch for foreign from full function goto grant group having holdlock
+identity if in index inner insert intersect into is join key kill left like limit
+merge natural nocheck nonclustered not of off offset on open option or order outer
+over partition percent pivot plan primary print proc procedure public raiserror
+read references replace restore return revoke right rollback rowcount rule save
+schema select set setuser shutdown some statistics table temporary then to top
+tran transaction trigger truncate union unique unpivot update use user using values
+view waitfor when where while with returning explain analyze vacuum pragma
+'''
+
+[[keywords]]
+name = "Types"
+kind = "type"
+words = '''
+bigint binary bit boolean char character date datetime datetime2 decimal double
+float image int integer json jsonb money nchar numeric nvarchar real serial
+smallint text time timestamp tinyint uuid varbinary varchar xml bytea blob clob
+'''
+
+[[keywords]]
+name = "Functions"
+words = '''
+avg count max min sum abs ceil ceiling floor round sqrt power mod upper lower
+substring substr trim ltrim rtrim length len concat replace left right cast convert
+coalesce nullif ifnull isnull now getdate current_date current_time
+current_timestamp date_add date_sub datediff dateadd extract row_number rank
+dense_rank lag lead first_value last_value string_agg group_concat
+'''
+
+[[keywords]]
+name = "Constants"
+words = "null true false unknown"

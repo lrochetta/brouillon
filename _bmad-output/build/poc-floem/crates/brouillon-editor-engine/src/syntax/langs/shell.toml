@@ -1,0 +1,49 @@
+name = "Shell"
+extensions = ["sh", "bash", "zsh", "ksh", "dash", "ash", "bashrc", "zshrc", "profile", "ebuild"]
+filenames = [".bashrc", ".bash_profile", ".bash_aliases", ".zshrc", ".zprofile", ".profile", "PKGBUILD"]
+shebang = ["sh", "bash", "zsh", "ksh", "dash", "ash"]
+case_sensitive = true
+operators = "|&;<>"
+line_comments = ["#"]
+heredoc = ["<<-", "<<~", "<<"]
+
+[[string]]
+open = '"'
+escape = '\'
+multiline = true
+
+[[string]]
+open = "'"
+multiline = true
+escapes = false
+
+[[string]]
+open = "`"
+escape = '\'
+multiline = true
+
+[[prefix]]
+chars = "$"
+kind = "variable"
+braced = true
+parens = true
+
+[[keywords]]
+name = "Keywords"
+words = "if then else elif fi case esac for select while until do done in function time coproc"
+
+[[keywords]]
+name = "Builtins"
+words = '''
+echo printf read cd pwd export unset local declare typeset readonly return exit
+break continue shift set source alias unalias eval exec trap wait test true false
+let getopts type hash ulimit umask kill jobs fg bg history
+'''
+
+[[keywords]]
+name = "Commands"
+words = '''
+ls cat grep sed awk find sort uniq head tail wc cut tr tee xargs chmod chown cp mv
+rm mkdir rmdir touch ln tar gzip gunzip curl wget ssh scp rsync git make sudo apt
+yum docker date sleep ps top diff patch which env
+'''

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Architecture</title>
+<table><caption>Crates and raw Rust line counts, 2026-11-05 (HEAD e75b00f plus working tree)</caption>
+<thead><tr><th scope="col">Crate</th><th scope="col">Role</th><th scope="col">Lines</th><th scope="col">Status</th></tr></thead>
+<tbody>
+<tr><th scope="row">brouillon</th><td>application</td><td>4,701</td><td>measured</td></tr>
+<tr><th scope="row">brouillon-ui</th><td>views</td><td>11,025</td><td>measured</td></tr>
+<tr><th scope="row">brouillon-editor-engine</th><td>editing logic</td><td>21,938</td><td>measured</td></tr>
+<tr><th scope="row">brouillon-import</th><td>importers</td><td>584</td><td>measured</td></tr>
+<tr><th scope="row">brouillon-core</th><td>contract, settings, theme</td><td>4,414</td><td>measured</td></tr>
+<tr><th scope="row">Total of the five crates</th><td></td><td>42,662</td><td>deduced (sum)</td></tr>
+<tr><th scope="row">core + engine + import</th><td>no window, no view (floem types used in 2 files)</td><td>26,936</td><td>deduced (sum)</td></tr>
+<tr><th scope="row">local stub: tokio</th><td>not the real crate</td><td>243</td><td>measured</td></tr>
+<tr><th scope="row">local stub: wasmtime</th><td>not the real crate</td><td>150</td><td>measured</td></tr>
+<tr><th scope="row">local stub: loro</th><td>not the real crate</td><td>114</td><td>measured</td></tr>
+<tr><th scope="row">local stub: wasmtime-wasi</th><td>not the real crate</td><td>30</td><td>measured</td></tr>
+</tbody></table>
+<p>Source: crates/*/Cargo.toml and a wc -l count of crates/**/*.rs in _bmad-output/build/poc-floem</p>
+</html>

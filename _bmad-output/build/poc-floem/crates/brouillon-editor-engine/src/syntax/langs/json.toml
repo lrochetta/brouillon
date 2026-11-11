@@ -1,0 +1,20 @@
+name = "JSON"
+extensions = ["json", "jsonc", "json5", "geojson", "webmanifest", "har", "ipynb", "jsonl", "ndjson"]
+filenames = [".babelrc", ".eslintrc"]
+case_sensitive = true
+line_comments = ["//"]
+block_comments = [["/*", "*/"]]
+
+[keys]
+separators = ":"
+kind = "attribute"
+strings = true
+
+[[string]]
+open = '"'
+escape = '\'
+
+[[keywords]]
+name = "Literals"
+kind = "keyword2"
+words = "true false null"

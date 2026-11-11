@@ -1,0 +1,25 @@
+[package]
+name = "brouillon-remote"
+description = "Brouillon remote helper: SFTP v3 client over the OS ssh, driven through a framed stdio protocol"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+
+[lib]
+name = "brouillon_remote"
+
+[[bin]]
+name = "brouillon-remote"
+path = "src/main.rs"
+
+[dependencies]
+brouillon-remote-proto = { path = "../brouillon-remote-proto" }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+getrandom.workspace = true
+rustls.workspace = true
+rustls-native-certs.workspace = true
+ring.workspace = true

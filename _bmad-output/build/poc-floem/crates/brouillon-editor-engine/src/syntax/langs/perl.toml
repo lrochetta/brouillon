@@ -1,0 +1,46 @@
+name = "Perl"
+extensions = ["pl", "pm", "t", "cgi", "psgi"]
+shebang = ["perl"]
+case_sensitive = true
+regex_literals = true
+operators = "+-*/=<>!&|^~"
+line_comments = ["#"]
+block_comments = [["=pod", "=cut"], ["=head1", "=cut"], ["=begin", "=cut"]]
+heredoc = ["<<~", "<<"]
+
+[[string]]
+open = '"'
+escape = '\'
+multiline = true
+
+[[string]]
+open = "'"
+escape = '\'
+multiline = true
+
+[[string]]
+open = "`"
+escape = '\'
+multiline = true
+
+[[prefix]]
+chars = "$@%"
+kind = "variable"
+
+[[keywords]]
+name = "Keywords"
+words = '''
+my our local use no package sub return if elsif else unless while until for foreach
+last next redo goto do eval die warn require and or not xor eq ne lt gt le ge cmp
+BEGIN END __END__ __DATA__ __FILE__ __LINE__ __PACKAGE__ qw q qq qr m s tr y
+'''
+
+[[keywords]]
+name = "Functions"
+words = '''
+print printf sprintf push pop shift unshift splice reverse sort map grep keys values
+each exists delete defined scalar length substr index rindex join split lc uc lcfirst
+ucfirst chomp chop chr ord abs int sqrt open close binmode read eof seek tell opendir
+readdir closedir mkdir rmdir unlink rename stat wantarray ref bless sleep time
+localtime gmtime exit sprintf pos quotemeta sprintf
+'''

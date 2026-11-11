@@ -1,0 +1,16 @@
+[package]
+name = "brouillon-release"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+authors = ["Laurent Rochetta"]
+publish = false
+description = "Release signing tool (keygen, sign, verify) for Brouillon update manifests. Not part of the Brouillon workspace."
+
+[workspace]
+
+[dependencies]
+# Pure-Rust Ed25519 (RustCrypto family).
+ed25519-dalek = { version = "2", default-features = false, features = ["std", "fast"] }
+sha2 = "0.10"
+rand_core = { version = "0.6", features = ["getrandom"] }

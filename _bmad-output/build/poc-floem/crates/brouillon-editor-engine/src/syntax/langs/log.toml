@@ -1,0 +1,28 @@
+name = "Log"
+extensions = ["log"]
+case_sensitive = false
+
+[[string]]
+open = '"'
+check_closing = true
+escapes = false
+
+[[keywords]]
+name = "Errors"
+kind = "tag"
+words = "error err fatal critical severe crit alert emerg exception failed failure panic"
+
+[[keywords]]
+name = "Warnings"
+kind = "keyword4"
+words = "warn warning notice deprecated"
+
+[[keywords]]
+name = "Info"
+kind = "string"
+words = "info information success ok started finished done"
+
+[[keywords]]
+name = "Debug"
+kind = "comment"
+words = "debug trace verbose"

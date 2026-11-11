@@ -1,0 +1,38 @@
+name = "Batch"
+extensions = ["bat", "cmd", "btm"]
+case_sensitive = false
+operators = "=<>|&"
+line_comments = ["REM ", "@REM "]
+
+# `::` comments and `:label` lines (first match wins, so `::` comes first).
+[[line_start]]
+prefix = "::"
+kind = "comment"
+
+[[line_start]]
+prefix = ":"
+kind = "function"
+
+[[string]]
+open = '"'
+escapes = false
+
+[[prefix]]
+chars = "%"
+kind = "variable"
+
+[[keywords]]
+name = "Commands"
+words = '''
+assoc break call cd chcp chdir cls color copy date del dir echo endlocal erase
+exit for ftype goto md mkdir mklink move path pause popd prompt pushd rd ren rename
+rmdir set setlocal shift start time title type ver verify vol
+'''
+
+[[keywords]]
+name = "Control"
+words = "if else not exist defined errorlevel equ neq lss leq gtr geq in do nul con prn aux"
+
+[[keywords]]
+name = "Tools"
+words = "attrib find findstr more sort xcopy robocopy taskkill tasklist ping ipconfig net reg sc where whoami"

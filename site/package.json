@@ -1,0 +1,11 @@
+{
+  "name": "brouillon-landing",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "node --test scripts/build.test.mjs scripts/update-channel.test.mjs"
+  }
+}

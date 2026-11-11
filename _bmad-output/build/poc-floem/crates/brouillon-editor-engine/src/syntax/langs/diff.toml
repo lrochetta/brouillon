@@ -1,0 +1,37 @@
+# Unified/context diffs. Rules are tried in order at column 0.
+name = "Diff"
+extensions = ["diff", "patch", "rej"]
+case_sensitive = true
+number = "none"
+
+[[line_start]]
+prefix = "+++"
+kind = "keyword1"
+
+[[line_start]]
+prefix = "---"
+kind = "keyword1"
+
+[[line_start]]
+prefix = "diff "
+kind = "keyword1"
+
+[[line_start]]
+prefix = "index "
+kind = "comment"
+
+[[line_start]]
+prefix = "@@"
+kind = "preprocessor"
+
+[[line_start]]
+prefix = "+"
+kind = "string"
+
+[[line_start]]
+prefix = "-"
+kind = "tag"
+
+[[line_start]]
+prefix = "!"
+kind = "keyword3"

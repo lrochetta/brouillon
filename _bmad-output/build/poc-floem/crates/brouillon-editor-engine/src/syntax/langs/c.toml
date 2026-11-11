@@ -1,0 +1,59 @@
+# Brouillon language definition: C (written for Brouillon from public language facts).
+name = "C"
+extensions = ["c", "h"]
+case_sensitive = true
+functions = true
+operators = "+-*/%=<>!&|^~?:"
+line_comments = ["//"]
+block_comments = [["/*", "*/"]]
+
+[[string]]
+open = '"'
+escape = '\'
+
+[[string]]
+open = "'"
+escape = '\'
+
+[preprocessor]
+start = "#"
+angle_include = ["include", "import"]
+
+[[keywords]]
+name = "Keywords"
+words = '''
+auto break case const continue default do else enum extern for goto if inline
+register restrict return sizeof static struct switch typedef union volatile while
+_Alignas _Alignof _Atomic _Bool _Complex _Generic _Imaginary _Noreturn
+_Static_assert _Thread_local
+'''
+
+[[keywords]]
+name = "Types"
+kind = "type"
+words = '''
+void char short int long float double signed unsigned bool size_t ssize_t
+ptrdiff_t intptr_t uintptr_t int8_t int16_t int32_t int64_t uint8_t uint16_t
+uint32_t uint64_t FILE wchar_t time_t va_list off_t
+'''
+
+[[keywords]]
+name = "Library"
+words = '''
+printf fprintf sprintf snprintf vprintf scanf sscanf fscanf puts putchar getchar
+fgets fputs fopen fclose fread fwrite fseek ftell fflush rewind remove rename
+malloc calloc realloc free memcpy memmove memset memcmp strlen strcpy strncpy
+strcat strncat strcmp strncmp strchr strrchr strstr strtok strdup atoi atol atof
+strtol strtoul strtod abs labs rand srand exit abort atexit qsort bsearch time
+clock difftime getenv system sin cos tan asin acos atan atan2 sqrt pow floor ceil
+fabs fmod log log10 exp assert perror setjmp longjmp signal raise isalpha isdigit
+isalnum isspace isupper islower toupper tolower va_start va_end va_arg
+'''
+
+[[keywords]]
+name = "Constants"
+words = '''
+NULL EOF true false stdin stdout stderr EXIT_SUCCESS EXIT_FAILURE INT_MAX INT_MIN
+UINT_MAX LONG_MAX LONG_MIN CHAR_BIT SIZE_MAX RAND_MAX BUFSIZ SEEK_SET SEEK_CUR
+SEEK_END __FILE__ __LINE__ __func__ __DATE__ __TIME__ __cplusplus errno
+'''

@@ -1,0 +1,91 @@
+[package]
+name = "brouillon"
+version = "0.1.0-alpha.15"
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+publish = false
+description = "Brouillon — the fast editor that doesn't phone home. Cross-platform Rust-native code editor, 2026 vision."
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "brouillon"
+path = "src/main.rs"
+
+[dependencies]
+brouillon-core = { path = "../brouillon-core" }
+brouillon-editor-engine = { path = "../brouillon-editor-engine" }
+brouillon-ui = { path = "../brouillon-ui" }
+brouillon-mcp = { path = "../brouillon-mcp" }
+brouillon-update = { path = "../brouillon-update" }
+crossbeam-channel = "0.5"
+brouillon-modules = { path = "../brouillon-modules" }
+
+floem.workspace = true
+crop.workspace = true
+tree-sitter.workspace = true
+tree-sitter-rust.workspace = true
+sysinfo.workspace = true
+rand.workspace = true
+rand_chacha.workspace = true
+regex.workspace = true
+im.workspace = true
+mimalloc = { workspace = true, optional = true }
+libmimalloc-sys = { version = "0.1", default-features = false, features = ["extended"], optional = true }
+rfd.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+toml.workspace = true
+dirs.workspace = true
+arboard.workspace = true
+encoding_rs.workspace = true
+linkify.workspace = true
+open.workspace = true
+loro.workspace = true
+wasmtime.workspace = true
+wasmtime-wasi.workspace = true
+tokio.workspace = true
+floem_renderer = "0.2.0"
+clap.workspace = true
+interprocess.workspace = true
+tempfile.workspace = true
+brouillon-import = { path = "../brouillon-import" }
+dhat = { version = "0.3", optional = true }
+
+[features]
+# DEV-ONLY: local named-pipe test input channel (docs/TESTING.md). Refused at compile time in a release build.
+test-input = ["floem/test-input", "brouillon-editor-engine/test-input"]
+
+# Heap profiling build (diagnosis only): `cargo build --profile leak --features dhat-heap`. Writes dhat-heap.json when
+# the file named by BROUILLON_DHAT_TRIGGER appears.
+dhat-heap = ["dep:dhat"]
+
+# Global allocator A/B (see tools/smoke/ab-memory.ps1). DEFAULT = mimalloc 3.x (C, MIT). Build with
+# `--no-default-features` for the plain Windows system heap baseline, or `--features mimalloc-v2` for
+# the older, more conservative mimalloc 2.x. `purge-eager` makes mimalloc decommit freed pages at once.
+default = ["alloc-mimalloc"]
+alloc-mimalloc = ["dep:mimalloc", "dep:libmimalloc-sys"]
+mimalloc-v2 = ["alloc-mimalloc", "mimalloc/v2", "libmimalloc-sys/v2"]
+purge-eager = ["alloc-mimalloc"]
+
+# Windows only: embeds assets/brand/brouillon.ico + version info in the exe (build.rs).
+[target.'cfg(windows)'.build-dependencies]
+winresource = { version = "0.1", default-features = false }
+
+[dev-dependencies]
+criterion = { workspace = true }
+# process memory counters (private bytes) for the lazy-store guard in tests/heap_peak.rs
+brouillon-textstore-spike = { path = "../brouillon-textstore-spike" }
+
+[[bench]]
+name = "perf"
+path = "../../benches/perf.rs"
+harness = false
+
+[[bench]]
+name = "large_file"
+path = "../../benches/large_file.rs"
+harness = false

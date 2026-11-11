@@ -1,0 +1,68 @@
+name = "PowerShell"
+extensions = ["ps1", "psm1", "psd1", "ps1xml", "pssc"]
+shebang = ["pwsh", "powershell"]
+case_sensitive = false
+word_chars = "-"
+operators = "+*/%=<>!|&"
+line_comments = ["#"]
+block_comments = [["<#", "#>"]]
+
+[[string]]
+open = '@"'
+close = '"@'
+multiline = true
+
+[[string]]
+open = "@'"
+close = "'@"
+multiline = true
+escapes = false
+
+[[string]]
+open = '"'
+escape = '`'
+multiline = true
+
+[[string]]
+open = "'"
+doubled = true
+multiline = true
+escapes = false
+
+[[prefix]]
+chars = "$"
+kind = "variable"
+braced = true
+
+[[keywords]]
+name = "Keywords"
+words = '''
+begin break catch class continue data do dynamicparam else elseif end enum exit
+filter finally for foreach from function if in inlinescript param process return
+sequence switch throw trap try until using var while workflow
+'''
+
+[[keywords]]
+name = "Cmdlets"
+words = '''
+Get-ChildItem Get-Content Set-Content Add-Content Get-Item Set-Item New-Item
+Remove-Item Copy-Item Move-Item Get-Location Set-Location Write-Host Write-Output
+Write-Error Write-Warning Write-Verbose Read-Host Get-Process Stop-Process
+Start-Process Get-Service Start-Service Stop-Service Get-Command Get-Help
+Get-Member Select-Object Where-Object ForEach-Object Sort-Object Group-Object
+Measure-Object Format-Table Format-List Out-File Out-String Out-Null
+ConvertTo-Json ConvertFrom-Json Invoke-Command Invoke-WebRequest Invoke-RestMethod
+Import-Module Export-ModuleMember Test-Path Join-Path Split-Path Start-Sleep
+'''
+
+[[keywords]]
+name = "Operators"
+words = '''
+-eq -ne -gt -ge -lt -le -like -notlike -match -notmatch -contains -notcontains -in
+-notin -and -or -not -xor -is -isnot -as -replace -split -join -f -band -bor -bxor
+-shl -shr
+'''
+
+[[keywords]]
+name = "Constants"
+words = "$true $false $null"

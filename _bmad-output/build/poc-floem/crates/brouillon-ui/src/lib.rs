@@ -1,0 +1,57 @@
+pub mod ai_extract;
+pub mod ai_panel;
+pub mod bracket_paint;
+pub mod clipboard;
+pub mod clipboard_view;
+pub mod confirm;
+pub mod diff_view;
+pub mod minimap_view;
+pub mod doc_selector;
+pub mod editor_view;
+pub mod export;
+pub mod ext_event_helpers;
+pub mod browser_view;
+pub mod file_tree_view;
+pub mod find_replace;
+pub mod goto_view;
+pub mod hex_editor;
+pub mod hex_view;
+pub mod kbd_focus;
+pub mod link_detect;
+pub mod markdown_render;
+pub mod markdown_view;
+pub mod menu_bar;
+pub mod menu_dropdown;
+pub mod output_view;
+pub mod palette;
+pub mod render_badge;
+pub mod palette_view;
+pub mod remote_dialogs;
+pub mod remote_view;
+pub mod sftp_panel;
+pub mod sketch_view;
+pub mod tab_bar;
+pub mod theme_ctx;
+pub mod toolbar;
+pub mod xcf;
+
+// Step 0 stubs
+pub mod cliptext_panel;
+pub mod encoding_picker;
+pub mod keymap_editor;
+pub mod quick_open;
+pub mod quick_open_view;
+pub mod results_model;
+pub mod results_panel;
+pub mod status_bar;
+
+// Preference surfaces (settings, shortcuts, cliptext)
+pub mod cliptext_store;
+pub mod cliptext_view;
+pub mod key_capture;
+pub mod link_view;
+pub mod keymap_view;
+pub mod onboarding_view;
+pub mod settings_editor;
+pub mod ui_kit;
+pub mod viewport;

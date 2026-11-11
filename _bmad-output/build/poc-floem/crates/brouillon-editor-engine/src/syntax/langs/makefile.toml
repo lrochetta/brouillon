@@ -1,0 +1,32 @@
+name = "Makefile"
+extensions = ["mk", "mak", "make"]
+filenames = ["Makefile", "makefile", "GNUmakefile", "BSDmakefile"]
+case_sensitive = true
+word_chars = ".-"
+number = "none"
+operators = "=+?!"
+line_comments = ["#"]
+
+[keys]
+separators = ":"
+kind = "function"
+line_start_only = true
+
+[[string]]
+open = '"'
+escape = '\'
+
+[[string]]
+open = "'"
+check_closing = true
+escapes = false
+
+[[prefix]]
+chars = "$"
+kind = "variable"
+braced = true
+parens = true
+
+[[keywords]]
+name = "Directives"
+words = "ifeq ifneq ifdef ifndef else endif include -include sinclude define endef export unexport override private vpath undefine"

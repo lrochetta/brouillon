@@ -1,0 +1,99 @@
+name = "CSS"
+extensions = ["css", "scss", "less", "pcss"]
+case_sensitive = false
+functions = true
+number = "css"
+word_chars = "-"
+operators = ">+~*"
+block_comments = [["/*", "*/"]]
+
+[[string]]
+open = '"'
+escape = '\'
+
+[[string]]
+open = "'"
+escape = '\'
+
+[[prefix]]
+chars = "."
+kind = "type"
+
+[[prefix]]
+chars = "#"
+kind = "attribute"
+
+[[prefix]]
+chars = "@"
+kind = "preprocessor"
+
+[[keywords]]
+name = "Properties"
+words = '''
+align-content align-items align-self all animation animation-delay
+animation-direction animation-duration animation-fill-mode animation-iteration-count
+animation-name animation-play-state animation-timing-function aspect-ratio
+backdrop-filter backface-visibility background background-attachment
+background-blend-mode background-clip background-color background-image
+background-origin background-position background-repeat background-size border
+border-bottom border-bottom-color border-bottom-left-radius
+border-bottom-right-radius border-bottom-style border-bottom-width border-collapse
+border-color border-image border-left border-left-color border-left-style
+border-left-width border-radius border-right border-right-color border-right-style
+border-right-width border-spacing border-style border-top border-top-color
+border-top-left-radius border-top-right-radius border-top-style border-top-width
+border-width bottom box-shadow box-sizing caption-side caret-color clear clip
+clip-path color column-count column-gap column-rule columns content counter-increment
+counter-reset cursor direction display empty-cells fill filter flex flex-basis
+flex-direction flex-flow flex-grow flex-shrink flex-wrap float font font-family
+font-feature-settings font-kerning font-size font-size-adjust font-stretch
+font-style font-variant font-weight gap grid grid-area grid-auto-columns
+grid-auto-flow grid-auto-rows grid-column grid-column-end grid-column-gap
+grid-column-start grid-gap grid-row grid-row-end grid-row-gap grid-row-start
+grid-template grid-template-areas grid-template-columns grid-template-rows
+height hyphens image-rendering inset isolation justify-content justify-items
+justify-self left letter-spacing line-height list-style list-style-image
+list-style-position list-style-type margin margin-bottom margin-left margin-right
+margin-top mask max-height max-width min-height min-width mix-blend-mode
+object-fit object-position opacity order orphans outline outline-color
+outline-offset outline-style outline-width overflow overflow-wrap overflow-x
+overflow-y padding padding-bottom padding-left padding-right padding-top
+page-break-after page-break-before page-break-inside perspective perspective-origin
+place-content place-items place-self pointer-events position quotes resize right
+rotate row-gap scale scroll-behavior scroll-snap-align scroll-snap-type
+tab-size table-layout text-align text-align-last text-decoration
+text-decoration-color text-decoration-line text-decoration-style text-indent
+text-justify text-overflow text-shadow text-transform top touch-action transform
+transform-origin transform-style transition transition-delay transition-duration
+transition-property transition-timing-function translate unicode-bidi user-select
+vertical-align visibility white-space widows width will-change word-break
+word-spacing word-wrap writing-mode z-index src
+'''
+
+[[keywords]]
+name = "Values"
+words = '''
+absolute alternate always auto backwards baseline block bold bolder both bottom
+break-word capitalize center collapse column column-reverse contain content-box
+cover dashed default dotted double ease ease-in ease-in-out ease-out ellipsis end
+fixed flex flex-end flex-start forwards grid groove hidden infinite inherit initial
+inline inline-block inline-flex inline-grid inset italic justify left lighter
+line-through linear lowercase middle no-repeat none normal nowrap oblique outset
+overline pointer pre pre-line pre-wrap relative repeat repeat-x repeat-y reverse
+ridge right row row-reverse scroll separate smooth solid space-around space-between
+space-evenly start static sticky stretch sub super table text top transparent
+underline unset uppercase visible wrap wrap-reverse important
+black white red green blue yellow orange purple pink gray grey brown cyan magenta
+silver gold navy teal maroon olive lime aqua currentColor
+'''
+
+[[keywords]]
+name = "HTML tags"
+kind = "tag"
+words = '''
+a abbr address article aside audio b blockquote body br button canvas caption code
+col colgroup dd details div dl dt em fieldset figcaption figure footer form h1 h2
+h3 h4 h5 h6 head header hr html i iframe img input label legend li main mark menu
+nav ol optgroup option p picture pre progress section select small span strong sub
+summary sup svg table tbody td textarea tfoot th thead time tr u ul video
+'''

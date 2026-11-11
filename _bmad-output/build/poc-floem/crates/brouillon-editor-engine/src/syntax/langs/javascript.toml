@@ -1,0 +1,52 @@
+name = "JavaScript"
+extensions = ["js", "jsx", "mjs", "cjs", "es6", "jsm"]
+shebang = ["node", "nodejs", "deno", "bun"]
+case_sensitive = true
+functions = true
+regex_literals = true
+word_chars = "$"
+operators = "+-*/%=<>!&|^~?:"
+line_comments = ["//"]
+block_comments = [["/*", "*/"]]
+
+[[string]]
+open = "`"
+escape = '\'
+multiline = true
+
+[[string]]
+open = '"'
+escape = '\'
+
+[[string]]
+open = "'"
+escape = '\'
+
+[[keywords]]
+name = "Keywords"
+words = '''
+async await break case catch class const continue debugger default delete do else
+export extends finally for function if import in instanceof let new of return
+static super switch this throw try typeof var void while with yield get set from as
+'''
+
+[[keywords]]
+name = "Types"
+kind = "type"
+words = '''
+Array Object String Number Boolean Symbol BigInt Map Set WeakMap WeakSet Promise
+Date RegExp Error TypeError RangeError SyntaxError Function Proxy Reflect Intl
+ArrayBuffer Uint8Array Int32Array Float64Array
+'''
+
+[[keywords]]
+name = "Builtins"
+words = '''
+console document window globalThis parseInt parseFloat isNaN isFinite setTimeout
+setInterval clearTimeout clearInterval fetch require module exports process Buffer
+alert JSON Math localStorage sessionStorage navigator location history
+'''
+
+[[keywords]]
+name = "Constants"
+words = "true false null undefined NaN Infinity"

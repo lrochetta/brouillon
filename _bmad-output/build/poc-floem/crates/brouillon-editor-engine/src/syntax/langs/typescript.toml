@@ -1,0 +1,19 @@
+name = "TypeScript"
+extends = "JavaScript"
+extensions = ["ts", "tsx", "mts", "cts"]
+shebang = ["ts-node", "tsx"]
+
+[[keywords]]
+name = "Keywords"
+words = '''
+abstract asserts declare enum implements infer interface is keyof namespace never
+override private protected public readonly satisfies type unique module
+'''
+
+[[keywords]]
+name = "Types"
+words = '''
+number string boolean any unknown never void object symbol bigint Record Partial
+Required Readonly Pick Omit Exclude Extract NonNullable ReturnType Parameters
+InstanceType Awaited
+'''

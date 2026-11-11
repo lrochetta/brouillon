@@ -1,0 +1,11 @@
+# HTML: tag/attribute/entity lexer; <script> bodies use JavaScript, <style> bodies use CSS.
+name = "HTML"
+extensions = ["html", "htm", "xhtml", "shtml", "hta", "vue", "svelte"]
+first_line = ["<!doctype html", "<html"]
+case_sensitive = false
+
+[markup]
+raw_text = [
+  { tag = "script", lang = "JavaScript" },
+  { tag = "style", lang = "CSS" },
+]

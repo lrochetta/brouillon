@@ -1,0 +1,50 @@
+name = "Visual Basic"
+extensions = ["vb", "vbs", "bas", "frm", "cls", "vba", "ctl"]
+case_sensitive = false
+functions = true
+operators = "+-*/\\^&=<>"
+line_comments = ["'", "REM "]
+
+[[string]]
+open = '"'
+doubled = true
+escapes = false
+
+[preprocessor]
+start = "#"
+
+[[keywords]]
+name = "Keywords"
+words = '''
+AddHandler AddressOf Alias And AndAlso As ByRef ByVal Call Case Catch CBool CByte
+CChar CDate CDbl CDec CInt CLng CObj CSByte CShort CSng CStr CType CUInt CULng
+CUShort Class Const Continue Declare Default Delegate Dim DirectCast Do Each Else
+ElseIf End EndIf Enum Erase Error Event Exit Finally For Friend Function Get
+GetType Global GoSub GoTo Handles If Implements Imports In Inherits Interface Is
+IsNot Let Lib Like Loop Me Mod Module MustInherit MustOverride MyBase MyClass
+Namespace Narrowing New Next Not NotInheritable NotOverridable Of On Operator
+Option Optional Or OrElse Overloads Overridable Overrides ParamArray Partial
+Private Property Protected Public RaiseEvent ReadOnly ReDim RemoveHandler Resume
+Return Select Set Shadows Shared Static Step Stop Structure Sub SyncLock Then Throw
+To Try TryCast TypeOf Using Wend When While Widening With WithEvents WriteOnly Xor
+'''
+
+[[keywords]]
+name = "Types"
+kind = "type"
+words = '''
+Boolean Byte Char Date Decimal Double Integer Long Object SByte Short Single String
+UInteger ULong UShort Variant Currency
+'''
+
+[[keywords]]
+name = "Constants"
+words = "True False Nothing Null Empty vbCrLf vbCr vbLf vbTab vbNullString"
+
+[[keywords]]
+name = "Functions"
+words = '''
+MsgBox InputBox Len Left Right Mid Trim LTrim RTrim UCase LCase InStr Replace Split
+Join Format Now Date Time Year Month Day Hour Minute Second Val Str Chr Asc Abs Int
+Fix Sqr Rnd CreateObject GetObject IsNumeric IsNull IsEmpty IsArray UBound LBound
+'''

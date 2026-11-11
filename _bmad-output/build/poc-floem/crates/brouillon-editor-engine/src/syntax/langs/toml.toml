@@ -1,0 +1,36 @@
+name = "TOML"
+extensions = ["toml"]
+filenames = ["Cargo.lock", "Pipfile", "poetry.lock"]
+case_sensitive = true
+word_chars = "-"
+line_comments = ["#"]
+
+[[line_start]]
+prefix = "["
+kind = "tag"
+
+[keys]
+separators = "="
+kind = "attribute"
+strings = true
+
+[[string]]
+open = '"""'
+escape = '\'
+multiline = true
+
+[[string]]
+open = "'''"
+multiline = true
+
+[[string]]
+open = '"'
+escape = '\'
+
+[[string]]
+open = "'"
+
+[[keywords]]
+name = "Literals"
+kind = "keyword2"
+words = "true false inf nan"

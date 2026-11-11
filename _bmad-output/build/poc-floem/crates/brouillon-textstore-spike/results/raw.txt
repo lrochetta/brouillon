@@ -1,0 +1,546 @@
+﻿R|rope|s1_code_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|rope|s1_code_lf.txt|1 open|3.6|1.1|5.1|5.2|1.8|
+R|rope|s1_code_lf.txt|1b first viewport (line N, 60 rows)|0.0|1.1|1.1|5.2|1.8|N=11398 bytes=2793
+R|rope|s1_code_lf.txt|2 line_count (index complete)|0.0|1.1|1.1|5.2|1.8|lines=22306
+R|rope|s1_code_lf.txt|3 300 random jumps|0.0|1.1|1.1|5.2|1.8|p50_ms=0.001 p99_ms=0.005
+R|rope|s1_code_lf.txt|4 10000 scattered edits|13.9|2.8|2.9|7.5|4.3|p50_ms=0.0010 p99_ms=0.0049 max_ms=0.14 heap_est=1.56MB
+R|rope|s1_code_lf.txt|4b 300 jumps after edits|0.0|2.8|2.8|7.5|4.3|p50_ms=0.001 p99_ms=0.003
+R|rope|s1_code_lf.txt|5 Find (count ZQXJ_MARK, whole file)|0.7|2.8|2.8|7.5|4.3|matches=4
+R|rope|s1_code_lf.txt|6 Save (stream + fsync + rename)|7.4|2.8|3.8|7.6|4.3|
+R|rope|s1_code_lf.txt|7 undo all|9.9|3.3|3.4|8.1|4.9|ops=10000 p50_ms=0.0007 p99_ms=0.0019 identical_to_original=true
+R|rope|s1_code_lf.txt|8 redo all|8.4|3.5|3.5|8.1|5.0|ops=10000 p50_ms=0.0005 p99_ms=0.0016 identical_to_edited=true
+PEAK|rope|s1_code_lf.txt|peak_ws=9.1|peak_commit=5.8
+R|mmap|s1_code_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s1_code_lf.txt|1 open|0.4|0.1|1.1|4.1|0.7|
+R|mmap|s1_code_lf.txt|1b first viewport (line N, 60 rows)|1.0|0.1|0.1|4.1|0.7|N=11398 bytes=2793
+R|mmap|s1_code_lf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.1|0.7|lines=22306
+R|mmap|s1_code_lf.txt|3 300 random jumps|0.0|0.1|0.1|5.1|0.7|p50_ms=0.019 p99_ms=0.059
+R|mmap|s1_code_lf.txt|4 10000 scattered edits|51.8|2.6|2.7|8.5|4.3|p50_ms=0.0043 p99_ms=0.0148 max_ms=0.14 heap_est=1.68MB
+R|mmap|s1_code_lf.txt|4b 300 jumps after edits|0.0|2.7|2.7|8.5|4.3|p50_ms=0.023 p99_ms=0.054
+R|mmap|s1_code_lf.txt|5 Find (count ZQXJ_MARK, whole file)|1.3|2.7|2.7|8.5|4.3|matches=4
+R|mmap|s1_code_lf.txt|6 Save (stream + fsync + rename)|11.3|1.8|3.7|8.0|4.0|
+R|mmap|s1_code_lf.txt|7 undo all|77.9|3.0|3.1|9.9|4.9|ops=10000 p50_ms=0.0055 p99_ms=0.0365 identical_to_original=true
+R|mmap|s1_code_lf.txt|8 redo all|12.8|3.3|3.4|10.1|5.0|ops=10000 p50_ms=0.0007 p99_ms=0.0062 identical_to_edited=true
+PEAK|mmap|s1_code_lf.txt|peak_ws=10.1|peak_commit=5.4
+R|chunked|s1_code_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s1_code_lf.txt|1 open|0.5|0.1|1.1|4.2|0.8|
+R|chunked|s1_code_lf.txt|1b first viewport (line N, 60 rows)|1.6|0.1|0.1|4.2|0.8|N=11398 bytes=2793
+R|chunked|s1_code_lf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.2|0.7|lines=22306
+R|chunked|s1_code_lf.txt|3 300 random jumps|0.0|1.1|1.1|5.1|1.7|p50_ms=0.019 p99_ms=0.081
+R|chunked|s1_code_lf.txt|4 10000 scattered edits|56.2|3.7|3.7|8.4|5.3|p50_ms=0.0046 p99_ms=0.0179 max_ms=0.35 heap_est=2.68MB
+R|chunked|s1_code_lf.txt|4b 300 jumps after edits|0.0|3.7|3.7|8.4|5.3|p50_ms=0.030 p99_ms=0.098
+R|chunked|s1_code_lf.txt|5 Find (count ZQXJ_MARK, whole file)|1.4|3.7|3.7|8.4|5.3|matches=4
+R|chunked|s1_code_lf.txt|6 Save (stream + fsync + rename)|32.4|2.8|4.7|8.2|5.0|
+R|chunked|s1_code_lf.txt|7 undo all|100.1|5.0|5.1|9.9|6.9|ops=10000 p50_ms=0.0062 p99_ms=0.0320 identical_to_original=true
+R|chunked|s1_code_lf.txt|8 redo all|9.3|5.3|5.4|10.1|7.0|ops=10000 p50_ms=0.0005 p99_ms=0.0044 identical_to_edited=true
+PEAK|chunked|s1_code_lf.txt|peak_ws=10.1|peak_commit=7.0
+R|mmap|s1_code_lf.txt|early-first-edit|1.1|0.1|1.1|4.1|0.7|open_ms=0.33
+R|chunked|s1_code_lf.txt|early-first-edit|1.1|0.1|1.1|4.1|0.8|open_ms=0.24
+R|rope|s1_code_lf.txt|early-first-edit|0.1|1.1|5.1|5.2|1.8|open_ms=3.27
+R|rope|s1_code_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|rope|s1_code_crlf.txt|1 open|3.2|1.1|5.1|5.2|1.8|
+R|rope|s1_code_crlf.txt|1b first viewport (line N, 60 rows)|0.0|1.1|1.1|5.2|1.8|N=11155 bytes=3251
+R|rope|s1_code_crlf.txt|2 line_count (index complete)|0.0|1.1|1.1|5.2|1.8|lines=21849
+R|rope|s1_code_crlf.txt|3 300 random jumps|0.0|1.1|1.1|5.2|1.8|p50_ms=0.001 p99_ms=0.003
+R|rope|s1_code_crlf.txt|4 10000 scattered edits|12.7|2.8|2.9|7.5|4.3|p50_ms=0.0010 p99_ms=0.0034 max_ms=0.13 heap_est=1.56MB
+R|rope|s1_code_crlf.txt|4b 300 jumps after edits|0.0|2.8|2.8|7.5|4.3|p50_ms=0.001 p99_ms=0.003
+R|rope|s1_code_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|0.4|2.8|2.8|7.6|4.3|matches=3
+R|rope|s1_code_crlf.txt|6 Save (stream + fsync + rename)|9.3|2.8|3.8|7.6|4.3|
+R|rope|s1_code_crlf.txt|7 undo all|10.3|3.3|3.4|8.1|4.9|ops=10000 p50_ms=0.0007 p99_ms=0.0022 identical_to_original=true
+R|rope|s1_code_crlf.txt|8 redo all|13.2|3.5|3.5|8.1|5.0|ops=10000 p50_ms=0.0008 p99_ms=0.0028 identical_to_edited=true
+PEAK|rope|s1_code_crlf.txt|peak_ws=9.1|peak_commit=5.8
+R|mmap|s1_code_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s1_code_crlf.txt|1 open|0.4|0.1|1.1|4.1|0.7|
+R|mmap|s1_code_crlf.txt|1b first viewport (line N, 60 rows)|1.1|0.1|0.1|4.1|0.7|N=11155 bytes=3251
+R|mmap|s1_code_crlf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.1|0.7|lines=21849
+R|mmap|s1_code_crlf.txt|3 300 random jumps|0.0|0.1|0.1|5.1|0.7|p50_ms=0.022 p99_ms=0.077
+R|mmap|s1_code_crlf.txt|4 10000 scattered edits|49.9|2.7|2.8|8.3|4.1|p50_ms=0.0041 p99_ms=0.0171 max_ms=0.12 heap_est=1.68MB
+R|mmap|s1_code_crlf.txt|4b 300 jumps after edits|0.0|2.7|2.7|8.3|4.1|p50_ms=0.021 p99_ms=0.048
+R|mmap|s1_code_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|1.2|2.7|2.7|8.3|4.1|matches=3
+R|mmap|s1_code_crlf.txt|6 Save (stream + fsync + rename)|9.3|1.8|3.7|7.9|3.8|
+R|mmap|s1_code_crlf.txt|7 undo all|58.3|3.0|3.1|9.9|4.8|ops=10000 p50_ms=0.0047 p99_ms=0.0183 identical_to_original=true
+R|mmap|s1_code_crlf.txt|8 redo all|8.3|3.3|3.4|10.0|4.9|ops=10000 p50_ms=0.0004 p99_ms=0.0031 identical_to_edited=true
+PEAK|mmap|s1_code_crlf.txt|peak_ws=10.0|peak_commit=5.2
+R|chunked|s1_code_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s1_code_crlf.txt|1 open|0.3|0.1|1.1|4.2|0.8|
+R|chunked|s1_code_crlf.txt|1b first viewport (line N, 60 rows)|0.9|0.1|0.1|4.1|0.7|N=11155 bytes=3251
+R|chunked|s1_code_crlf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.1|0.7|lines=21849
+R|chunked|s1_code_crlf.txt|3 300 random jumps|0.0|1.1|1.1|5.1|1.7|p50_ms=0.019 p99_ms=0.070
+R|chunked|s1_code_crlf.txt|4 10000 scattered edits|55.5|3.7|3.8|8.4|5.2|p50_ms=0.0046 p99_ms=0.0155 max_ms=0.32 heap_est=2.68MB
+R|chunked|s1_code_crlf.txt|4b 300 jumps after edits|0.0|3.7|3.7|8.4|5.2|p50_ms=0.023 p99_ms=0.067
+R|chunked|s1_code_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|1.7|3.7|3.7|8.4|5.2|matches=3
+R|chunked|s1_code_crlf.txt|6 Save (stream + fsync + rename)|30.9|2.8|4.7|8.1|4.9|
+R|chunked|s1_code_crlf.txt|7 undo all|69.1|5.0|5.1|10.0|6.9|ops=10000 p50_ms=0.0042 p99_ms=0.0126 identical_to_original=true
+R|chunked|s1_code_crlf.txt|8 redo all|7.0|5.3|5.4|10.1|7.0|ops=10000 p50_ms=0.0003 p99_ms=0.0025 identical_to_edited=true
+PEAK|chunked|s1_code_crlf.txt|peak_ws=10.1|peak_commit=7.0
+R|mmap|s1_code_crlf.txt|early-first-edit|1.1|0.1|1.1|4.1|0.7|open_ms=0.25
+R|chunked|s1_code_crlf.txt|early-first-edit|0.9|0.1|1.1|4.1|0.8|open_ms=0.23
+R|rope|s1_code_crlf.txt|early-first-edit|0.0|1.1|5.1|5.2|1.8|open_ms=3.17
+R|rope|s1_prose_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|rope|s1_prose_lf.txt|1 open|6.7|1.1|5.1|5.1|1.8|
+R|rope|s1_prose_lf.txt|1b first viewport (line N, 60 rows)|0.0|1.1|1.1|5.2|1.8|N=1778 bytes=19593
+R|rope|s1_prose_lf.txt|2 line_count (index complete)|0.0|1.1|1.1|5.2|1.8|lines=3322
+R|rope|s1_prose_lf.txt|3 300 random jumps|0.0|1.1|1.1|5.2|1.8|p50_ms=0.001 p99_ms=0.004
+R|rope|s1_prose_lf.txt|4 10000 scattered edits|13.0|2.8|2.8|7.5|4.3|p50_ms=0.0010 p99_ms=0.0030 max_ms=0.09 heap_est=1.56MB
+R|rope|s1_prose_lf.txt|4b 300 jumps after edits|0.0|2.8|2.8|7.5|4.3|p50_ms=0.002 p99_ms=0.004
+R|rope|s1_prose_lf.txt|5 Find (count ZQXJ_MARK, whole file)|0.3|2.8|2.8|7.5|4.3|matches=0
+R|rope|s1_prose_lf.txt|6 Save (stream + fsync + rename)|9.0|2.8|3.8|7.6|4.3|
+R|rope|s1_prose_lf.txt|7 undo all|10.1|3.3|3.4|8.1|4.9|ops=10000 p50_ms=0.0007 p99_ms=0.0018 identical_to_original=true
+R|rope|s1_prose_lf.txt|8 redo all|8.9|3.5|3.5|8.1|5.0|ops=10000 p50_ms=0.0005 p99_ms=0.0018 identical_to_edited=true
+PEAK|rope|s1_prose_lf.txt|peak_ws=9.1|peak_commit=5.8
+R|mmap|s1_prose_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s1_prose_lf.txt|1 open|0.2|0.1|1.1|4.1|0.7|
+R|mmap|s1_prose_lf.txt|1b first viewport (line N, 60 rows)|2.5|0.1|0.1|4.1|0.7|N=1778 bytes=19593
+R|mmap|s1_prose_lf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.1|0.7|lines=3322
+R|mmap|s1_prose_lf.txt|3 300 random jumps|0.0|0.1|0.1|5.1|0.7|p50_ms=0.005 p99_ms=0.031
+R|mmap|s1_prose_lf.txt|4 10000 scattered edits|47.5|2.7|2.8|8.3|4.1|p50_ms=0.0040 p99_ms=0.0125 max_ms=0.15 heap_est=1.68MB
+R|mmap|s1_prose_lf.txt|4b 300 jumps after edits|0.0|2.7|2.7|8.3|4.1|p50_ms=0.007 p99_ms=0.018
+R|mmap|s1_prose_lf.txt|5 Find (count ZQXJ_MARK, whole file)|1.2|2.7|2.7|8.3|4.1|matches=0
+R|mmap|s1_prose_lf.txt|6 Save (stream + fsync + rename)|13.2|1.8|3.7|8.0|3.9|
+R|mmap|s1_prose_lf.txt|7 undo all|53.2|3.1|3.1|10.0|4.9|ops=10000 p50_ms=0.0044 p99_ms=0.0145 identical_to_original=true
+R|mmap|s1_prose_lf.txt|8 redo all|9.2|3.3|3.4|10.1|5.0|ops=10000 p50_ms=0.0005 p99_ms=0.0038 identical_to_edited=true
+PEAK|mmap|s1_prose_lf.txt|peak_ws=10.1|peak_commit=5.1
+R|chunked|s1_prose_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s1_prose_lf.txt|1 open|0.3|0.1|1.1|4.1|0.8|
+R|chunked|s1_prose_lf.txt|1b first viewport (line N, 60 rows)|2.5|0.1|0.1|4.1|0.8|N=1778 bytes=19593
+R|chunked|s1_prose_lf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.1|0.8|lines=3322
+R|chunked|s1_prose_lf.txt|3 300 random jumps|0.0|1.1|1.1|5.1|1.7|p50_ms=0.005 p99_ms=0.066
+R|chunked|s1_prose_lf.txt|4 10000 scattered edits|52.8|3.7|3.8|8.2|5.0|p50_ms=0.0044 p99_ms=0.0153 max_ms=0.13 heap_est=2.68MB
+R|chunked|s1_prose_lf.txt|4b 300 jumps after edits|0.0|3.7|3.7|8.2|5.0|p50_ms=0.013 p99_ms=0.025
+R|chunked|s1_prose_lf.txt|5 Find (count ZQXJ_MARK, whole file)|1.5|3.7|3.7|8.2|5.0|matches=0
+R|chunked|s1_prose_lf.txt|6 Save (stream + fsync + rename)|31.0|2.8|4.7|8.0|4.8|
+R|chunked|s1_prose_lf.txt|7 undo all|82.0|5.0|5.1|10.0|6.9|ops=10000 p50_ms=0.0047 p99_ms=0.0151 identical_to_original=true
+R|chunked|s1_prose_lf.txt|8 redo all|14.6|5.3|5.4|10.0|7.0|ops=10000 p50_ms=0.0008 p99_ms=0.0058 identical_to_edited=true
+PEAK|chunked|s1_prose_lf.txt|peak_ws=10.0|peak_commit=7.0
+R|mmap|s1_prose_lf.txt|early-first-edit|3.3|0.1|1.1|4.1|0.7|open_ms=0.33
+R|chunked|s1_prose_lf.txt|early-first-edit|3.0|0.1|1.1|4.1|0.8|open_ms=0.21
+R|rope|s1_prose_lf.txt|early-first-edit|0.0|1.1|5.1|5.2|1.8|open_ms=6.90
+R|rope|s1_prose_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|rope|s1_prose_crlf.txt|1 open|6.5|1.1|5.1|5.2|1.8|
+R|rope|s1_prose_crlf.txt|1b first viewport (line N, 60 rows)|0.0|1.1|1.1|5.2|1.8|N=1771 bytes=17742
+R|rope|s1_prose_crlf.txt|2 line_count (index complete)|0.0|1.1|1.1|5.2|1.8|lines=3312
+R|rope|s1_prose_crlf.txt|3 300 random jumps|0.0|1.1|1.1|5.2|1.8|p50_ms=0.002 p99_ms=0.004
+R|rope|s1_prose_crlf.txt|4 10000 scattered edits|12.9|2.8|2.9|7.5|4.3|p50_ms=0.0010 p99_ms=0.0034 max_ms=0.11 heap_est=1.56MB
+R|rope|s1_prose_crlf.txt|4b 300 jumps after edits|0.0|2.8|2.8|7.5|4.3|p50_ms=0.001 p99_ms=0.003
+R|rope|s1_prose_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|0.2|2.8|2.8|7.5|4.3|matches=0
+R|rope|s1_prose_crlf.txt|6 Save (stream + fsync + rename)|7.2|2.8|3.8|7.6|4.3|
+R|rope|s1_prose_crlf.txt|7 undo all|9.5|3.3|3.4|8.1|4.9|ops=10000 p50_ms=0.0006 p99_ms=0.0024 identical_to_original=true
+R|rope|s1_prose_crlf.txt|8 redo all|8.0|3.5|3.5|8.1|5.0|ops=10000 p50_ms=0.0005 p99_ms=0.0019 identical_to_edited=true
+PEAK|rope|s1_prose_crlf.txt|peak_ws=9.1|peak_commit=5.8
+R|mmap|s1_prose_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s1_prose_crlf.txt|1 open|0.4|0.1|1.1|4.2|0.7|
+R|mmap|s1_prose_crlf.txt|1b first viewport (line N, 60 rows)|2.6|0.1|0.1|4.2|0.7|N=1771 bytes=17742
+R|mmap|s1_prose_crlf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.2|0.7|lines=3312
+R|mmap|s1_prose_crlf.txt|3 300 random jumps|0.0|0.1|0.1|5.1|0.7|p50_ms=0.005 p99_ms=0.034
+R|mmap|s1_prose_crlf.txt|4 10000 scattered edits|59.6|2.7|2.7|8.4|4.2|p50_ms=0.0049 p99_ms=0.0175 max_ms=0.22 heap_est=1.68MB
+R|mmap|s1_prose_crlf.txt|4b 300 jumps after edits|0.0|2.7|2.7|8.4|4.2|p50_ms=0.007 p99_ms=0.016
+R|mmap|s1_prose_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|1.1|2.7|2.7|8.4|4.2|matches=0
+R|mmap|s1_prose_crlf.txt|6 Save (stream + fsync + rename)|9.9|1.8|3.7|8.0|3.7|
+R|mmap|s1_prose_crlf.txt|7 undo all|49.3|3.0|3.1|9.8|4.8|ops=10000 p50_ms=0.0041 p99_ms=0.0141 identical_to_original=true
+R|mmap|s1_prose_crlf.txt|8 redo all|7.8|3.3|3.4|10.1|4.9|ops=10000 p50_ms=0.0004 p99_ms=0.0031 identical_to_edited=true
+PEAK|mmap|s1_prose_crlf.txt|peak_ws=10.1|peak_commit=5.3
+R|chunked|s1_prose_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s1_prose_crlf.txt|1 open|0.3|0.1|1.1|4.1|0.8|
+R|chunked|s1_prose_crlf.txt|1b first viewport (line N, 60 rows)|2.9|0.1|0.1|4.1|0.7|N=1771 bytes=17742
+R|chunked|s1_prose_crlf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.1|0.7|lines=3312
+R|chunked|s1_prose_crlf.txt|3 300 random jumps|0.0|1.1|1.1|5.1|1.7|p50_ms=0.005 p99_ms=0.061
+R|chunked|s1_prose_crlf.txt|4 10000 scattered edits|56.2|3.7|3.7|8.3|5.2|p50_ms=0.0047 p99_ms=0.0173 max_ms=0.10 heap_est=2.69MB
+R|chunked|s1_prose_crlf.txt|4b 300 jumps after edits|0.0|3.7|3.7|8.3|5.2|p50_ms=0.013 p99_ms=0.029
+R|chunked|s1_prose_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|1.3|3.7|3.7|8.3|5.2|matches=0
+R|chunked|s1_prose_crlf.txt|6 Save (stream + fsync + rename)|27.3|2.8|4.7|8.0|5.0|
+R|chunked|s1_prose_crlf.txt|7 undo all|76.2|5.0|5.0|9.8|6.8|ops=10000 p50_ms=0.0044 p99_ms=0.0121 identical_to_original=true
+R|chunked|s1_prose_crlf.txt|8 redo all|11.4|5.3|5.4|10.0|6.9|ops=10000 p50_ms=0.0005 p99_ms=0.0056 identical_to_edited=true
+PEAK|chunked|s1_prose_crlf.txt|peak_ws=10.0|peak_commit=6.9
+R|mmap|s1_prose_crlf.txt|early-first-edit|3.1|0.1|1.1|4.1|0.7|open_ms=0.32
+R|chunked|s1_prose_crlf.txt|early-first-edit|2.7|0.1|1.1|4.1|0.8|open_ms=0.21
+R|rope|s1_prose_crlf.txt|early-first-edit|0.0|1.1|5.1|5.2|1.8|open_ms=6.75
+R|rope|s10_code_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|rope|s10_code_lf.txt|1 open|16.5|10.4|14.4|14.8|11.6|
+R|rope|s10_code_lf.txt|1b first viewport (line N, 60 rows)|0.0|10.4|10.4|14.8|11.6|N=113976 bytes=2604
+R|rope|s10_code_lf.txt|2 line_count (index complete)|0.0|10.4|10.4|14.8|11.6|lines=223043
+R|rope|s10_code_lf.txt|3 300 random jumps|0.0|10.4|10.4|14.8|11.6|p50_ms=0.002 p99_ms=0.005
+R|rope|s10_code_lf.txt|4 10000 scattered edits|18.7|17.0|17.1|22.0|18.9|p50_ms=0.0014 p99_ms=0.0050 max_ms=0.11 heap_est=10.90MB
+R|rope|s10_code_lf.txt|4b 300 jumps after edits|0.0|17.0|17.0|22.0|18.9|p50_ms=0.001 p99_ms=0.004
+R|rope|s10_code_lf.txt|5 Find (count ZQXJ_MARK, whole file)|2.8|17.0|17.0|22.0|18.9|matches=54
+R|rope|s10_code_lf.txt|6 Save (stream + fsync + rename)|27.5|17.0|18.0|22.0|18.9|
+R|rope|s10_code_lf.txt|7 undo all|28.8|15.8|17.0|22.6|19.6|ops=10000 p50_ms=0.0009 p99_ms=0.0031 identical_to_original=true
+R|rope|s10_code_lf.txt|8 redo all|27.5|17.3|17.3|22.6|19.6|ops=10000 p50_ms=0.0008 p99_ms=0.0027 identical_to_edited=true
+PEAK|rope|s10_code_lf.txt|peak_ws=23.0|peak_commit=20.0
+R|mmap|s10_code_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s10_code_lf.txt|1 open|0.4|1.1|1.1|4.2|1.7|
+R|mmap|s10_code_lf.txt|1b first viewport (line N, 60 rows)|5.8|1.1|1.1|4.2|1.7|N=113976 bytes=2604
+R|mmap|s10_code_lf.txt|2 line_count (index complete)|2.1|0.1|1.1|4.2|0.7|lines=223043
+R|mmap|s10_code_lf.txt|3 300 random jumps|0.0|0.1|0.1|10.6|0.7|p50_ms=0.034 p99_ms=0.082
+R|mmap|s10_code_lf.txt|4 10000 scattered edits|73.3|2.7|2.8|17.4|4.3|p50_ms=0.0064 p99_ms=0.0215 max_ms=0.12 heap_est=1.70MB
+R|mmap|s10_code_lf.txt|4b 300 jumps after edits|0.0|2.7|2.7|17.4|4.3|p50_ms=0.026 p99_ms=0.060
+R|mmap|s10_code_lf.txt|5 Find (count ZQXJ_MARK, whole file)|2.0|2.7|2.7|17.4|4.3|matches=54
+R|mmap|s10_code_lf.txt|6 Save (stream + fsync + rename)|28.5|1.8|3.7|17.0|4.0|
+R|mmap|s10_code_lf.txt|7 undo all|117.0|3.1|3.1|27.8|4.9|ops=10000 p50_ms=0.0080 p99_ms=0.0449 identical_to_original=true
+R|mmap|s10_code_lf.txt|8 redo all|19.7|3.4|3.4|28.0|5.0|ops=10000 p50_ms=0.0004 p99_ms=0.0018 identical_to_edited=true
+PEAK|mmap|s10_code_lf.txt|peak_ws=28.0|peak_commit=5.4
+R|chunked|s10_code_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s10_code_lf.txt|1 open|0.4|0.1|1.1|4.2|0.8|
+R|chunked|s10_code_lf.txt|1b first viewport (line N, 60 rows)|7.4|0.1|0.1|4.2|0.7|N=113976 bytes=2604
+R|chunked|s10_code_lf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.2|0.7|lines=223043
+R|chunked|s10_code_lf.txt|3 300 random jumps|0.1|2.1|2.1|6.2|2.9|p50_ms=0.054 p99_ms=0.140
+R|chunked|s10_code_lf.txt|4 10000 scattered edits|319.4|4.7|4.8|9.6|6.3|p50_ms=0.0278 p99_ms=0.1326 max_ms=2.98 heap_est=3.70MB
+R|chunked|s10_code_lf.txt|4b 300 jumps after edits|0.1|4.7|4.8|9.6|6.3|p50_ms=0.053 p99_ms=0.175
+R|chunked|s10_code_lf.txt|5 Find (count ZQXJ_MARK, whole file)|26.7|4.7|4.7|9.7|6.4|matches=54
+R|chunked|s10_code_lf.txt|6 Save (stream + fsync + rename)|52.5|3.8|5.7|9.3|6.1|
+R|chunked|s10_code_lf.txt|7 undo all|332.9|7.1|7.1|12.4|9.2|ops=10000 p50_ms=0.0247 p99_ms=0.1005 identical_to_original=true
+R|chunked|s10_code_lf.txt|8 redo all|43.1|7.4|7.4|12.7|9.7|ops=10000 p50_ms=0.0004 p99_ms=0.0019 identical_to_edited=true
+PEAK|chunked|s10_code_lf.txt|peak_ws=12.7|peak_commit=9.7
+R|mmap|s10_code_lf.txt|early-first-edit|6.5|0.1|1.1|4.1|0.7|open_ms=0.29
+R|chunked|s10_code_lf.txt|early-first-edit|6.9|0.1|1.1|4.1|0.8|open_ms=0.22
+R|rope|s10_code_lf.txt|early-first-edit|0.0|10.4|14.4|14.8|11.6|open_ms=17.54
+R|rope|s10_code_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|rope|s10_code_crlf.txt|1 open|14.9|10.4|14.4|14.8|11.6|
+R|rope|s10_code_crlf.txt|1b first viewport (line N, 60 rows)|0.0|10.4|10.4|14.8|11.6|N=111551 bytes=2833
+R|rope|s10_code_crlf.txt|2 line_count (index complete)|0.0|10.4|10.4|14.8|11.6|lines=218404
+R|rope|s10_code_crlf.txt|3 300 random jumps|0.0|10.4|10.4|14.8|11.6|p50_ms=0.001 p99_ms=0.004
+R|rope|s10_code_crlf.txt|4 10000 scattered edits|17.8|16.9|17.0|22.0|19.0|p50_ms=0.0013 p99_ms=0.0049 max_ms=0.11 heap_est=10.90MB
+R|rope|s10_code_crlf.txt|4b 300 jumps after edits|0.0|16.9|16.9|22.0|19.0|p50_ms=0.001 p99_ms=0.003
+R|rope|s10_code_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|2.9|16.9|16.9|22.0|19.0|matches=53
+R|rope|s10_code_crlf.txt|6 Save (stream + fsync + rename)|34.0|16.9|17.9|22.0|19.0|
+R|rope|s10_code_crlf.txt|7 undo all|27.5|15.6|16.9|22.6|19.6|ops=10000 p50_ms=0.0009 p99_ms=0.0028 identical_to_original=true
+R|rope|s10_code_crlf.txt|8 redo all|24.0|17.2|17.3|22.6|19.6|ops=10000 p50_ms=0.0007 p99_ms=0.0022 identical_to_edited=true
+PEAK|rope|s10_code_crlf.txt|peak_ws=23.0|peak_commit=20.0
+R|mmap|s10_code_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s10_code_crlf.txt|1 open|0.3|0.1|1.1|4.1|0.7|
+R|mmap|s10_code_crlf.txt|1b first viewport (line N, 60 rows)|7.8|0.1|0.1|4.1|0.7|N=111551 bytes=2833
+R|mmap|s10_code_crlf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.1|0.7|lines=218404
+R|mmap|s10_code_crlf.txt|3 300 random jumps|0.0|0.1|0.1|10.3|0.7|p50_ms=0.035 p99_ms=0.105
+R|mmap|s10_code_crlf.txt|4 10000 scattered edits|80.4|2.8|2.9|17.4|4.3|p50_ms=0.0066 p99_ms=0.0306 max_ms=0.17 heap_est=1.70MB
+R|mmap|s10_code_crlf.txt|4b 300 jumps after edits|0.0|2.8|2.8|17.4|4.3|p50_ms=0.032 p99_ms=0.074
+R|mmap|s10_code_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|2.1|2.8|2.8|17.4|4.3|matches=53
+R|mmap|s10_code_crlf.txt|6 Save (stream + fsync + rename)|27.5|1.8|3.8|17.0|4.1|
+R|mmap|s10_code_crlf.txt|7 undo all|104.4|3.1|3.2|27.9|5.0|ops=10000 p50_ms=0.0072 p99_ms=0.0319 identical_to_original=true
+R|mmap|s10_code_crlf.txt|8 redo all|26.6|3.4|3.5|28.1|5.0|ops=10000 p50_ms=0.0006 p99_ms=0.0027 identical_to_edited=true
+PEAK|mmap|s10_code_crlf.txt|peak_ws=28.1|peak_commit=5.4
+R|chunked|s10_code_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s10_code_crlf.txt|1 open|0.3|0.1|1.1|4.1|0.8|
+R|chunked|s10_code_crlf.txt|1b first viewport (line N, 60 rows)|7.0|0.1|0.1|4.1|0.7|N=111551 bytes=2833
+R|chunked|s10_code_crlf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.1|0.7|lines=218404
+R|chunked|s10_code_crlf.txt|3 300 random jumps|0.0|2.1|2.1|6.1|2.9|p50_ms=0.048 p99_ms=0.123
+R|chunked|s10_code_crlf.txt|4 10000 scattered edits|308.1|4.8|4.9|9.7|6.6|p50_ms=0.0290 p99_ms=0.0995 max_ms=0.31 heap_est=3.70MB
+R|chunked|s10_code_crlf.txt|4b 300 jumps after edits|0.1|4.8|4.8|9.7|6.6|p50_ms=0.051 p99_ms=0.128
+R|chunked|s10_code_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|24.7|4.8|4.8|9.9|6.7|matches=53
+R|chunked|s10_code_crlf.txt|6 Save (stream + fsync + rename)|192.2|3.8|5.8|9.2|6.0|
+R|chunked|s10_code_crlf.txt|7 undo all|348.2|7.1|7.2|12.4|9.3|ops=10000 p50_ms=0.0268 p99_ms=0.1125 identical_to_original=true
+R|chunked|s10_code_crlf.txt|8 redo all|48.5|7.4|7.5|12.7|9.7|ops=10000 p50_ms=0.0005 p99_ms=0.0023 identical_to_edited=true
+PEAK|chunked|s10_code_crlf.txt|peak_ws=12.7|peak_commit=9.7
+R|mmap|s10_code_crlf.txt|early-first-edit|7.7|0.1|1.1|4.1|0.7|open_ms=0.50
+R|chunked|s10_code_crlf.txt|early-first-edit|6.9|0.1|1.1|4.1|0.8|open_ms=0.17
+R|rope|s10_code_crlf.txt|early-first-edit|0.0|10.4|14.4|14.8|11.6|open_ms=15.75
+R|rope|s10_prose_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|rope|s10_prose_lf.txt|1 open|40.1|10.4|14.4|14.7|11.6|
+R|rope|s10_prose_lf.txt|1b first viewport (line N, 60 rows)|0.0|10.4|10.4|14.7|11.6|N=17772 bytes=18437
+R|rope|s10_prose_lf.txt|2 line_count (index complete)|0.0|10.4|10.4|14.7|11.6|lines=33271
+R|rope|s10_prose_lf.txt|3 300 random jumps|0.0|10.4|10.4|14.8|11.6|p50_ms=0.002 p99_ms=0.004
+R|rope|s10_prose_lf.txt|4 10000 scattered edits|17.6|16.9|16.9|22.0|18.9|p50_ms=0.0013 p99_ms=0.0047 max_ms=0.11 heap_est=10.90MB
+R|rope|s10_prose_lf.txt|4b 300 jumps after edits|0.0|16.9|16.9|22.0|18.9|p50_ms=0.002 p99_ms=0.004
+R|rope|s10_prose_lf.txt|5 Find (count ZQXJ_MARK, whole file)|3.0|16.9|16.9|22.0|18.9|matches=8
+R|rope|s10_prose_lf.txt|6 Save (stream + fsync + rename)|28.8|16.9|17.9|22.0|18.9|
+R|rope|s10_prose_lf.txt|7 undo all|25.4|15.8|16.9|22.6|19.6|ops=10000 p50_ms=0.0008 p99_ms=0.0029 identical_to_original=true
+R|rope|s10_prose_lf.txt|8 redo all|25.9|17.1|17.2|22.6|19.6|ops=10000 p50_ms=0.0007 p99_ms=0.0023 identical_to_edited=true
+PEAK|rope|s10_prose_lf.txt|peak_ws=23.0|peak_commit=20.0
+R|mmap|s10_prose_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s10_prose_lf.txt|1 open|0.3|0.1|1.1|4.1|0.7|
+R|mmap|s10_prose_lf.txt|1b first viewport (line N, 60 rows)|13.8|0.1|0.1|4.1|0.7|N=17772 bytes=18437
+R|mmap|s10_prose_lf.txt|2 line_count (index complete)|3.8|0.1|1.1|4.1|0.7|lines=33271
+R|mmap|s10_prose_lf.txt|3 300 random jumps|0.0|0.1|0.1|11.4|0.7|p50_ms=0.015 p99_ms=0.042
+R|mmap|s10_prose_lf.txt|4 10000 scattered edits|70.0|2.7|2.8|17.3|4.2|p50_ms=0.0061 p99_ms=0.0210 max_ms=0.20 heap_est=1.70MB
+R|mmap|s10_prose_lf.txt|4b 300 jumps after edits|0.0|2.7|2.7|17.3|4.2|p50_ms=0.011 p99_ms=0.020
+R|mmap|s10_prose_lf.txt|5 Find (count ZQXJ_MARK, whole file)|1.9|2.7|2.7|17.4|4.2|matches=8
+R|mmap|s10_prose_lf.txt|6 Save (stream + fsync + rename)|40.5|1.8|3.7|17.1|4.0|
+R|mmap|s10_prose_lf.txt|7 undo all|114.5|3.0|3.1|27.8|4.8|ops=10000 p50_ms=0.0083 p99_ms=0.0410 identical_to_original=true
+R|mmap|s10_prose_lf.txt|8 redo all|27.1|3.4|3.5|27.9|4.9|ops=10000 p50_ms=0.0006 p99_ms=0.0037 identical_to_edited=true
+PEAK|mmap|s10_prose_lf.txt|peak_ws=27.9|peak_commit=5.2
+R|chunked|s10_prose_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s10_prose_lf.txt|1 open|0.3|0.2|1.1|4.2|0.8|
+R|chunked|s10_prose_lf.txt|1b first viewport (line N, 60 rows)|22.0|0.2|0.2|4.2|0.8|N=17772 bytes=18437
+R|chunked|s10_prose_lf.txt|2 line_count (index complete)|0.0|0.2|0.2|4.2|0.8|lines=33271
+R|chunked|s10_prose_lf.txt|3 300 random jumps|0.0|2.1|2.1|6.1|2.9|p50_ms=0.029 p99_ms=0.128
+R|chunked|s10_prose_lf.txt|4 10000 scattered edits|269.8|4.7|4.8|9.4|6.2|p50_ms=0.0258 p99_ms=0.0869 max_ms=0.34 heap_est=3.70MB
+R|chunked|s10_prose_lf.txt|4b 300 jumps after edits|0.0|4.7|4.8|9.4|6.2|p50_ms=0.030 p99_ms=0.106
+R|chunked|s10_prose_lf.txt|5 Find (count ZQXJ_MARK, whole file)|25.8|4.7|4.7|9.7|6.5|matches=8
+R|chunked|s10_prose_lf.txt|6 Save (stream + fsync + rename)|64.3|3.8|5.7|9.2|5.9|
+R|chunked|s10_prose_lf.txt|7 undo all|325.8|7.0|7.1|12.5|9.6|ops=10000 p50_ms=0.0260 p99_ms=0.0991 identical_to_original=true
+R|chunked|s10_prose_lf.txt|8 redo all|50.9|7.4|7.5|12.9|9.9|ops=10000 p50_ms=0.0005 p99_ms=0.0024 identical_to_edited=true
+PEAK|chunked|s10_prose_lf.txt|peak_ws=12.9|peak_commit=9.9
+R|mmap|s10_prose_lf.txt|early-first-edit|18.9|0.1|1.1|4.1|0.7|open_ms=0.24
+R|chunked|s10_prose_lf.txt|early-first-edit|21.8|0.1|1.1|4.1|0.8|open_ms=0.16
+R|rope|s10_prose_lf.txt|early-first-edit|0.0|10.4|14.4|14.8|11.6|open_ms=44.52
+R|rope|s10_prose_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.6|
+R|rope|s10_prose_crlf.txt|1 open|56.1|10.4|14.4|14.7|11.6|
+R|rope|s10_prose_crlf.txt|1b first viewport (line N, 60 rows)|0.0|10.4|10.4|14.7|11.6|N=17712 bytes=16306
+R|rope|s10_prose_crlf.txt|2 line_count (index complete)|0.0|10.4|10.4|14.7|11.6|lines=33170
+R|rope|s10_prose_crlf.txt|3 300 random jumps|0.0|10.4|10.4|14.8|11.6|p50_ms=0.002 p99_ms=0.004
+R|rope|s10_prose_crlf.txt|4 10000 scattered edits|20.0|16.9|17.0|22.0|18.9|p50_ms=0.0016 p99_ms=0.0050 max_ms=0.11 heap_est=10.90MB
+R|rope|s10_prose_crlf.txt|4b 300 jumps after edits|0.0|16.9|16.9|22.0|18.9|p50_ms=0.002 p99_ms=0.004
+R|rope|s10_prose_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|3.2|16.9|16.9|22.0|18.9|matches=8
+R|rope|s10_prose_crlf.txt|6 Save (stream + fsync + rename)|30.5|16.9|17.9|22.0|18.9|
+R|rope|s10_prose_crlf.txt|7 undo all|24.7|15.8|16.9|22.6|19.6|ops=10000 p50_ms=0.0008 p99_ms=0.0025 identical_to_original=true
+R|rope|s10_prose_crlf.txt|8 redo all|25.1|17.2|17.2|22.6|19.6|ops=10000 p50_ms=0.0008 p99_ms=0.0029 identical_to_edited=true
+PEAK|rope|s10_prose_crlf.txt|peak_ws=23.0|peak_commit=20.0
+R|mmap|s10_prose_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s10_prose_crlf.txt|1 open|0.3|0.1|1.1|4.1|0.7|
+R|mmap|s10_prose_crlf.txt|1b first viewport (line N, 60 rows)|14.8|0.1|0.1|4.1|0.7|N=17712 bytes=16306
+R|mmap|s10_prose_crlf.txt|2 line_count (index complete)|3.9|0.1|1.1|4.1|0.7|lines=33170
+R|mmap|s10_prose_crlf.txt|3 300 random jumps|0.0|0.1|0.1|11.5|0.7|p50_ms=0.014 p99_ms=0.043
+R|mmap|s10_prose_crlf.txt|4 10000 scattered edits|79.7|2.7|2.8|17.4|4.3|p50_ms=0.0066 p99_ms=0.0296 max_ms=0.20 heap_est=1.70MB
+R|mmap|s10_prose_crlf.txt|4b 300 jumps after edits|0.0|2.7|2.7|17.4|4.3|p50_ms=0.011 p99_ms=0.023
+R|mmap|s10_prose_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|2.1|2.7|2.7|17.4|4.3|matches=8
+R|mmap|s10_prose_crlf.txt|6 Save (stream + fsync + rename)|41.9|1.8|3.7|17.0|4.0|
+R|mmap|s10_prose_crlf.txt|7 undo all|108.6|3.1|3.1|27.8|4.9|ops=10000 p50_ms=0.0075 p99_ms=0.0381 identical_to_original=true
+R|mmap|s10_prose_crlf.txt|8 redo all|25.2|3.4|3.5|28.0|5.0|ops=10000 p50_ms=0.0006 p99_ms=0.0026 identical_to_edited=true
+PEAK|mmap|s10_prose_crlf.txt|peak_ws=28.0|peak_commit=5.3
+R|chunked|s10_prose_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s10_prose_crlf.txt|1 open|0.3|0.1|1.1|4.2|0.8|
+R|chunked|s10_prose_crlf.txt|1b first viewport (line N, 60 rows)|15.5|0.1|0.1|4.2|1.8|N=17712 bytes=16306
+R|chunked|s10_prose_crlf.txt|2 line_count (index complete)|4.0|0.1|1.1|4.1|0.7|lines=33170
+R|chunked|s10_prose_crlf.txt|3 300 random jumps|0.0|2.1|2.1|6.2|2.9|p50_ms=0.026 p99_ms=0.111
+R|chunked|s10_prose_crlf.txt|4 10000 scattered edits|241.8|4.7|4.8|9.8|6.6|p50_ms=0.0230 p99_ms=0.0781 max_ms=0.30 heap_est=3.70MB
+R|chunked|s10_prose_crlf.txt|4b 300 jumps after edits|0.0|4.7|4.8|9.8|6.6|p50_ms=0.032 p99_ms=0.090
+R|chunked|s10_prose_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|30.2|4.7|4.7|9.9|6.7|matches=8
+R|chunked|s10_prose_crlf.txt|6 Save (stream + fsync + rename)|62.7|3.8|5.7|9.4|6.3|
+R|chunked|s10_prose_crlf.txt|7 undo all|336.9|7.1|7.1|12.7|9.7|ops=10000 p50_ms=0.0257 p99_ms=0.1068 identical_to_original=true
+R|chunked|s10_prose_crlf.txt|8 redo all|38.1|7.4|7.5|13.1|10.2|ops=10000 p50_ms=0.0004 p99_ms=0.0018 identical_to_edited=true
+PEAK|chunked|s10_prose_crlf.txt|peak_ws=13.1|peak_commit=10.2
+R|mmap|s10_prose_crlf.txt|early-first-edit|20.5|0.1|1.1|4.1|0.7|open_ms=0.40
+R|chunked|s10_prose_crlf.txt|early-first-edit|22.8|0.1|1.1|4.1|0.8|open_ms=0.20
+R|rope|s10_prose_crlf.txt|early-first-edit|0.0|10.4|14.4|14.8|11.6|open_ms=39.88
+R|rope|s100_code_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|rope|s100_code_lf.txt|1 open|137.4|103.8|107.8|110.5|109.3|
+R|rope|s100_code_lf.txt|1b first viewport (line N, 60 rows)|0.0|103.8|103.8|110.5|109.3|N=1139756 bytes=3053
+R|rope|s100_code_lf.txt|2 line_count (index complete)|0.0|103.8|103.8|110.5|109.3|lines=2233329
+R|rope|s100_code_lf.txt|3 300 random jumps|0.0|103.8|103.8|110.6|109.3|p50_ms=0.002 p99_ms=0.004
+R|rope|s100_code_lf.txt|4 10000 scattered edits|30.9|116.3|116.4|124.1|122.9|p50_ms=0.0023 p99_ms=0.0092 max_ms=0.16 heap_est=104.36MB
+R|rope|s100_code_lf.txt|4b 300 jumps after edits|0.0|116.3|116.3|124.1|122.9|p50_ms=0.002 p99_ms=0.005
+R|rope|s100_code_lf.txt|5 Find (count ZQXJ_MARK, whole file)|19.1|116.3|116.3|124.1|122.9|matches=558
+R|rope|s100_code_lf.txt|6 Save (stream + fsync + rename)|464.1|116.3|117.3|124.1|122.9|
+R|rope|s100_code_lf.txt|7 undo all|170.3|113.8|116.3|124.6|123.4|ops=10000 p50_ms=0.0012 p99_ms=0.0029 identical_to_original=true
+R|rope|s100_code_lf.txt|8 redo all|163.9|116.7|116.8|125.4|124.4|ops=10000 p50_ms=0.0010 p99_ms=0.0027 identical_to_edited=true
+PEAK|rope|s100_code_lf.txt|peak_ws=125.4|peak_commit=124.4
+R|mmap|s100_code_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s100_code_lf.txt|1 open|0.4|0.1|1.1|4.2|0.9|
+R|mmap|s100_code_lf.txt|1b first viewport (line N, 60 rows)|29.7|0.1|0.1|4.2|0.9|N=1139756 bytes=3053
+R|mmap|s100_code_lf.txt|2 line_count (index complete)|25.9|0.1|1.1|4.2|0.9|lines=2233329
+R|mmap|s100_code_lf.txt|3 300 random jumps|0.0|0.1|0.1|14.2|0.9|p50_ms=0.032 p99_ms=0.077
+R|mmap|s100_code_lf.txt|4 10000 scattered edits|111.6|2.7|2.8|95.3|4.4|p50_ms=0.0084 p99_ms=0.0393 max_ms=0.10 heap_est=1.71MB
+R|mmap|s100_code_lf.txt|4b 300 jumps after edits|0.0|2.7|2.7|95.9|4.4|p50_ms=0.025 p99_ms=0.053
+R|mmap|s100_code_lf.txt|5 Find (count ZQXJ_MARK, whole file)|11.5|2.7|2.7|107.4|4.4|matches=558
+R|mmap|s100_code_lf.txt|6 Save (stream + fsync + rename)|316.1|1.9|3.7|107.1|4.5|
+R|mmap|s100_code_lf.txt|7 undo all|300.5|3.1|3.2|207.9|5.3|ops=10000 p50_ms=0.0108 p99_ms=0.0463 identical_to_original=true
+R|mmap|s100_code_lf.txt|8 redo all|175.5|3.3|3.4|208.1|5.4|ops=10000 p50_ms=0.0005 p99_ms=0.0021 identical_to_edited=true
+PEAK|mmap|s100_code_lf.txt|peak_ws=208.1|peak_commit=5.5
+R|chunked|s100_code_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s100_code_lf.txt|1 open|0.3|0.1|1.1|4.1|0.8|
+R|chunked|s100_code_lf.txt|1b first viewport (line N, 60 rows)|72.2|0.1|0.1|4.1|0.8|N=1139756 bytes=3053
+R|chunked|s100_code_lf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.1|0.8|lines=2233329
+R|chunked|s100_code_lf.txt|3 300 random jumps|0.0|2.1|2.1|6.2|2.9|p50_ms=0.049 p99_ms=0.118
+R|chunked|s100_code_lf.txt|4 10000 scattered edits|433.3|4.7|4.8|9.6|6.5|p50_ms=0.0379 p99_ms=0.1398 max_ms=0.73 heap_est=3.71MB
+R|chunked|s100_code_lf.txt|4b 300 jumps after edits|0.1|4.7|4.8|9.7|6.5|p50_ms=0.060 p99_ms=0.133
+R|chunked|s100_code_lf.txt|5 Find (count ZQXJ_MARK, whole file)|73.6|4.7|4.9|10.0|6.9|matches=558
+R|chunked|s100_code_lf.txt|6 Save (stream + fsync + rename)|519.5|3.9|5.9|9.7|6.6|
+R|chunked|s100_code_lf.txt|7 undo all|692.5|7.1|7.2|12.9|9.9|ops=10000 p50_ms=0.0409 p99_ms=0.1346 identical_to_original=true
+R|chunked|s100_code_lf.txt|8 redo all|236.5|7.3|7.5|13.2|10.4|ops=10000 p50_ms=0.0004 p99_ms=0.0019 identical_to_edited=true
+PEAK|chunked|s100_code_lf.txt|peak_ws=13.2|peak_commit=10.4
+R|mmap|s100_code_lf.txt|early-first-edit|57.3|0.1|1.1|4.1|0.9|open_ms=0.22
+R|chunked|s100_code_lf.txt|early-first-edit|60.7|0.1|1.1|4.2|0.8|open_ms=0.18
+R|rope|s100_code_lf.txt|early-first-edit|0.0|103.8|107.8|110.5|109.3|open_ms=142.64
+R|rope|s100_code_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|rope|s100_code_crlf.txt|1 open|163.4|103.8|107.8|110.5|109.3|
+R|rope|s100_code_crlf.txt|1b first viewport (line N, 60 rows)|0.0|103.8|103.8|110.5|109.3|N=1115506 bytes=2606
+R|rope|s100_code_crlf.txt|2 line_count (index complete)|0.0|103.8|103.8|110.5|109.3|lines=2186782
+R|rope|s100_code_crlf.txt|3 300 random jumps|0.0|103.8|103.8|110.5|109.3|p50_ms=0.003 p99_ms=0.004
+R|rope|s100_code_crlf.txt|4 10000 scattered edits|39.1|116.4|116.5|124.1|122.9|p50_ms=0.0030 p99_ms=0.0128 max_ms=0.26 heap_est=104.36MB
+R|rope|s100_code_crlf.txt|4b 300 jumps after edits|0.0|116.4|116.4|124.1|122.9|p50_ms=0.002 p99_ms=0.005
+R|rope|s100_code_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|23.5|116.4|116.4|124.1|122.9|matches=546
+R|rope|s100_code_crlf.txt|6 Save (stream + fsync + rename)|483.1|116.4|117.4|124.1|122.9|
+R|rope|s100_code_crlf.txt|7 undo all|208.9|113.8|116.4|124.7|123.5|ops=10000 p50_ms=0.0016 p99_ms=0.0045 identical_to_original=true
+R|rope|s100_code_crlf.txt|8 redo all|197.1|116.8|116.9|125.2|124.1|ops=10000 p50_ms=0.0012 p99_ms=0.0033 identical_to_edited=true
+PEAK|rope|s100_code_crlf.txt|peak_ws=125.2|peak_commit=124.1
+R|mmap|s100_code_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s100_code_crlf.txt|1 open|0.4|0.1|1.1|4.2|2.0|
+R|mmap|s100_code_crlf.txt|1b first viewport (line N, 60 rows)|38.8|1.1|1.1|4.3|1.9|N=1115506 bytes=2606
+R|mmap|s100_code_crlf.txt|2 line_count (index complete)|34.1|0.1|1.1|4.2|0.9|lines=2186782
+R|mmap|s100_code_crlf.txt|3 300 random jumps|0.0|0.1|0.1|13.9|0.9|p50_ms=0.047 p99_ms=0.109
+R|mmap|s100_code_crlf.txt|4 10000 scattered edits|132.9|2.7|2.8|95.0|4.4|p50_ms=0.0100 p99_ms=0.0460 max_ms=0.16 heap_est=1.71MB
+R|mmap|s100_code_crlf.txt|4b 300 jumps after edits|0.0|2.7|2.7|95.4|4.4|p50_ms=0.031 p99_ms=0.066
+R|mmap|s100_code_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|11.3|2.7|2.7|107.4|4.4|matches=546
+R|mmap|s100_code_crlf.txt|6 Save (stream + fsync + rename)|349.5|1.9|3.7|107.0|4.1|
+R|mmap|s100_code_crlf.txt|7 undo all|295.2|3.1|3.2|207.9|5.3|ops=10000 p50_ms=0.0106 p99_ms=0.0466 identical_to_original=true
+R|mmap|s100_code_crlf.txt|8 redo all|146.9|3.4|3.5|208.1|5.4|ops=10000 p50_ms=0.0003 p99_ms=0.0013 identical_to_edited=true
+PEAK|mmap|s100_code_crlf.txt|peak_ws=208.1|peak_commit=5.4
+R|chunked|s100_code_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s100_code_crlf.txt|1 open|0.4|0.1|1.1|4.2|0.8|
+R|chunked|s100_code_crlf.txt|1b first viewport (line N, 60 rows)|59.2|0.1|0.1|4.2|0.8|N=1115506 bytes=2606
+R|chunked|s100_code_crlf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.2|0.8|lines=2186782
+R|chunked|s100_code_crlf.txt|3 300 random jumps|0.1|2.1|2.1|6.2|2.9|p50_ms=0.053 p99_ms=0.140
+R|chunked|s100_code_crlf.txt|4 10000 scattered edits|418.7|4.7|4.8|9.7|6.5|p50_ms=0.0371 p99_ms=0.1345 max_ms=0.62 heap_est=3.71MB
+R|chunked|s100_code_crlf.txt|4b 300 jumps after edits|0.0|4.7|4.8|9.7|6.5|p50_ms=0.050 p99_ms=0.098
+R|chunked|s100_code_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|55.5|4.7|4.8|10.1|7.0|matches=546
+R|chunked|s100_code_crlf.txt|6 Save (stream + fsync + rename)|377.9|3.9|5.8|9.2|5.9|
+R|chunked|s100_code_crlf.txt|7 undo all|583.7|7.1|7.2|12.9|9.9|ops=10000 p50_ms=0.0345 p99_ms=0.1119 identical_to_original=true
+R|chunked|s100_code_crlf.txt|8 redo all|191.7|7.4|7.5|13.3|10.3|ops=10000 p50_ms=0.0003 p99_ms=0.0012 identical_to_edited=true
+PEAK|chunked|s100_code_crlf.txt|peak_ws=13.3|peak_commit=10.3
+R|mmap|s100_code_crlf.txt|early-first-edit|54.7|0.1|1.1|4.1|0.9|open_ms=0.31
+R|chunked|s100_code_crlf.txt|early-first-edit|56.2|0.1|1.1|4.2|0.8|open_ms=0.18
+R|rope|s100_code_crlf.txt|early-first-edit|0.0|103.8|107.8|110.5|109.3|open_ms=174.03
+R|rope|s100_prose_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|rope|s100_prose_lf.txt|1 open|409.5|103.8|107.8|110.5|109.3|
+R|rope|s100_prose_lf.txt|1b first viewport (line N, 60 rows)|0.0|103.8|103.8|110.5|109.3|N=177725 bytes=18610
+R|rope|s100_prose_lf.txt|2 line_count (index complete)|0.0|103.8|103.8|110.5|109.3|lines=332106
+R|rope|s100_prose_lf.txt|3 300 random jumps|0.0|103.8|103.8|110.5|109.3|p50_ms=0.002 p99_ms=0.004
+R|rope|s100_prose_lf.txt|4 10000 scattered edits|28.7|116.2|116.3|123.8|122.6|p50_ms=0.0022 p99_ms=0.0081 max_ms=0.15 heap_est=104.36MB
+R|rope|s100_prose_lf.txt|4b 300 jumps after edits|0.0|116.2|116.2|123.8|122.6|p50_ms=0.003 p99_ms=0.004
+R|rope|s100_prose_lf.txt|5 Find (count ZQXJ_MARK, whole file)|22.6|116.2|116.2|123.8|122.6|matches=83
+R|rope|s100_prose_lf.txt|6 Save (stream + fsync + rename)|333.1|116.2|117.2|123.9|122.6|
+R|rope|s100_prose_lf.txt|7 undo all|166.8|113.6|116.2|124.4|123.3|ops=10000 p50_ms=0.0012 p99_ms=0.0027 identical_to_original=true
+R|rope|s100_prose_lf.txt|8 redo all|154.6|116.6|116.7|125.2|124.1|ops=10000 p50_ms=0.0010 p99_ms=0.0031 identical_to_edited=true
+PEAK|rope|s100_prose_lf.txt|peak_ws=125.2|peak_commit=124.1
+R|mmap|s100_prose_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s100_prose_lf.txt|1 open|0.4|0.1|1.1|4.2|0.9|
+R|mmap|s100_prose_lf.txt|1b first viewport (line N, 60 rows)|176.3|0.1|0.1|4.2|0.9|N=177725 bytes=18610
+R|mmap|s100_prose_lf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.2|0.9|lines=332106
+R|mmap|s100_prose_lf.txt|3 300 random jumps|0.0|0.1|0.1|17.8|0.9|p50_ms=0.032 p99_ms=0.065
+R|mmap|s100_prose_lf.txt|4 10000 scattered edits|113.2|2.7|2.8|95.0|4.4|p50_ms=0.0085 p99_ms=0.0412 max_ms=0.19 heap_est=1.71MB
+R|mmap|s100_prose_lf.txt|4b 300 jumps after edits|0.0|2.7|2.7|95.7|4.4|p50_ms=0.012 p99_ms=0.031
+R|mmap|s100_prose_lf.txt|5 Find (count ZQXJ_MARK, whole file)|9.3|2.7|2.7|107.4|4.4|matches=83
+R|mmap|s100_prose_lf.txt|6 Save (stream + fsync + rename)|392.0|1.9|3.7|107.0|4.2|
+R|mmap|s100_prose_lf.txt|7 undo all|286.2|3.1|3.1|207.9|5.2|ops=10000 p50_ms=0.0095 p99_ms=0.0479 identical_to_original=true
+R|mmap|s100_prose_lf.txt|8 redo all|169.1|3.3|3.4|208.1|5.3|ops=10000 p50_ms=0.0004 p99_ms=0.0014 identical_to_edited=true
+PEAK|mmap|s100_prose_lf.txt|peak_ws=208.1|peak_commit=5.5
+R|chunked|s100_prose_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s100_prose_lf.txt|1 open|0.3|0.1|1.1|4.2|0.8|
+R|chunked|s100_prose_lf.txt|1b first viewport (line N, 60 rows)|242.0|0.1|0.1|4.2|0.8|N=177725 bytes=18610
+R|chunked|s100_prose_lf.txt|2 line_count (index complete)|0.0|0.1|0.1|4.2|0.8|lines=332106
+R|chunked|s100_prose_lf.txt|3 300 random jumps|0.0|2.1|2.1|6.2|2.9|p50_ms=0.040 p99_ms=0.150
+R|chunked|s100_prose_lf.txt|4 10000 scattered edits|362.4|4.7|4.8|9.7|6.6|p50_ms=0.0317 p99_ms=0.1156 max_ms=0.51 heap_est=3.71MB
+R|chunked|s100_prose_lf.txt|4b 300 jumps after edits|0.0|4.7|4.8|9.7|6.6|p50_ms=0.044 p99_ms=0.183
+R|chunked|s100_prose_lf.txt|5 Find (count ZQXJ_MARK, whole file)|61.9|4.7|4.8|10.2|7.2|matches=83
+R|chunked|s100_prose_lf.txt|6 Save (stream + fsync + rename)|448.1|3.9|5.8|9.8|6.8|
+R|chunked|s100_prose_lf.txt|7 undo all|592.0|7.1|7.2|12.9|10.0|ops=10000 p50_ms=0.0327 p99_ms=0.1057 identical_to_original=true
+R|chunked|s100_prose_lf.txt|8 redo all|186.8|7.4|7.5|13.3|10.2|ops=10000 p50_ms=0.0004 p99_ms=0.0011 identical_to_edited=true
+PEAK|chunked|s100_prose_lf.txt|peak_ws=13.3|peak_commit=10.2
+R|mmap|s100_prose_lf.txt|early-first-edit|244.0|0.1|1.1|4.1|0.9|open_ms=0.32
+R|chunked|s100_prose_lf.txt|early-first-edit|185.4|0.1|1.1|4.2|0.8|open_ms=0.36
+R|rope|s100_prose_lf.txt|early-first-edit|0.0|103.8|107.8|110.5|109.3|open_ms=415.84
+R|rope|s100_prose_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|rope|s100_prose_crlf.txt|1 open|392.6|103.8|107.8|110.5|109.3|
+R|rope|s100_prose_crlf.txt|1b first viewport (line N, 60 rows)|0.0|103.8|103.8|110.5|109.3|N=177124 bytes=18334
+R|rope|s100_prose_crlf.txt|2 line_count (index complete)|0.0|103.8|103.8|110.5|109.3|lines=331073
+R|rope|s100_prose_crlf.txt|3 300 random jumps|0.0|103.8|103.8|110.5|109.3|p50_ms=0.002 p99_ms=0.005
+R|rope|s100_prose_crlf.txt|4 10000 scattered edits|31.2|116.2|116.3|123.8|122.6|p50_ms=0.0023 p99_ms=0.0112 max_ms=0.30 heap_est=104.36MB
+R|rope|s100_prose_crlf.txt|4b 300 jumps after edits|0.0|116.2|116.2|123.8|122.6|p50_ms=0.003 p99_ms=0.007
+R|rope|s100_prose_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|20.2|116.2|116.2|123.8|122.6|matches=82
+R|rope|s100_prose_crlf.txt|6 Save (stream + fsync + rename)|233.3|116.2|117.2|123.8|122.6|
+R|rope|s100_prose_crlf.txt|7 undo all|157.8|113.8|116.2|124.4|123.3|ops=10000 p50_ms=0.0012 p99_ms=0.0036 identical_to_original=true
+R|rope|s100_prose_crlf.txt|8 redo all|148.3|116.6|116.7|125.5|124.4|ops=10000 p50_ms=0.0011 p99_ms=0.0033 identical_to_edited=true
+PEAK|rope|s100_prose_crlf.txt|peak_ws=125.5|peak_commit=124.4
+R|mmap|s100_prose_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s100_prose_crlf.txt|1 open|0.7|0.1|1.1|4.1|0.9|
+R|mmap|s100_prose_crlf.txt|1b first viewport (line N, 60 rows)|121.9|1.1|1.1|4.2|1.9|N=177124 bytes=18334
+R|mmap|s100_prose_crlf.txt|2 line_count (index complete)|81.6|0.1|1.1|4.2|0.9|lines=331073
+R|mmap|s100_prose_crlf.txt|3 300 random jumps|0.0|0.1|0.1|17.4|0.9|p50_ms=0.026 p99_ms=0.049
+R|mmap|s100_prose_crlf.txt|4 10000 scattered edits|114.3|2.7|2.8|95.1|4.5|p50_ms=0.0089 p99_ms=0.0390 max_ms=0.12 heap_est=1.71MB
+R|mmap|s100_prose_crlf.txt|4b 300 jumps after edits|0.0|2.7|2.7|96.0|4.5|p50_ms=0.013 p99_ms=0.030
+R|mmap|s100_prose_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|14.9|2.7|2.7|107.4|4.5|matches=82
+R|mmap|s100_prose_crlf.txt|6 Save (stream + fsync + rename)|395.5|1.9|3.7|107.0|4.3|
+R|mmap|s100_prose_crlf.txt|7 undo all|308.3|3.1|3.2|207.8|5.2|ops=10000 p50_ms=0.0109 p99_ms=0.0576 identical_to_original=true
+R|mmap|s100_prose_crlf.txt|8 redo all|152.9|3.4|3.4|208.0|5.2|ops=10000 p50_ms=0.0005 p99_ms=0.0020 identical_to_edited=true
+PEAK|mmap|s100_prose_crlf.txt|peak_ws=208.0|peak_commit=5.5
+R|chunked|s100_prose_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s100_prose_crlf.txt|1 open|0.4|0.1|1.1|4.2|0.8|
+R|chunked|s100_prose_crlf.txt|1b first viewport (line N, 60 rows)|120.2|0.1|0.1|4.2|0.8|N=177124 bytes=18334
+R|chunked|s100_prose_crlf.txt|2 line_count (index complete)|92.0|0.1|1.1|4.2|0.8|lines=331073
+R|chunked|s100_prose_crlf.txt|3 300 random jumps|0.0|2.1|2.1|6.2|2.9|p50_ms=0.026 p99_ms=0.098
+R|chunked|s100_prose_crlf.txt|4 10000 scattered edits|393.2|4.7|4.8|9.6|6.5|p50_ms=0.0336 p99_ms=0.1281 max_ms=0.61 heap_est=3.71MB
+R|chunked|s100_prose_crlf.txt|4b 300 jumps after edits|0.0|4.7|4.7|9.6|6.5|p50_ms=0.040 p99_ms=0.118
+R|chunked|s100_prose_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|49.0|4.7|4.8|10.3|7.3|matches=82
+R|chunked|s100_prose_crlf.txt|6 Save (stream + fsync + rename)|445.4|3.9|5.8|9.5|6.3|
+R|chunked|s100_prose_crlf.txt|7 undo all|584.3|7.1|7.2|12.9|9.9|ops=10000 p50_ms=0.0345 p99_ms=0.1075 identical_to_original=true
+R|chunked|s100_prose_crlf.txt|8 redo all|179.4|7.4|7.5|13.5|10.6|ops=10000 p50_ms=0.0003 p99_ms=0.0011 identical_to_edited=true
+PEAK|chunked|s100_prose_crlf.txt|peak_ws=13.5|peak_commit=10.6
+R|mmap|s100_prose_crlf.txt|early-first-edit|196.2|0.1|1.1|4.1|0.9|open_ms=0.34
+R|chunked|s100_prose_crlf.txt|early-first-edit|185.0|0.1|1.1|4.1|0.8|open_ms=0.16
+R|rope|s100_prose_crlf.txt|early-first-edit|0.1|103.8|107.8|110.5|109.3|open_ms=403.38
+R|rope|s1000000000_code_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|rope|s1000000000_code_lf.txt|1 open|1524.4|989.5|993.5|1017.9|1038.9|
+R|rope|s1000000000_code_lf.txt|1b first viewport (line N, 60 rows)|0.0|989.5|989.5|1017.9|1038.9|N=10869566 bytes=2719
+R|rope|s1000000000_code_lf.txt|2 line_count (index complete)|0.0|989.5|989.5|1017.9|1038.9|lines=21298399
+R|rope|s1000000000_code_lf.txt|3 300 random jumps|0.0|989.5|989.5|1017.9|1038.9|p50_ms=0.004 p99_ms=0.007
+R|rope|s1000000000_code_lf.txt|4 10000 scattered edits|53.3|1003.6|1003.7|1033.1|1053.6|p50_ms=0.0043 p99_ms=0.0217 max_ms=0.18 heap_est=990.87MB
+R|rope|s1000000000_code_lf.txt|4b 300 jumps after edits|0.0|1003.6|1003.6|1033.2|1053.6|p50_ms=0.004 p99_ms=0.006
+R|rope|s1000000000_code_lf.txt|5 Find (count ZQXJ_MARK, whole file)|218.1|1003.6|1003.6|1033.2|1053.6|matches=5324
+R|rope|s1000000000_code_lf.txt|6 Save (stream + fsync + rename)|3232.9|1003.6|1004.6|1033.2|1053.6|
+R|rope|s1000000000_code_lf.txt|7 undo all|2326.5|1001.0|1003.6|1033.7|1054.2|ops=10000 p50_ms=0.0027 p99_ms=0.0069 identical_to_original=true
+R|rope|s1000000000_code_lf.txt|8 redo all|2351.7|1004.2|1004.3|1034.8|1055.4|ops=10000 p50_ms=0.0025 p99_ms=0.0063 identical_to_edited=true
+PEAK|rope|s1000000000_code_lf.txt|peak_ws=1034.8|peak_commit=1055.4
+R|mmap|s1000000000_code_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s1000000000_code_lf.txt|1 open|0.4|0.2|1.2|4.4|2.8|
+R|mmap|s1000000000_code_lf.txt|1b first viewport (line N, 60 rows)|571.5|0.2|0.2|4.4|2.8|N=10869566 bytes=2719
+R|mmap|s1000000000_code_lf.txt|2 line_count (index complete)|0.0|0.2|0.2|4.5|2.8|lines=21298399
+R|mmap|s1000000000_code_lf.txt|3 300 random jumps|0.0|0.2|0.2|15.2|2.8|p50_ms=0.041 p99_ms=0.095
+R|mmap|s1000000000_code_lf.txt|4 10000 scattered edits|253.0|2.8|2.9|282.3|6.2|p50_ms=0.0224 p99_ms=0.0809 max_ms=0.46 heap_est=1.82MB
+R|mmap|s1000000000_code_lf.txt|4b 300 jumps after edits|0.0|2.8|2.8|288.9|6.2|p50_ms=0.040 p99_ms=0.085
+R|mmap|s1000000000_code_lf.txt|5 Find (count ZQXJ_MARK, whole file)|140.0|2.8|2.8|961.2|6.2|matches=5324
+R|mmap|s1000000000_code_lf.txt|6 Save (stream + fsync + rename)|4228.1|2.1|3.9|961.0|7.9|
+R|mmap|s1000000000_code_lf.txt|7 undo all|2819.8|3.3|3.4|1915.5|8.8|ops=10000 p50_ms=0.0315 p99_ms=0.0779 identical_to_original=true
+R|mmap|s1000000000_code_lf.txt|8 redo all|2134.5|3.6|3.7|1915.7|8.9|ops=10000 p50_ms=0.0006 p99_ms=0.0019 identical_to_edited=true
+PEAK|mmap|s1000000000_code_lf.txt|peak_ws=1915.7|peak_commit=8.9
+R|chunked|s1000000000_code_lf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s1000000000_code_lf.txt|1 open|0.4|0.3|1.1|4.3|2.0|
+R|chunked|s1000000000_code_lf.txt|1b first viewport (line N, 60 rows)|274.3|1.3|1.3|4.4|2.0|N=10869566 bytes=2719
+R|chunked|s1000000000_code_lf.txt|2 line_count (index complete)|260.8|0.4|1.3|4.5|1.1|lines=21298399
+R|chunked|s1000000000_code_lf.txt|3 300 random jumps|0.0|2.2|2.3|6.4|3.1|p50_ms=0.044 p99_ms=0.087
+R|chunked|s1000000000_code_lf.txt|4 10000 scattered edits|527.4|4.8|4.9|9.7|6.5|p50_ms=0.0475 p99_ms=0.1329 max_ms=0.62 heap_est=3.82MB
+R|chunked|s1000000000_code_lf.txt|4b 300 jumps after edits|0.1|4.8|4.9|9.7|6.5|p50_ms=0.076 p99_ms=0.178
+R|chunked|s1000000000_code_lf.txt|5 Find (count ZQXJ_MARK, whole file)|537.4|4.8|5.8|10.0|6.8|matches=5324
+R|chunked|s1000000000_code_lf.txt|6 Save (stream + fsync + rename)|4695.5|4.1|6.9|10.2|7.0|
+R|chunked|s1000000000_code_lf.txt|7 undo all|3301.5|7.3|8.3|13.7|10.9|ops=10000 p50_ms=0.0709 p99_ms=0.1914 identical_to_original=true
+R|chunked|s1000000000_code_lf.txt|8 redo all|2691.1|7.6|8.6|13.8|10.9|ops=10000 p50_ms=0.0006 p99_ms=0.0019 identical_to_edited=true
+PEAK|chunked|s1000000000_code_lf.txt|peak_ws=14.9|peak_commit=11.9
+R|mmap|s1000000000_code_lf.txt|early-first-edit|611.5|0.2|1.2|4.3|2.8|open_ms=0.26
+R|chunked|s1000000000_code_lf.txt|early-first-edit|612.7|0.3|1.3|4.4|1.0|open_ms=0.20
+R|rope|s1000000000_code_lf.txt|early-first-edit|0.0|989.5|993.5|1017.9|1038.9|open_ms=1367.73
+R|rope|s1000000000_prose_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|rope|s1000000000_prose_crlf.txt|1 open|4836.3|989.5|993.5|1017.8|1038.9|
+R|rope|s1000000000_prose_crlf.txt|1b first viewport (line N, 60 rows)|0.0|989.5|989.5|1017.9|1038.9|N=1689189 bytes=20450
+R|rope|s1000000000_prose_crlf.txt|2 line_count (index complete)|0.0|989.5|989.5|1017.9|1038.9|lines=3153883
+R|rope|s1000000000_prose_crlf.txt|3 300 random jumps|0.0|989.5|989.5|1017.9|1038.9|p50_ms=0.003 p99_ms=0.009
+R|rope|s1000000000_prose_crlf.txt|4 10000 scattered edits|52.8|1003.4|1003.4|1032.9|1053.4|p50_ms=0.0041 p99_ms=0.0253 max_ms=0.31 heap_est=990.87MB
+R|rope|s1000000000_prose_crlf.txt|4b 300 jumps after edits|0.0|1003.4|1003.4|1032.9|1053.4|p50_ms=0.004 p99_ms=0.007
+R|rope|s1000000000_prose_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|176.3|1003.4|1003.4|1032.9|1053.4|matches=788
+R|rope|s1000000000_prose_crlf.txt|6 Save (stream + fsync + rename)|4358.1|1003.4|1004.4|1032.9|1053.4|
+R|rope|s1000000000_prose_crlf.txt|7 undo all|2224.6|1000.9|1003.4|1033.5|1053.9|ops=10000 p50_ms=0.0017 p99_ms=0.0041 identical_to_original=true
+R|rope|s1000000000_prose_crlf.txt|8 redo all|2261.3|1004.0|1004.1|1034.8|1055.4|ops=10000 p50_ms=0.0022 p99_ms=0.0055 identical_to_edited=true
+PEAK|rope|s1000000000_prose_crlf.txt|peak_ws=1034.8|peak_commit=1055.4
+R|mmap|s1000000000_prose_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|mmap|s1000000000_prose_crlf.txt|1 open|0.5|0.2|1.2|4.4|2.8|
+R|mmap|s1000000000_prose_crlf.txt|1b first viewport (line N, 60 rows)|991.1|0.2|0.2|4.4|2.8|N=1689189 bytes=20450
+R|mmap|s1000000000_prose_crlf.txt|2 line_count (index complete)|987.4|0.2|1.2|4.4|2.8|lines=3153883
+R|mmap|s1000000000_prose_crlf.txt|3 300 random jumps|0.0|0.2|0.2|19.0|2.8|p50_ms=0.044 p99_ms=0.099
+R|mmap|s1000000000_prose_crlf.txt|4 10000 scattered edits|308.2|2.8|2.9|284.3|6.3|p50_ms=0.0280 p99_ms=0.0779 max_ms=0.24 heap_est=1.82MB
+R|mmap|s1000000000_prose_crlf.txt|4b 300 jumps after edits|0.0|2.9|2.9|293.8|6.3|p50_ms=0.045 p99_ms=0.084
+R|mmap|s1000000000_prose_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|135.3|2.9|2.9|961.3|6.3|matches=788
+R|mmap|s1000000000_prose_crlf.txt|6 Save (stream + fsync + rename)|5241.7|2.1|4.0|961.1|8.0|
+R|mmap|s1000000000_prose_crlf.txt|7 undo all|2874.6|3.3|3.4|1915.6|8.9|ops=10000 p50_ms=0.0277 p99_ms=0.0758 identical_to_original=true
+R|mmap|s1000000000_prose_crlf.txt|8 redo all|2207.8|3.7|3.7|1915.7|9.1|ops=10000 p50_ms=0.0006 p99_ms=0.0019 identical_to_edited=true
+PEAK|mmap|s1000000000_prose_crlf.txt|peak_ws=1915.7|peak_commit=9.1
+R|chunked|s1000000000_prose_crlf.txt|0 process start|0.0|0.1|0.1|3.9|0.7|
+R|chunked|s1000000000_prose_crlf.txt|1 open|0.4|0.3|1.2|4.3|0.9|
+R|chunked|s1000000000_prose_crlf.txt|1b first viewport (line N, 60 rows)|1767.5|0.3|0.3|4.3|0.9|N=1689189 bytes=20450
+R|chunked|s1000000000_prose_crlf.txt|2 line_count (index complete)|0.0|0.3|0.3|4.3|0.9|lines=3153883
+R|chunked|s1000000000_prose_crlf.txt|3 300 random jumps|0.0|2.2|2.3|6.4|3.1|p50_ms=0.025 p99_ms=0.098
+R|chunked|s1000000000_prose_crlf.txt|4 10000 scattered edits|602.0|4.9|4.9|9.7|6.5|p50_ms=0.0532 p99_ms=0.1598 max_ms=0.75 heap_est=3.82MB
+R|chunked|s1000000000_prose_crlf.txt|4b 300 jumps after edits|0.1|4.9|4.9|9.7|6.5|p50_ms=0.072 p99_ms=0.167
+R|chunked|s1000000000_prose_crlf.txt|5 Find (count ZQXJ_MARK, whole file)|378.3|4.9|5.8|10.8|7.7|matches=788
+R|chunked|s1000000000_prose_crlf.txt|6 Save (stream + fsync + rename)|6473.1|4.1|7.0|9.7|6.4|
+R|chunked|s1000000000_prose_crlf.txt|7 undo all|3149.6|7.3|8.3|13.5|10.5|ops=10000 p50_ms=0.0520 p99_ms=0.1553 identical_to_original=true
+R|chunked|s1000000000_prose_crlf.txt|8 redo all|2396.0|7.7|8.6|14.0|11.0|ops=10000 p50_ms=0.0007 p99_ms=0.0021 identical_to_edited=true
+PEAK|chunked|s1000000000_prose_crlf.txt|peak_ws=14.3|peak_commit=12.1
+R|mmap|s1000000000_prose_crlf.txt|early-first-edit|1644.0|0.2|1.2|4.3|2.8|open_ms=0.22
+R|chunked|s1000000000_prose_crlf.txt|early-first-edit|1688.3|0.3|1.3|4.4|1.0|open_ms=0.14
+R|rope|s1000000000_prose_crlf.txt|early-first-edit|0.1|989.5|993.5|1017.9|1038.9|open_ms=3901.79

@@ -1,0 +1,2 @@
+<!-- Brouillon icon, small-size variant (16/20/24/32 px): thicker bar and outline, tighter margins so the hollow ghost cursor survives downscaling. Same palette as brouillon-icon.svg. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#1a1b26"/><rect x="5" y="2" width="8" height="28" rx="3" fill="#7aa2f7"/><rect x="18" y="3.5" width="7.5" height="25" rx="3" fill="none" stroke="#bb9af7" stroke-width="3.5"/></svg>

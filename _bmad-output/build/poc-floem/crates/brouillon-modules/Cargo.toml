@@ -1,0 +1,22 @@
+[package]
+name = "brouillon-modules"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+publish = false
+description = "Optional modules on demand: absent by default, offered on first open of their file kind, installed only after an explicit click (signed, pinned hash), loaded at first request and kept until exit. No UI."
+
+[dependencies]
+brouillon-core = { path = "../brouillon-core" }
+# Reuses the update client (rustls, no new TLS stack), the Ed25519 verifier and the key list.
+brouillon-update = { path = "../brouillon-update" }
+sha2.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+tiny_http = "0.12"
+ed25519-dalek = { version = "2", default-features = false, features = ["std"] }

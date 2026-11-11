@@ -1,0 +1,48 @@
+# C++ builds on the C definition (`extends`) and adds its own words.
+name = "C++"
+extends = "C"
+extensions = ["cpp", "cc", "cxx", "c++", "hpp", "hh", "hxx", "h++", "ipp", "tpp", "ino"]
+
+# Strings are replaced as a whole (a child list replaces the inherited one).
+[[string]]
+open = 'R"('
+close = ')"'
+multiline = true
+
+[[string]]
+open = '"'
+escape = '\'
+
+[[string]]
+open = "'"
+escape = '\'
+
+[[keywords]]
+name = "Keywords"
+words = '''
+alignas alignof and and_eq asm bitand bitor catch class compl concept constexpr
+consteval constinit const_cast co_await co_return co_yield decltype delete
+dynamic_cast explicit export final friend mutable namespace new noexcept not
+not_eq operator or or_eq override private protected public reinterpret_cast
+requires static_assert static_cast template this thread_local throw try typeid
+typename using virtual xor xor_eq
+'''
+
+[[keywords]]
+name = "Types"
+words = '''
+char8_t char16_t char32_t nullptr_t string wstring string_view vector map
+unordered_map set unordered_set list deque array unique_ptr shared_ptr weak_ptr
+optional variant tuple pair function span
+'''
+
+[[keywords]]
+name = "Library"
+words = '''
+cout cin cerr endl make_unique make_shared make_pair make_tuple move forward swap
+sort find begin end push_back emplace_back size empty
+'''
+
+[[keywords]]
+name = "Constants"
+words = "nullptr"

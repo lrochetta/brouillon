@@ -1,0 +1,59 @@
+name = "Markdown"
+extensions = ["md", "markdown", "mdx", "mkd", "mdown"]
+case_sensitive = true
+number = "none"
+block_comments = [["<!--", "-->"]]
+
+# Headings and quotes colour the whole line.
+[[line_start]]
+prefix = "#"
+kind = "keyword1"
+
+[[line_start]]
+prefix = ">"
+kind = "comment"
+
+# Fenced code (``` and ~~~): multi-line, ends at the matching fence.
+[[string]]
+open = "```"
+multiline = true
+escapes = false
+
+[[string]]
+open = "~~~"
+multiline = true
+escapes = false
+
+[[string]]
+open = "``"
+check_closing = true
+escapes = false
+
+[[string]]
+open = "`"
+check_closing = true
+escapes = false
+
+[[string]]
+open = "**"
+check_closing = true
+kind = "keyword2"
+escapes = false
+
+[[string]]
+open = "__"
+check_closing = true
+kind = "keyword2"
+escapes = false
+
+[[string]]
+open = "*"
+check_closing = true
+kind = "keyword3"
+escapes = false
+
+[[string]]
+open = "_"
+check_closing = true
+kind = "keyword3"
+escapes = false

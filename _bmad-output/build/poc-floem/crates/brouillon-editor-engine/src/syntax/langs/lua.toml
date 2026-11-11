@@ -1,0 +1,51 @@
+name = "Lua"
+extensions = ["lua", "luau", "rockspec"]
+shebang = ["lua", "luajit"]
+case_sensitive = true
+functions = true
+operators = "+-*/%^#=<>~"
+line_comments = ["--"]
+block_comments = [["--[[", "]]"], ["--[=[", "]=]"]]
+
+[[string]]
+open = "[==["
+close = "]==]"
+multiline = true
+
+[[string]]
+open = "[=["
+close = "]=]"
+multiline = true
+
+[[string]]
+open = "[["
+close = "]]"
+multiline = true
+
+[[string]]
+open = '"'
+escape = '\'
+
+[[string]]
+open = "'"
+escape = '\'
+
+[[keywords]]
+name = "Keywords"
+words = "and break do else elseif end for function goto if in local not or repeat return then until while"
+
+[[keywords]]
+name = "Builtins"
+words = '''
+assert collectgarbage dofile error getmetatable ipairs load loadfile next pairs
+pcall print rawequal rawget rawlen rawset require select setmetatable tonumber
+tostring type xpcall
+'''
+
+[[keywords]]
+name = "Libraries"
+words = "string table math io os coroutine debug utf8 package _G _ENV self"
+
+[[keywords]]
+name = "Constants"
+words = "true false nil"

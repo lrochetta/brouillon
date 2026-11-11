@@ -1,0 +1,11 @@
+[package]
+name = "icon-gen"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "Renders assets/brand/*.svg to PNG / ICO / iconset. Not part of the Brouillon workspace."
+
+[workspace]
+
+[dependencies]
+resvg = { version = "0.46", default-features = false }

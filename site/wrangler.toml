@@ -1,0 +1,5 @@
+# Cloudflare Pages project (static). No credentials here; authenticate with `wrangler login` or CI secrets.
+# Path is relative to this file: site/dist. Not deployed by any script in this repo.
+name = "brouillon-landing"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-11-01"

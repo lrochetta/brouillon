@@ -1,0 +1,27 @@
+name = "Dockerfile"
+extensions = ["dockerfile"]
+filenames = ["Dockerfile", "Dockerfile.*", "*.dockerfile", "Containerfile"]
+case_sensitive = false
+operators = "=\\"
+line_comments = ["#"]
+
+[[string]]
+open = '"'
+escape = '\'
+
+[[string]]
+open = "'"
+check_closing = true
+escapes = false
+
+[[prefix]]
+chars = "$"
+kind = "variable"
+braced = true
+
+[[keywords]]
+name = "Instructions"
+words = '''
+ADD ARG CMD COPY ENTRYPOINT ENV EXPOSE FROM HEALTHCHECK LABEL MAINTAINER ONBUILD
+RUN SHELL STOPSIGNAL USER VOLUME WORKDIR AS
+'''

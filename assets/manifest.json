@@ -1,0 +1,959 @@
+{
+  "schema": 1,
+  "generated_by": "tools/images (cargo run --release -- process)",
+  "assets": [
+    {
+      "id": "illustrations/agent-proposes",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "The ghost cursor proposes, you decide",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/agent-proposes.svg",
+          "format": "svg",
+          "width": 800,
+          "height": 420,
+          "bytes": 4852,
+          "hash": "628236cb",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/agent-proposes.fr",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Le curseur fantôme propose, vous validez",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/agent-proposes.fr.svg",
+          "format": "svg",
+          "width": 800,
+          "height": 420,
+          "bytes": 4884,
+          "hash": "1c9b3f88",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/download",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Decorative banner for the download section.",
+        "fr": "Bannière décorative de la section téléchargement."
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/download.svg",
+          "format": "svg",
+          "width": 640,
+          "height": 300,
+          "bytes": 3011,
+          "hash": "7dcdd01e",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {},
+      "budget_bytes": 3072
+    },
+    {
+      "id": "illustrations/empty-folder",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Empty folder",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/empty-folder.svg",
+          "format": "svg",
+          "width": 240,
+          "height": 180,
+          "bytes": 2155,
+          "hash": "c5d00c49",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/empty-no-results",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "No results",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/empty-no-results.svg",
+          "format": "svg",
+          "width": 240,
+          "height": 180,
+          "bytes": 2267,
+          "hash": "901095ab",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/empty-nothing-to-recover",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Nothing to recover",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/empty-nothing-to-recover.svg",
+          "format": "svg",
+          "width": 240,
+          "height": 180,
+          "bytes": 2230,
+          "hash": "c56a5801",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/hero",
+      "kind": "illustration",
+      "status": "preview",
+      "alt": {
+        "en": "Design preview: a solid blue caret (you) types in a few lines of text while a hollow violet ghost caret (an agent) points at one line and proposes a change that you accept or refuse.",
+        "fr": "Aperçu de conception : un curseur bleu plein (vous) écrit dans quelques lignes de texte pendant qu'un curseur fantôme violet creux (un agent) désigne une ligne et propose une modification que vous acceptez ou refusez."
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/hero.svg",
+          "format": "svg",
+          "width": 960,
+          "height": 540,
+          "bytes": 6661,
+          "hash": "7482ff62",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {},
+      "budget_bytes": 6144
+    },
+    {
+      "id": "illustrations/hero.fr",
+      "kind": "illustration",
+      "status": "preview",
+      "alt": {
+        "en": "Design preview: a solid blue caret (you) types in a few lines of text while a hollow violet ghost caret (an agent) points at one line and proposes a change that you accept or refuse.",
+        "fr": "Aperçu de conception : un curseur bleu plein (vous) écrit dans quelques lignes de texte pendant qu'un curseur fantôme violet creux (un agent) désigne une ligne et propose une modification que vous acceptez ou refusez."
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/hero.fr.svg",
+          "format": "svg",
+          "width": 960,
+          "height": 540,
+          "bytes": 6721,
+          "hash": "342ba4bf",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {},
+      "budget_bytes": 6144
+    },
+    {
+      "id": "illustrations/icon-backups",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Durable backups",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/icon-backups.svg",
+          "format": "svg",
+          "width": 48,
+          "height": 48,
+          "bytes": 2148,
+          "hash": "dbd45db7",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/icon-crash-recovery",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Crash recovery",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/icon-crash-recovery.svg",
+          "format": "svg",
+          "width": 48,
+          "height": 48,
+          "bytes": 2091,
+          "hash": "4969aefa",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/icon-grouped-undo",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Grouped undo",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/icon-grouped-undo.svg",
+          "format": "svg",
+          "width": 48,
+          "height": 48,
+          "bytes": 2150,
+          "hash": "c9fa8cb0",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/icon-local-first",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Local-first and private",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/icon-local-first.svg",
+          "format": "svg",
+          "width": 48,
+          "height": 48,
+          "bytes": 2182,
+          "hash": "922cc08d",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/icon-palette",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Shortcuts and command palette",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/icon-palette.svg",
+          "format": "svg",
+          "width": 48,
+          "height": 48,
+          "bytes": 2123,
+          "hash": "56100303",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/icon-quick-start",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Quick start",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/icon-quick-start.svg",
+          "format": "svg",
+          "width": 48,
+          "height": 48,
+          "bytes": 2021,
+          "hash": "786f8238",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/icon-search-replace",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Search and replace",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/icon-search-replace.svg",
+          "format": "svg",
+          "width": 48,
+          "height": 48,
+          "bytes": 2105,
+          "hash": "4805e968",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/icon-syntax",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Syntax highlighting",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/icon-syntax.svg",
+          "format": "svg",
+          "width": 48,
+          "height": 48,
+          "bytes": 2078,
+          "hash": "84a6721a",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/local-first",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Your files stay on your machine",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/local-first.svg",
+          "format": "svg",
+          "width": 800,
+          "height": 360,
+          "bytes": 4147,
+          "hash": "93476289",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/local-first.fr",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Vos fichiers restent sur votre machine",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/local-first.fr.svg",
+          "format": "svg",
+          "width": 800,
+          "height": 360,
+          "bytes": 4212,
+          "hash": "8e4f3de7",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "illustrations/notfound",
+      "kind": "illustration",
+      "status": "delivered",
+      "alt": {
+        "en": "Page not found",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/illustrations/notfound.svg",
+          "format": "svg",
+          "width": 480,
+          "height": 300,
+          "bytes": 2637,
+          "hash": "5024f5db",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "infographics/architecture",
+      "kind": "infographic",
+      "status": "delivered",
+      "alt": {
+        "en": "Diagram of the Rust crates: brouillon (application) depends on brouillon-ui, brouillon-editor-engine and brouillon-import, which all rely on brouillon-core.",
+        "fr": "Schéma des crates Rust : brouillon (application) dépend de brouillon-ui, brouillon-editor-engine et brouillon-import, qui reposent tous sur brouillon-core."
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/infographics/architecture.svg",
+          "format": "svg",
+          "width": 800,
+          "height": 500,
+          "bytes": 5808,
+          "hash": "a58a89d8",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {},
+      "budget_bytes": 6144
+    },
+    {
+      "id": "infographics/memory",
+      "kind": "infographic",
+      "status": "delivered",
+      "alt": {
+        "en": "Idle memory of Brouillon: 294.6 MB, 151.7 MB, 60.9 MB",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/infographics/memory.svg",
+          "format": "svg",
+          "width": 800,
+          "height": 490,
+          "bytes": 5139,
+          "hash": "4103f657",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "infographics/performance-100mb",
+      "kind": "infographic",
+      "status": "delivered",
+      "alt": {
+        "en": "100 MB file: opens in 211 ms plus 50 ms in the engine, search in 164 ms",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/infographics/performance-100mb.svg",
+          "format": "svg",
+          "width": 800,
+          "height": 520,
+          "bytes": 5324,
+          "hash": "e979d62a",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "infographics/recovery-flow",
+      "kind": "infographic",
+      "status": "delivered",
+      "alt": {
+        "en": "Flow: you type; changes go to a journal; if the app crashes, the next launch reads the journal and reopens your documents as modified; saving writes a temporary file, syncs it and renames it atomically so an old file is never left half-written.",
+        "fr": "Flux : vous écrivez ; les changements vont dans un journal ; si l'application plante, le lancement suivant relit le journal et rouvre vos documents comme modifiés ; l'enregistrement écrit un fichier temporaire, le synchronise puis le renomme de façon atomique pour ne jamais laisser un ancien fichier à moitié écrit."
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/infographics/recovery-flow.svg",
+          "format": "svg",
+          "width": 800,
+          "height": 520,
+          "bytes": 7012,
+          "hash": "4bd22c5c",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {},
+      "budget_bytes": 6144
+    },
+    {
+      "id": "infographics/status-matrix",
+      "kind": "infographic",
+      "status": "delivered",
+      "alt": {
+        "en": "Matrix of features by status: Available (in the downloadable build), Engine ready (implemented and tested, not wired into the interface), Planned. Each status has its own shape and label, not only a colour.",
+        "fr": "Matrice des fonctions par statut : Disponible (dans la version téléchargeable), Moteur prêt (implémenté et testé, pas encore relié à l'interface), Envisagé. Chaque statut a sa forme et son libellé, pas seulement une couleur."
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/infographics/status-matrix.svg",
+          "format": "svg",
+          "width": 800,
+          "height": 800,
+          "bytes": 7919,
+          "hash": "7095cfe1",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {},
+      "budget_bytes": 7168
+    },
+    {
+      "id": "infographics/syntax-languages",
+      "kind": "infographic",
+      "status": "delivered",
+      "alt": {
+        "en": "30 highlighted languages",
+        "fr": ""
+      },
+      "text": [],
+      "files": [
+        {
+          "path": "optimized/infographics/syntax-languages.svg",
+          "format": "svg",
+          "width": 800,
+          "height": 440,
+          "bytes": 7249,
+          "hash": "aa3fca3e",
+          "role": "optimized"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "social/github-social-preview",
+      "kind": "social",
+      "status": "delivered",
+      "alt": {
+        "en": "Brouillon, a fast, local-first text editor. Free, open source (MIT), written in Rust.",
+        "fr": "Brouillon, un éditeur de texte rapide et local-first. Gratuit, open source (MIT), écrit en Rust."
+      },
+      "text": [
+        "Brouillon",
+        "A fast, local-first text editor.",
+        "Free, open source (MIT), written in Rust.",
+        "github.com/lrochetta/brouillon"
+      ],
+      "files": [
+        {
+          "path": "social/github-social-preview.png",
+          "format": "png",
+          "width": 1280,
+          "height": 640,
+          "bytes": 12768,
+          "hash": "b420a707",
+          "role": "source"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "social/og-changelog-en",
+      "kind": "social",
+      "status": "delivered",
+      "alt": {
+        "en": "Brouillon changelog: release notes for every version, with build number and UTC date.",
+        "fr": "Journal des modifications de Brouillon : notes de chaque version, avec numéro de build et date UTC."
+      },
+      "text": [
+        "Changelog",
+        "Release notes,",
+        "version by version.",
+        "With build number and UTC date.",
+        "Brouillon",
+        "brouillon.rochetta.fr"
+      ],
+      "files": [
+        {
+          "path": "social/og-changelog-en.png",
+          "format": "png",
+          "width": 1200,
+          "height": 630,
+          "bytes": 14035,
+          "hash": "a4490b9c",
+          "role": "source"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "social/og-changelog-fr",
+      "kind": "social",
+      "status": "delivered",
+      "alt": {
+        "en": "Brouillon changelog: release notes for every version, with build number and UTC date.",
+        "fr": "Journal des modifications de Brouillon : notes de chaque version, avec numéro de build et date UTC."
+      },
+      "text": [
+        "Journal des modifications",
+        "Les notes de version,",
+        "version par version.",
+        "Avec numéro de build et date UTC.",
+        "Brouillon",
+        "brouillon.rochetta.fr"
+      ],
+      "files": [
+        {
+          "path": "social/og-changelog-fr.png",
+          "format": "png",
+          "width": 1200,
+          "height": 630,
+          "bytes": 15715,
+          "hash": "e54c0192",
+          "role": "source"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "social/og-download-en",
+      "kind": "social",
+      "status": "delivered",
+      "alt": {
+        "en": "Download the Brouillon alpha for Windows x64: unsigned test build, SHA-256 checksum for every file.",
+        "fr": "Télécharger l’alpha de Brouillon pour Windows x64 : build de test non signé, SHA-256 de chaque fichier."
+      },
+      "text": [
+        "Alpha, Windows x64",
+        "Download",
+        "the alpha.",
+        "Unsigned test build.",
+        "SHA-256 for every file.",
+        "Brouillon",
+        "brouillon.rochetta.fr"
+      ],
+      "files": [
+        {
+          "path": "social/og-download-en.png",
+          "format": "png",
+          "width": 1200,
+          "height": 630,
+          "bytes": 13210,
+          "hash": "145f25fe",
+          "role": "source"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "social/og-download-fr",
+      "kind": "social",
+      "status": "delivered",
+      "alt": {
+        "en": "Download the Brouillon alpha for Windows x64: unsigned test build, SHA-256 checksum for every file.",
+        "fr": "Télécharger l’alpha de Brouillon pour Windows x64 : build de test non signé, SHA-256 de chaque fichier."
+      },
+      "text": [
+        "Alpha, Windows x64",
+        "Télécharger",
+        "l’alpha.",
+        "Build de test non signé.",
+        "SHA-256 de chaque fichier.",
+        "Brouillon",
+        "brouillon.rochetta.fr"
+      ],
+      "files": [
+        {
+          "path": "social/og-download-fr.png",
+          "format": "png",
+          "width": 1200,
+          "height": 630,
+          "bytes": 13540,
+          "hash": "108875cc",
+          "role": "source"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "social/og-home-en",
+      "kind": "social",
+      "status": "delivered",
+      "alt": {
+        "en": "Brouillon: a fast, local-first text editor. Free, open source (MIT), written in Rust. Windows alpha.",
+        "fr": "Brouillon : un éditeur de texte rapide et local-first. Gratuit, open source (MIT), écrit en Rust. Alpha pour Windows."
+      },
+      "text": [
+        "Free, open source, Rust",
+        "A fast, local-first",
+        "text editor.",
+        "MIT licence. Windows alpha test build.",
+        "Brouillon",
+        "brouillon.rochetta.fr"
+      ],
+      "files": [
+        {
+          "path": "social/og-home-en.png",
+          "format": "png",
+          "width": 1200,
+          "height": 630,
+          "bytes": 13544,
+          "hash": "ef1ef6a9",
+          "role": "source"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "social/og-home-fr",
+      "kind": "social",
+      "status": "delivered",
+      "alt": {
+        "en": "Brouillon: a fast, local-first text editor. Free, open source (MIT), written in Rust. Windows alpha.",
+        "fr": "Brouillon : un éditeur de texte rapide et local-first. Gratuit, open source (MIT), écrit en Rust. Alpha pour Windows."
+      },
+      "text": [
+        "Gratuit, open source, Rust",
+        "Un éditeur de texte",
+        "rapide, local-first.",
+        "Licence MIT. Build de test alpha pour Windows.",
+        "Brouillon",
+        "brouillon.rochetta.fr"
+      ],
+      "files": [
+        {
+          "path": "social/og-home-fr.png",
+          "format": "png",
+          "width": 1200,
+          "height": 630,
+          "bytes": 15542,
+          "hash": "8d5a09ef",
+          "role": "source"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "social/og-privacy-en",
+      "kind": "social",
+      "status": "delivered",
+      "alt": {
+        "en": "Brouillon privacy: no account, no telemetry in the editor, no cookies on this website.",
+        "fr": "Confidentialité de Brouillon : sans compte, sans télémétrie dans l’éditeur, sans cookie sur ce site."
+      },
+      "text": [
+        "Privacy",
+        "It does not",
+        "phone home.",
+        "No account, no telemetry in the editor.",
+        "No cookies on this site.",
+        "Brouillon",
+        "brouillon.rochetta.fr"
+      ],
+      "files": [
+        {
+          "path": "social/og-privacy-en.png",
+          "format": "png",
+          "width": 1200,
+          "height": 630,
+          "bytes": 13375,
+          "hash": "53b189cb",
+          "role": "source"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "social/og-privacy-fr",
+      "kind": "social",
+      "status": "delivered",
+      "alt": {
+        "en": "Brouillon privacy: no account, no telemetry in the editor, no cookies on this website.",
+        "fr": "Confidentialité de Brouillon : sans compte, sans télémétrie dans l’éditeur, sans cookie sur ce site."
+      },
+      "text": [
+        "Confidentialité",
+        "Il n’appelle",
+        "personne.",
+        "Sans compte, sans télémétrie dans l’éditeur.",
+        "Sans cookie sur ce site.",
+        "Brouillon",
+        "brouillon.rochetta.fr"
+      ],
+      "files": [
+        {
+          "path": "social/og-privacy-fr.png",
+          "format": "png",
+          "width": 1200,
+          "height": 630,
+          "bytes": 14060,
+          "hash": "8a3f1600",
+          "role": "source"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "social/readme-banner",
+      "kind": "social",
+      "status": "delivered",
+      "alt": {
+        "en": "Brouillon, a fast, local-first text editor. Free, open source (MIT), written in Rust.",
+        "fr": "Brouillon, un éditeur de texte rapide et local-first. Gratuit, open source (MIT), écrit en Rust."
+      },
+      "text": [
+        "Brouillon",
+        "A fast, local-first text editor.",
+        "Free, open source (MIT). Rust. Windows alpha."
+      ],
+      "files": [
+        {
+          "path": "social/readme-banner.png",
+          "format": "png",
+          "width": 1280,
+          "height": 320,
+          "bytes": 8222,
+          "hash": "d40e3582",
+          "role": "source"
+        },
+        {
+          "path": "social/readme-banner.svg",
+          "format": "svg",
+          "width": 1280,
+          "height": 320,
+          "bytes": 33617,
+          "hash": "2dc182d6",
+          "role": "source"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "social/readme-banner-dark",
+      "kind": "social",
+      "status": "delivered",
+      "alt": {
+        "en": "Brouillon, a fast, local-first text editor. Free, open source (MIT), written in Rust.",
+        "fr": "Brouillon, un éditeur de texte rapide et local-first. Gratuit, open source (MIT), écrit en Rust."
+      },
+      "text": [
+        "Brouillon",
+        "A fast, local-first text editor.",
+        "Free, open source (MIT). Rust. Windows alpha."
+      ],
+      "files": [
+        {
+          "path": "social/readme-banner-dark.png",
+          "format": "png",
+          "width": 1280,
+          "height": 320,
+          "bytes": 8222,
+          "hash": "d40e3582",
+          "role": "source"
+        },
+        {
+          "path": "social/readme-banner-dark.svg",
+          "format": "svg",
+          "width": 1280,
+          "height": 320,
+          "bytes": 33617,
+          "hash": "2dc182d6",
+          "role": "source"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "social/readme-banner-light",
+      "kind": "social",
+      "status": "delivered",
+      "alt": {
+        "en": "Brouillon, a fast, local-first text editor. Free, open source (MIT), written in Rust.",
+        "fr": "Brouillon, un éditeur de texte rapide et local-first. Gratuit, open source (MIT), écrit en Rust."
+      },
+      "text": [
+        "Brouillon",
+        "A fast, local-first text editor.",
+        "Free, open source (MIT). Rust. Windows alpha."
+      ],
+      "files": [
+        {
+          "path": "social/readme-banner-light.png",
+          "format": "png",
+          "width": 1280,
+          "height": 320,
+          "bytes": 8223,
+          "hash": "cf765285",
+          "role": "source"
+        },
+        {
+          "path": "social/readme-banner-light.svg",
+          "format": "svg",
+          "width": 1280,
+          "height": 320,
+          "bytes": 33617,
+          "hash": "5288b3b0",
+          "role": "source"
+        }
+      ],
+      "srcset": {}
+    },
+    {
+      "id": "social/release-banner",
+      "kind": "social",
+      "status": "delivered",
+      "alt": {
+        "en": "Brouillon 0.1.0-alpha.13 release notes: unsigned alpha test build for Windows x64. Back up your files.",
+        "fr": "Notes de version de Brouillon 0.1.0-alpha.13 : build de test alpha non signé pour Windows x64. Sauvegardez vos fichiers."
+      },
+      "text": [
+        "Release notes",
+        "Brouillon 0.1.0-alpha.13",
+        "Unsigned alpha test build for Windows x64.",
+        "Back up your files.",
+        "Brouillon",
+        "brouillon.rochetta.fr"
+      ],
+      "files": [
+        {
+          "path": "social/release-banner.png",
+          "format": "png",
+          "width": 1200,
+          "height": 600,
+          "bytes": 13777,
+          "hash": "04b4bd39",
+          "role": "source"
+        }
+      ],
+      "srcset": {}
+    }
+  ]
+}

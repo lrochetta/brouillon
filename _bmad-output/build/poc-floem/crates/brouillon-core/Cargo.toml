@@ -1,0 +1,22 @@
+[package]
+name = "brouillon-core"
+version = "0.1.0-alpha.15"
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+publish = false
+
+[dependencies]
+floem.workspace = true
+sysinfo.workspace = true
+serde.workspace = true
+toml.workspace = true
+dirs.workspace = true
+encoding_rs.workspace = true
+chardetng.workspace = true
+unicode-segmentation.workspace = true
+
+# Windows only: working set / private bytes readout, HeapCompact, EmptyWorkingSet (memtrim.rs).
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_System_Memory", "Win32_System_ProcessStatus", "Win32_System_Threading"] }

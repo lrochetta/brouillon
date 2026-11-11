@@ -1,0 +1,23 @@
+[package]
+name = "brouillon-vault"
+version = "0.1.0-alpha.15"
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+publish = false
+description = "Brouillon secret vault: keyslot file format, XChaCha20-Poly1305, Windows DPAPI wrap. No UI, no network."
+
+[features]
+# Test-only stand-in for the OS key wrap (NOT secure: the key sits in the caller's memory).
+test-util = []
+
+[dependencies]
+chacha20poly1305 = { version = "0.10", default-features = false, features = ["alloc"] }
+hkdf = "0.12"
+sha2.workspace = true
+zeroize = "1"
+getrandom = "0.3"
+
+[dev-dependencies]
+tempfile.workspace = true

@@ -1,0 +1,56 @@
+name = "Ruby"
+extensions = ["rb", "rake", "gemspec", "ru", "rbw"]
+filenames = ["Rakefile", "Gemfile", "Guardfile", "Vagrantfile", "Podfile", "Capfile"]
+shebang = ["ruby", "jruby"]
+case_sensitive = true
+regex_literals = true
+word_chars = "?!"
+operators = "+-*/%=<>&|^~"
+line_comments = ["#"]
+block_comments = [["=begin", "=end"]]
+heredoc = ["<<~", "<<-", "<<"]
+
+[[string]]
+open = '"'
+escape = '\'
+multiline = true
+
+[[string]]
+open = "'"
+escape = '\'
+multiline = true
+
+[[string]]
+open = "`"
+escape = '\'
+multiline = true
+
+[[prefix]]
+chars = "@$"
+kind = "variable"
+
+[[prefix]]
+chars = ":"
+kind = "attribute"
+
+[[keywords]]
+name = "Keywords"
+words = '''
+BEGIN END alias and begin break case class def defined? do else elsif end ensure
+for if in module next not or redo rescue retry return then undef unless until when
+while yield __method__ __FILE__ __LINE__ __dir__
+'''
+
+[[keywords]]
+name = "Constants"
+words = "true false nil self super"
+
+[[keywords]]
+name = "Kernel"
+words = '''
+puts print p pp require require_relative load include extend prepend attr_accessor
+attr_reader attr_writer raise fail loop lambda proc private public protected
+module_function format sprintf printf gets puts catch throw block_given? binding
+freeze frozen? is_a? kind_of? respond_to? instance_of? nil? each map select reject
+reduce inject
+'''

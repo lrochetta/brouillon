@@ -1,0 +1,190 @@
+{
+  "github-social-preview": {
+    "alt": {
+      "en": "Brouillon, a fast, local-first text editor. Free, open source (MIT), written in Rust.",
+      "fr": "Brouillon, un éditeur de texte rapide et local-first. Gratuit, open source (MIT), écrit en Rust."
+    },
+    "status": "delivered",
+    "text": [
+      "Brouillon",
+      "A fast, local-first text editor.",
+      "Free, open source (MIT), written in Rust.",
+      "github.com/lrochetta/brouillon"
+    ]
+  },
+  "og-changelog-en": {
+    "alt": {
+      "en": "Brouillon changelog: release notes for every version, with build number and UTC date.",
+      "fr": "Journal des modifications de Brouillon : notes de chaque version, avec numéro de build et date UTC."
+    },
+    "status": "delivered",
+    "text": [
+      "Changelog",
+      "Release notes,",
+      "version by version.",
+      "With build number and UTC date.",
+      "Brouillon",
+      "brouillon.rochetta.fr"
+    ]
+  },
+  "og-changelog-fr": {
+    "alt": {
+      "en": "Brouillon changelog: release notes for every version, with build number and UTC date.",
+      "fr": "Journal des modifications de Brouillon : notes de chaque version, avec numéro de build et date UTC."
+    },
+    "status": "delivered",
+    "text": [
+      "Journal des modifications",
+      "Les notes de version,",
+      "version par version.",
+      "Avec numéro de build et date UTC.",
+      "Brouillon",
+      "brouillon.rochetta.fr"
+    ]
+  },
+  "og-download-en": {
+    "alt": {
+      "en": "Download the Brouillon alpha for Windows x64: unsigned test build, SHA-256 checksum for every file.",
+      "fr": "Télécharger l’alpha de Brouillon pour Windows x64 : build de test non signé, SHA-256 de chaque fichier."
+    },
+    "status": "delivered",
+    "text": [
+      "Alpha, Windows x64",
+      "Download",
+      "the alpha.",
+      "Unsigned test build.",
+      "SHA-256 for every file.",
+      "Brouillon",
+      "brouillon.rochetta.fr"
+    ]
+  },
+  "og-download-fr": {
+    "alt": {
+      "en": "Download the Brouillon alpha for Windows x64: unsigned test build, SHA-256 checksum for every file.",
+      "fr": "Télécharger l’alpha de Brouillon pour Windows x64 : build de test non signé, SHA-256 de chaque fichier."
+    },
+    "status": "delivered",
+    "text": [
+      "Alpha, Windows x64",
+      "Télécharger",
+      "l’alpha.",
+      "Build de test non signé.",
+      "SHA-256 de chaque fichier.",
+      "Brouillon",
+      "brouillon.rochetta.fr"
+    ]
+  },
+  "og-home-en": {
+    "alt": {
+      "en": "Brouillon: a fast, local-first text editor. Free, open source (MIT), written in Rust. Windows alpha.",
+      "fr": "Brouillon : un éditeur de texte rapide et local-first. Gratuit, open source (MIT), écrit en Rust. Alpha pour Windows."
+    },
+    "status": "delivered",
+    "text": [
+      "Free, open source, Rust",
+      "A fast, local-first",
+      "text editor.",
+      "MIT licence. Windows alpha test build.",
+      "Brouillon",
+      "brouillon.rochetta.fr"
+    ]
+  },
+  "og-home-fr": {
+    "alt": {
+      "en": "Brouillon: a fast, local-first text editor. Free, open source (MIT), written in Rust. Windows alpha.",
+      "fr": "Brouillon : un éditeur de texte rapide et local-first. Gratuit, open source (MIT), écrit en Rust. Alpha pour Windows."
+    },
+    "status": "delivered",
+    "text": [
+      "Gratuit, open source, Rust",
+      "Un éditeur de texte",
+      "rapide, local-first.",
+      "Licence MIT. Build de test alpha pour Windows.",
+      "Brouillon",
+      "brouillon.rochetta.fr"
+    ]
+  },
+  "og-privacy-en": {
+    "alt": {
+      "en": "Brouillon privacy: no account, no telemetry in the editor, no cookies on this website.",
+      "fr": "Confidentialité de Brouillon : sans compte, sans télémétrie dans l’éditeur, sans cookie sur ce site."
+    },
+    "status": "delivered",
+    "text": [
+      "Privacy",
+      "It does not",
+      "phone home.",
+      "No account, no telemetry in the editor.",
+      "No cookies on this site.",
+      "Brouillon",
+      "brouillon.rochetta.fr"
+    ]
+  },
+  "og-privacy-fr": {
+    "alt": {
+      "en": "Brouillon privacy: no account, no telemetry in the editor, no cookies on this website.",
+      "fr": "Confidentialité de Brouillon : sans compte, sans télémétrie dans l’éditeur, sans cookie sur ce site."
+    },
+    "status": "delivered",
+    "text": [
+      "Confidentialité",
+      "Il n’appelle",
+      "personne.",
+      "Sans compte, sans télémétrie dans l’éditeur.",
+      "Sans cookie sur ce site.",
+      "Brouillon",
+      "brouillon.rochetta.fr"
+    ]
+  },
+  "readme-banner": {
+    "alt": {
+      "en": "Brouillon, a fast, local-first text editor. Free, open source (MIT), written in Rust.",
+      "fr": "Brouillon, un éditeur de texte rapide et local-first. Gratuit, open source (MIT), écrit en Rust."
+    },
+    "status": "delivered",
+    "text": [
+      "Brouillon",
+      "A fast, local-first text editor.",
+      "Free, open source (MIT). Rust. Windows alpha."
+    ]
+  },
+  "readme-banner-dark": {
+    "alt": {
+      "en": "Brouillon, a fast, local-first text editor. Free, open source (MIT), written in Rust.",
+      "fr": "Brouillon, un éditeur de texte rapide et local-first. Gratuit, open source (MIT), écrit en Rust."
+    },
+    "status": "delivered",
+    "text": [
+      "Brouillon",
+      "A fast, local-first text editor.",
+      "Free, open source (MIT). Rust. Windows alpha."
+    ]
+  },
+  "readme-banner-light": {
+    "alt": {
+      "en": "Brouillon, a fast, local-first text editor. Free, open source (MIT), written in Rust.",
+      "fr": "Brouillon, un éditeur de texte rapide et local-first. Gratuit, open source (MIT), écrit en Rust."
+    },
+    "status": "delivered",
+    "text": [
+      "Brouillon",
+      "A fast, local-first text editor.",
+      "Free, open source (MIT). Rust. Windows alpha."
+    ]
+  },
+  "release-banner": {
+    "alt": {
+      "en": "Brouillon 0.1.0-alpha.13 release notes: unsigned alpha test build for Windows x64. Back up your files.",
+      "fr": "Notes de version de Brouillon 0.1.0-alpha.13 : build de test alpha non signé pour Windows x64. Sauvegardez vos fichiers."
+    },
+    "status": "delivered",
+    "text": [
+      "Release notes",
+      "Brouillon 0.1.0-alpha.13",
+      "Unsigned alpha test build for Windows x64.",
+      "Back up your files.",
+      "Brouillon",
+      "brouillon.rochetta.fr"
+    ]
+  }
+}

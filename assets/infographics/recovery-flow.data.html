@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Recovery flow</title>
+<table><caption>How unsaved text is recovered after an unexpected stop (verified 2026-11-05)</caption>
+<thead><tr><th scope="col">Step</th><th scope="col">What happens</th><th scope="col">Evidence</th><th scope="col">Status</th></tr></thead>
+<tbody>
+<tr><th scope="row">1. You type</th><td>Edits go to the buffer. The journal is written every 30 s.</td><td>code, 42 section 3</td><td>tests or code only</td></tr>
+<tr><th scope="row">2. Recovery journal</th><td>Unsaved text is kept on disk with an atomic, fsynced write.</td><td>unit tests, 45 bug 4</td><td>tests or code only</td></tr>
+<tr><th scope="row">3. Unexpected stop</th><td>The process is killed (kill -9 in the test harness).</td><td>seen on screen, 44 k</td><td>seen on screen</td></tr>
+<tr><th scope="row">4. Relaunch</th><td>The journal is read at start-up and merged into the session.</td><td>seen on screen, 45 bug 2</td><td>seen on screen</td></tr>
+<tr><th scope="row">5. Text is back</th><td>Marked modified: dot on the tab and sidebar. Status bar says N unsaved document(s) were recovered.</td><td>seen on screen, 45 after-k2</td><td>seen on screen</td></tr>
+<tr><th scope="row">Not covered</th><td>Scroll and fold position; file changed on disk since the crash; network-share fallback</td><td>re/45 not done</td><td>not verified</td></tr>
+</tbody></table>
+<p>Source: internal design notes (not published) bugs 1 to 4; internal notes scenario k; internal notes section 3</p>
+</html>
